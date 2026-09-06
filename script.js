@@ -373,6 +373,14 @@ function prepareHtmlAudio(){
     bgMusic.src=abs;
   }
   try{ bgMusic.load(); }catch(e){}
+  /* If native loop gaps, restart instantly — no long silence */
+  bgMusic.addEventListener("ended", ()=>{
+    if(!musicPlaying || musicEndedAtBottom || musicMode !== "html") return;
+    try{
+      bgMusic.currentTime=0;
+      bgMusic.play().catch(()=>{});
+    }catch(e){}
+  });
 }
 
 function unlockAudioContext(){
@@ -406,9 +414,24 @@ function stopMusic(){
   stopWebAudio();
 }
 
+function pauseMusicSoft(){
+  /* Pause without resetting — used for real screen-lock only */
+  musicPlaying=false;
+  if(bgMusic && !bgMusic.paused){
+    try{ bgMusic.pause(); }catch(e){}
+  }
+  if(audioCtx && audioCtx.state === "running"){
+    try{ audioCtx.suspend(); }catch(e){}
+  }
+}
+
 function playHtmlAudio(){
   if(!bgMusic) return Promise.resolve(false);
+  if(musicPlaying && musicMode === "html" && !bgMusic.paused){
+    return Promise.resolve(true);
+  }
   bgMusic.muted=false;
+  bgMusic.loop=true;
   bgMusic.volume=0.65;
   try{
     const p=bgMusic.play();
@@ -432,31 +455,44 @@ function playHtmlAudio(){
 function startWebAudioFromBuffer(buffer){
   const ctx=unlockAudioContext();
   if(!ctx || !buffer) return false;
+  /* Already seamless-looping — do not restart (avoids 1–2s cut) */
+  if(musicMode === "webaudio" && webSource && musicPlaying) return true;
   stopWebAudio();
-  try{ if(bgMusic) bgMusic.pause(); }catch(e){}
   webSource=ctx.createBufferSource();
   webGain=ctx.createGain();
   webGain.gain.value=0.65;
   webSource.buffer=buffer;
   webSource.loop=true;
+  webSource.loopStart=0;
+  webSource.loopEnd=buffer.duration;
   webSource.connect(webGain);
   webGain.connect(ctx.destination);
   webSource.start(0);
   musicPlaying=true;
   musicMode="webaudio";
   musicEndedAtBottom=false;
+  /* HTML was only for unlock — stop it quietly after seamless WA starts */
+  if(bgMusic){
+    try{
+      bgMusic.pause();
+      bgMusic.muted=false;
+    }catch(e){}
+  }
   return true;
 }
 
 function playViaWebAudio(){
   const ctx=unlockAudioContext();
   if(!ctx) return Promise.resolve(false);
+  if(musicMode === "webaudio" && webSource && musicPlaying){
+    return Promise.resolve(true);
+  }
   if(decodedBuffer){
     return Promise.resolve(startWebAudioFromBuffer(decodedBuffer));
   }
   return fetch(musicSrc())
     .then(r=>r.arrayBuffer())
-    .then(buf=>ctx.decodeAudioData(buf))
+    .then(buf=>ctx.decodeAudioData(buf.slice(0)))
     .then(decoded=>{
       decodedBuffer=decoded;
       return startWebAudioFromBuffer(decoded);
@@ -465,16 +501,36 @@ function playViaWebAudio(){
 }
 
 function startMusicFromGesture(){
-  unlockAudioContext();
-  return playHtmlAudio().then((ok)=>{
+  const ctx=unlockAudioContext();
+  /* Unlock media in the same tap, then prefer seamless WebAudio loop */
+  if(bgMusic){
+    try{
+      bgMusic.muted=true;
+      bgMusic.play().catch(()=>{});
+    }catch(e){}
+  }
+  if(ctx && ctx.state === "suspended") ctx.resume();
+  return playViaWebAudio().then((ok)=>{
     if(ok) return true;
-    return playViaWebAudio();
+    if(bgMusic) bgMusic.muted=false;
+    return playHtmlAudio();
   });
 }
 
 function resumeMusic(){
-  if(musicPlaying && !musicEndedAtBottom) return;
-  if(musicMode === "webaudio" || (!bgMusic && decodedBuffer)){
+  if(musicEndedAtBottom === false && musicPlaying){
+    if(musicMode === "html" && bgMusic && !bgMusic.paused) return;
+    if(musicMode === "webaudio" && webSource) return;
+  }
+  musicEndedAtBottom=false;
+  if(audioCtx && audioCtx.state === "suspended"){
+    audioCtx.resume().catch(()=>{});
+  }
+  if(musicMode === "webaudio" || decodedBuffer){
+    if(webSource && audioCtx && audioCtx.state === "running"){
+      musicPlaying=true;
+      return;
+    }
     playViaWebAudio();
     return;
   }
@@ -482,6 +538,18 @@ function resumeMusic(){
     if(!ok) playViaWebAudio();
   });
 }
+
+/* If browser pauses audio unexpectedly mid-invite, resume without reset */
+window.setInterval(()=>{
+  if(!inviteOpened || musicEndedAtBottom || !musicPlaying) return;
+  if(document.hidden) return;
+  if(musicMode === "html" && bgMusic && bgMusic.paused){
+    bgMusic.play().catch(()=>{});
+  }
+  if(musicMode === "webaudio" && audioCtx && audioCtx.state === "suspended"){
+    audioCtx.resume().catch(()=>{});
+  }
+}, 800);
 
 function clearAutoTimer(){
   if(autoTimer){
@@ -657,12 +725,13 @@ function screenVisibility(screen){
 
 function syncMusicWithScrollPosition(){
   if(!inviteOpened || !autoScreens.length) return;
-  if(autoOn) return;
+  if(autoOn) return; /* never touch music during auto-scroll */
   const first=autoScreens[0];
   const last=autoScreens[autoScreens.length - 1];
   const firstVis=screenVisibility(first);
   const lastVis=screenVisibility(last);
-  if(lastVis > 0.55){
+  /* Only stop when clearly parked on the final screen */
+  if(lastVis > 0.72 && firstVis < 0.15){
     if(musicPlaying){
       musicEndedAtBottom=true;
       stopMusic();
@@ -736,20 +805,29 @@ window.addEventListener("touchstart", onUserWantManual, {passive:true});
 window.addEventListener("touchmove", onUserWantManual, {passive:true});
 window.addEventListener("scroll", onScrollMusicWatch, {passive:true});
 
+let hideMusicTimer=0;
 function onPageHidden(){
   if(!(document.hidden || document.visibilityState === "hidden")) return;
-  stopAutoScroll();
-  if(musicPlaying || (bgMusic && !bgMusic.paused) || webSource){
-    stopMusic();
-    musicEndedAtBottom=true;
-  }
-  if(audioCtx && audioCtx.state === "running"){
-    try{ audioCtx.suspend(); }catch(e){}
-  }
+  /* Debounce — phones can flicker hidden during auto-scroll */
+  if(hideMusicTimer) window.clearTimeout(hideMusicTimer);
+  hideMusicTimer=window.setTimeout(()=>{
+    hideMusicTimer=0;
+    if(!(document.hidden || document.visibilityState === "hidden")) return;
+    stopAutoScroll();
+    if(musicPlaying || (bgMusic && !bgMusic.paused) || webSource){
+      pauseMusicSoft();
+      musicEndedAtBottom=true;
+    }
+  }, 450);
 }
 
 document.addEventListener("visibilitychange", ()=>{
-  if(document.hidden || document.visibilityState === "hidden") onPageHidden();
+  if(document.hidden || document.visibilityState === "hidden"){
+    onPageHidden();
+  }else if(hideMusicTimer){
+    window.clearTimeout(hideMusicTimer);
+    hideMusicTimer=0;
+  }
 });
 window.addEventListener("pagehide", ()=>{
   stopAutoScroll();
