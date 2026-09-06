@@ -560,42 +560,6 @@ body.gate-locked{
   letter-spacing:.12em;
   color:var(--ink-soft);
 }
-.gate-scroll-hint{
-  margin:10px auto 16px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:8px;
-  font-family:"Cinzel",serif;
-  font-size:9px;
-  letter-spacing:.32em;
-  text-transform:uppercase;
-  color:rgba(224,192,122,.65);
-}
-.gate-scroll-hint span{
-  width:14px;
-  height:22px;
-  border:1px solid rgba(224,192,122,.45);
-  border-radius:10px;
-  position:relative;
-}
-.gate-scroll-hint span:after{
-  content:"";
-  position:absolute;
-  left:50%;
-  top:4px;
-  width:3px;
-  height:5px;
-  margin-left:-1.5px;
-  border-radius:2px;
-  background:rgba(224,192,122,.8);
-  animation:scrollDot 1.6s ease-in-out infinite;
-}
-@keyframes scrollDot{
-  0%{transform:translateY(0);opacity:1}
-  70%{transform:translateY(8px);opacity:.2}
-  100%{transform:translateY(0);opacity:1}
-}
 .gate-divider{
   width:120px;
   height:14px;
@@ -783,10 +747,6 @@ body.gate-locked{
 }
 
 /* Gate words use same reveal system as other pages — no special unlock */
-.screen.cover .gate-scroll-hint{
-  margin-top:10px;
-  margin-bottom:14px;
-}
 
 .parchment h2 em.w,
 .event h2 em.w{
@@ -1378,16 +1338,29 @@ h2 em.w{
 }
 .blessing-note{
   max-width:470px;
-  margin:45px auto 0;
-  padding-top:22px;
+  margin:28px auto 0;
+  padding-top:20px;
   padding-bottom:8px;
-  border-top:1px solid rgba(224,192,122,.28);
+  border-top:0;
+  position:relative;
+  font-family:"Cormorant Garamond",serif;
   font-size:clamp(10px,2.6vw,11px);
   letter-spacing:.14em;
   text-transform:uppercase;
   color:#c9c0ae;
   line-height:1.8;
   overflow:visible;
+}
+.blessing-note:before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:50%;
+  width:42px;
+  height:1px;
+  transform:translateX(-50%);
+  background:linear-gradient(90deg,transparent,rgba(224,192,122,.7),transparent);
+  box-shadow:0 0 10px rgba(224,192,122,.2);
 }
 
 /* Couple */
@@ -2230,6 +2203,17 @@ h2 em.w{
     font-size:clamp(14px,3.6vw,17px);
     line-height:1.45;
   }
+  .blessing .verse-line{
+    width:36px;
+    margin:16px auto;
+  }
+  .blessing .blessing-note{
+    margin-top:22px;
+    padding-top:16px;
+  }
+  .blessing .blessing-note:before{
+    width:36px;
+  }
   .event-card{padding:4px 0}
   .event-date strong{font-size:clamp(48px,13vw,60px)}
   .event .gold-btn{margin-top:10px; padding:12px 8px}
@@ -2355,9 +2339,6 @@ h2 em.w{
   .gate-title em,
   h2 em,
   .crest-mini{
-    animation:none !important;
-  }
-  .gate-scroll-hint span:after{
     animation:none !important;
   }
 }
