@@ -644,3 +644,30 @@ window.addEventListener("touchstart", onUserWantManual, {passive:true});
 window.addEventListener("touchmove", onUserWantManual, {passive:true});
 window.addEventListener("scroll", onScrollMusicWatch, {passive:true});
 
+/* Screen lock / tab switch / app background → stop music + auto-scroll */
+function onPageHidden(){
+  if(!document.hidden && document.visibilityState !== "hidden") return;
+  stopAutoScroll();
+  if(musicPlaying || (bgMusic && !bgMusic.paused) || webSource){
+    stopMusic();
+    /* So scrolling back to top can start music again */
+    musicEndedAtBottom=true;
+  }
+  if(audioCtx && audioCtx.state === "running"){
+    try{ audioCtx.suspend(); }catch(e){}
+  }
+}
+
+document.addEventListener("visibilitychange", ()=>{
+  if(document.hidden || document.visibilityState === "hidden") onPageHidden();
+});
+window.addEventListener("pagehide", ()=>{
+  stopAutoScroll();
+  stopMusic();
+  musicEndedAtBottom=true;
+});
+window.addEventListener("blur", ()=>{
+  /* Some phones fire blur on lock */
+  if(document.hidden) onPageHidden();
+});
+
