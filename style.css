@@ -100,9 +100,10 @@ body:before{
 }
 
 /* —— Music —— */
-.ctrl-btn{
+.music-btn{
   position:fixed;
   right:max(14px,env(safe-area-inset-right));
+  bottom:max(16px,env(safe-area-inset-bottom));
   z-index:110;
   width:46px;
   height:46px;
@@ -112,8 +113,7 @@ body:before{
     radial-gradient(circle at 35% 30%,rgba(224,192,122,.18),transparent 55%),
     rgba(4,20,15,.78);
   color:var(--gold);
-  font-size:15px;
-  line-height:1;
+  font-size:16px;
   cursor:pointer;
   backdrop-filter:blur(10px);
   -webkit-backdrop-filter:blur(10px);
@@ -126,21 +126,7 @@ body:before{
   opacity:1;
   pointer-events:auto;
 }
-.music-btn{
-  bottom:max(16px,env(safe-area-inset-bottom));
-  font-size:16px;
-}
-.auto-btn{
-  bottom:calc(16px + env(safe-area-inset-bottom, 0px) + 54px);
-  padding-left:3px;
-  letter-spacing:0;
-}
-.auto-btn[aria-pressed="true"]{
-  padding-left:0;
-  font-size:13px;
-  letter-spacing:.04em;
-}
-.ctrl-btn[aria-pressed="true"]{
+.music-btn[aria-pressed="true"]{
   background:
     radial-gradient(circle at 35% 30%,rgba(224,192,122,.28),transparent 55%),
     rgba(224,192,122,.16);
@@ -149,7 +135,7 @@ body:before{
     0 0 28px rgba(224,192,122,.2),
     0 12px 32px rgba(0,0,0,.35);
 }
-.ctrl-btn:active{transform:scale(.94)}
+.music-btn:active{transform:scale(.94)}
 
 /* —— Host families (opening page) —— */
 .screen.host{
@@ -815,7 +801,7 @@ body:before{
 }
 
 .gold-btn,
-.ctrl-btn{
+.music-btn{
   will-change:auto;
 }
 
