@@ -1,5 +1,6 @@
 const reduceMotion=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const isCoarse=window.matchMedia("(pointer: coarse)").matches;
+let inviteOpened=false;
 
 /* —— Viewport height once (no mid-scroll reflow) —— */
 let appHLocked=false;
@@ -75,6 +76,33 @@ function revealFirstScreens(){
       showReveal(rev);
     }
   }
+}
+
+/** Replay host/first-page word animation after Tap to open */
+function playOpeningReveal(){
+  const first=document.querySelector("#invitation > .screen");
+  if(!first) return;
+  const rev=first.querySelector(".reveal");
+  if(!rev) return;
+  first.classList.add("is-visible");
+  if(reduceMotion){
+    showReveal(rev);
+    return;
+  }
+  /* Force CSS animations to restart */
+  rev.classList.remove("in","from-end","from-start");
+  rev.querySelectorAll(".anim-item,.w").forEach(el=>{
+    el.style.animation="none";
+    void el.offsetWidth;
+    el.style.animation="";
+  });
+  requestAnimationFrame(()=>{
+    requestAnimationFrame(()=>{
+      rev.classList.add("from-start");
+      showReveal(rev);
+      if(typeof markRevealPlayed === "function") markRevealPlayed(rev);
+    });
+  });
 }
 
 pinToStart();
@@ -181,14 +209,18 @@ document.querySelectorAll(".split-words").forEach(splitWords);
 */
 const reveals=[...document.querySelectorAll(".reveal")];
 const screens=document.querySelectorAll("#invitation > .screen");
+const hasOpenGate=!!document.getElementById("openGate");
+let markRevealPlayed=null;
 
-revealFirstScreens();
+/* Don't animate first page under the gate — wait for Tap to open */
+if(!hasOpenGate) revealFirstScreens();
 
 if(reduceMotion){
   reveals.forEach(showReveal);
   screens.forEach(s=>s.classList.add("is-visible"));
 }else{
   const played=new WeakMap();
+  markRevealPlayed=(el)=>{ played.set(el, true); };
   let lastY=window.scrollY || 0;
   let dir="start-to-end";
 
@@ -205,10 +237,8 @@ if(reduceMotion){
 
   function sectionEntering(rect, vh){
     if(dir === "start-to-end"){
-      /* Coming from bottom: fire a bit before mid-screen */
       return rect.top < vh * 0.88 && rect.bottom > vh * 0.08;
     }
-    /* end → start: coming from top — fire early so words animate as section arrives */
     return rect.bottom > vh * 0.12 && rect.top < vh * 0.92;
   }
 
@@ -223,6 +253,8 @@ if(reduceMotion){
       }
       if(!sectionEntering(rect, vh)) return;
       if(played.get(el)) return;
+      /* Host stays gated until Tap to open */
+      if(hasOpenGate && !inviteOpened && el.closest("#host, .screen.host")) return;
       played.set(el, true);
       restartReveal(el, dir);
       const screen=el.closest(".screen");
@@ -329,7 +361,6 @@ const openGate=document.getElementById("openGate");
 const openGateHint=openGate ? openGate.querySelector(".open-gate-hint") : null;
 const autoScreens=[...document.querySelectorAll("#invitation > .screen")];
 let musicPlaying=false;
-let inviteOpened=false;
 let audioCtx=null;
 let decodedBuffer=null;
 let webSource=null;
@@ -759,6 +790,9 @@ function openInvitation(){
 
   const result=startMusicFromGesture();
   hideOpenGate();
+  /* Word animation on first page — only after gate opens */
+  playOpeningReveal();
+  window.setTimeout(playOpeningReveal, 80);
 
   ignoreInterruptUntil=Date.now() + 2000;
   window.setTimeout(()=>{
