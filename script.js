@@ -2,17 +2,25 @@ const reduceMotion=window.matchMedia("(prefers-reduced-motion: reduce)").matches
 const isCoarse=window.matchMedia("(pointer: coarse)").matches;
 
 /* —— Auto full-screen fit per phone —— */
-function syncAppViewport(){
+let appHLocked=false;
+let manualScrollMode=false;
+
+function syncAppViewport(force){
   const vv=window.visualViewport;
   const h=Math.max(1, Math.round((vv && vv.height) ? vv.height : window.innerHeight));
   const w=Math.max(1, Math.round((vv && vv.width) ? vv.width : window.innerWidth));
   const root=document.documentElement;
+  const prev=parseFloat(root.style.getPropertyValue("--app-h")) || 0;
+  /* Avoid mid-scroll jumps when mobile browser chrome shows/hides */
+  if(!force && appHLocked && Math.abs(h - prev) < 48) return;
   root.style.setProperty("--app-h", h + "px");
   root.style.setProperty("--app-w", w + "px");
   root.style.setProperty("--screen-min", h + "px");
+  if(h > 100) appHLocked=true;
 }
 
 function fitScreenContents(){
+  if(manualScrollMode) return; /* don't rescale while user is scrolling */
   document.querySelectorAll("#invitation > .screen").forEach(screen=>{
     const content=screen.querySelector(":scope > .content");
     if(!content) return;
@@ -36,31 +44,41 @@ function fitScreenContents(){
 }
 
 let fitRaf=0;
-function scheduleFitScreens(){
+function scheduleFitScreens(force){
+  if(manualScrollMode && !force) return;
   if(fitRaf) cancelAnimationFrame(fitRaf);
   fitRaf=requestAnimationFrame(()=>{
     fitRaf=0;
-    syncAppViewport();
+    syncAppViewport(!!force);
     fitScreenContents();
   });
 }
 
-syncAppViewport();
-window.addEventListener("resize", scheduleFitScreens, {passive:true});
+syncAppViewport(true);
+window.addEventListener("resize", ()=>{
+  /* Real window resize only — not every scroll chrome tweak */
+  appHLocked=false;
+  scheduleFitScreens(true);
+}, {passive:true});
 window.addEventListener("orientationchange", ()=>{
-  window.setTimeout(scheduleFitScreens, 120);
-  window.setTimeout(scheduleFitScreens, 400);
+  appHLocked=false;
+  manualScrollMode=false;
+  window.setTimeout(()=>scheduleFitScreens(true), 120);
+  window.setTimeout(()=>scheduleFitScreens(true), 400);
 });
 if(window.visualViewport){
-  window.visualViewport.addEventListener("resize", scheduleFitScreens, {passive:true});
-  window.visualViewport.addEventListener("scroll", scheduleFitScreens, {passive:true});
+  /* resize OK; do NOT listen to visualViewport scroll (causes mid-scroll jank) */
+  window.visualViewport.addEventListener("resize", ()=>{
+    if(manualScrollMode) return;
+    scheduleFitScreens(false);
+  }, {passive:true});
 }
-window.addEventListener("load", scheduleFitScreens);
+window.addEventListener("load", ()=>scheduleFitScreens(true));
 if(document.fonts && document.fonts.ready){
-  document.fonts.ready.then(scheduleFitScreens);
+  document.fonts.ready.then(()=>scheduleFitScreens(true));
 }
-window.setTimeout(scheduleFitScreens, 50);
-window.setTimeout(scheduleFitScreens, 300);
+window.setTimeout(()=>scheduleFitScreens(true), 50);
+window.setTimeout(()=>scheduleFitScreens(true), 300);
 
 /* Never restore mid-page — always open on the first host screen */
 if("scrollRestoration" in history) history.scrollRestoration="manual";
@@ -531,6 +549,7 @@ function cancelAutoAnim(){
 
 function stopAutoScroll(){
   autoOn=false;
+  manualScrollMode=true;
   clearAutoTimer();
   cancelAutoAnim();
 }
@@ -540,6 +559,7 @@ function easeInOutCubic(t){
 }
 
 function setScrollY(y){
+  if(manualScrollMode && !autoOn) return;
   const top=Math.max(0, y);
   try{ window.scrollTo(0, top); }catch(e){}
   document.documentElement.scrollTop=top;
@@ -552,11 +572,15 @@ function getScrollY(){
 
 function softScrollTo(top, duration, onDone){
   cancelAutoAnim();
+  if(!autoOn){
+    if(onDone) onDone();
+    return;
+  }
   const start=getScrollY();
   const dist=top - start;
   const ms=reduceMotion ? 0 : duration;
   if(Math.abs(dist) < 2 || ms < 50){
-    setScrollY(top);
+    if(autoOn) setScrollY(top);
     if(onDone) onDone();
     return;
   }
@@ -571,7 +595,7 @@ function softScrollTo(top, duration, onDone){
     if(p < 1) autoRaf=requestAnimationFrame(frame);
     else{
       autoRaf=0;
-      setScrollY(top);
+      if(autoOn) setScrollY(top);
       if(onDone) onDone();
     }
   }
@@ -580,14 +604,11 @@ function softScrollTo(top, duration, onDone){
 
 function goToScreen(i, onDone){
   const screen=autoScreens[i];
-  if(!screen){
+  if(!screen || !autoOn){
     if(onDone) onDone();
     return;
   }
   autoIndex=i;
-  /* Protect auto scroll from accidental touches while moving */
-  ignoreInterruptUntil=Date.now() + 4500;
-  scheduleFitScreens();
   const top=Math.max(0, Math.round(screen.getBoundingClientRect().top + getScrollY()));
   softScrollTo(top, 2200, onDone);
 }
@@ -622,11 +643,14 @@ function scheduleAfterDwell(){
 function startAutoScroll(){
   if(!autoScreens.length) return;
   if(autoOn) return;
+  manualScrollMode=false;
   autoOn=true;
   autoIndex=nearestScreenIndexSafe();
-  /* Long grace so open-tap / finger lift doesn't kill auto on phones */
-  ignoreInterruptUntil=Date.now() + 5000;
-  setScrollY(autoScreens[autoIndex] ? Math.max(0, autoScreens[autoIndex].offsetTop) : 0);
+  ignoreInterruptUntil=Date.now() + 1800;
+  const y=autoScreens[autoIndex] ? Math.max(0, autoScreens[autoIndex].offsetTop) : 0;
+  try{ window.scrollTo(0, y); }catch(e){}
+  document.documentElement.scrollTop=y;
+  document.body.scrollTop=y;
   scheduleAfterDwell();
 }
 
@@ -645,7 +669,6 @@ let touchArmed=false;
 
 function onUserWantManual(e){
   if(!autoOn) return;
-  if(Date.now() < ignoreInterruptUntil) return;
   const t=e && e.target;
   if(t && t.closest && (t.closest("#openGate") || t.closest(".gold-btn") || t.closest("a"))) return;
 
@@ -656,11 +679,24 @@ function onUserWantManual(e){
   if(e.type === "touchstart"){
     touchArmed=true;
     touchStartY=(e.touches && e.touches[0]) ? e.touches[0].clientY : 0;
-    return; /* tap alone should NOT stop auto */
+    return;
   }
   if(e.type === "touchmove" && touchArmed){
     const y=(e.touches && e.touches[0]) ? e.touches[0].clientY : touchStartY;
-    if(Math.abs(y - touchStartY) > 18){
+    const dy=Math.abs(y - touchStartY);
+    const animating=!!autoRaf;
+    const inGrace=Date.now() < ignoreInterruptUntil;
+    if(animating && dy > 8){
+      stopAutoScroll();
+      touchArmed=false;
+      return;
+    }
+    if(dy > 28){
+      stopAutoScroll();
+      touchArmed=false;
+      return;
+    }
+    if(!inGrace && dy > 12){
       stopAutoScroll();
       touchArmed=false;
     }
@@ -711,11 +747,10 @@ function openInvitation(){
   const result=startMusicFromGesture();
   hideOpenGate();
 
-  /* Always start auto-scroll on every phone (even reduced-motion) */
-  ignoreInterruptUntil=Date.now() + 6000;
+  ignoreInterruptUntil=Date.now() + 2000;
   window.setTimeout(()=>{
     startAutoScroll();
-    scheduleFitScreens();
+    scheduleFitScreens(true);
   }, 500);
   window.setTimeout(()=>{
     if(!autoOn) startAutoScroll();
@@ -757,7 +792,6 @@ window.addEventListener("touchstart", onUserWantManual, {passive:true});
 window.addEventListener("touchmove", onUserWantManual, {passive:true});
 window.addEventListener("scroll", onScrollMusicWatch, {passive:true});
 
-/* Screen lock / tab switch / app background → stop music + auto-scroll */
 function onPageHidden(){
   if(!(document.hidden || document.visibilityState === "hidden")) return;
   stopAutoScroll();
@@ -778,5 +812,3 @@ window.addEventListener("pagehide", ()=>{
   stopMusic();
   musicEndedAtBottom=true;
 });
-/* Do not use window blur — many phones fire it without real screen lock */
-
