@@ -288,15 +288,28 @@ if(ctx && !reduceMotion){
   clearWillChange();
 }
 
-/* Cross-browser music: one tap on open-gate.
-   Safari/Chrome/Firefox/Samsung — play on pointerdown (strongest gesture). */
+/* Cross-browser music + timed auto-scroll (4s).
+   - Tap to open → music + auto-scroll
+   - Manual scroll attempt → auto off, manual on
+   - Reach last screen → music stops
+   - Scroll back to top → music starts again */
 const bgMusic=document.getElementById("bgMusic");
 const openGate=document.getElementById("openGate");
 const openGateHint=openGate ? openGate.querySelector(".open-gate-hint") : null;
+const autoScreens=[...document.querySelectorAll("#invitation > .screen")];
 let musicPlaying=false;
 let inviteOpened=false;
 let audioCtx=null;
-let webAudioStarted=false;
+let decodedBuffer=null;
+let webSource=null;
+let webGain=null;
+let musicMode="none"; /* html | webaudio | none */
+let autoOn=false;
+let autoTimer=0;
+let autoRaf=0;
+let autoIndex=0;
+let ignoreInterruptUntil=0;
+let musicEndedAtBottom=false;
 
 function musicSrc(){
   try{
@@ -322,7 +335,6 @@ function prepareHtmlAudio(){
   bgMusic.playsInline=true;
   bgMusic.setAttribute("playsinline","");
   bgMusic.setAttribute("webkit-playsinline","");
-  /* Set src once — resetting src inside the tap breaks Chrome/Android */
   const abs=musicSrc();
   const source=bgMusic.querySelector("source");
   if(source) source.src=abs;
@@ -330,26 +342,6 @@ function prepareHtmlAudio(){
     bgMusic.src=abs;
   }
   try{ bgMusic.load(); }catch(e){}
-}
-
-function playHtmlAudio(){
-  if(!bgMusic) return Promise.resolve(false);
-  if(musicPlaying && !bgMusic.paused) return Promise.resolve(true);
-  bgMusic.muted=false;
-  bgMusic.volume=0.65;
-  try{
-    const p=bgMusic.play();
-    if(p && typeof p.then === "function"){
-      return p.then(()=>{
-        musicPlaying=true;
-        return true;
-      }).catch(()=>false);
-    }
-    musicPlaying=true;
-    return Promise.resolve(true);
-  }catch(e){
-    return Promise.resolve(false);
-  }
 }
 
 function unlockAudioContext(){
@@ -364,34 +356,84 @@ function unlockAudioContext(){
   }
 }
 
+function stopWebAudio(){
+  if(webSource){
+    try{ webSource.stop(); }catch(e){}
+    try{ webSource.disconnect(); }catch(e){}
+    webSource=null;
+  }
+}
+
+function stopMusic(){
+  musicPlaying=false;
+  if(bgMusic){
+    try{
+      bgMusic.pause();
+      bgMusic.currentTime=0;
+    }catch(e){}
+  }
+  stopWebAudio();
+}
+
+function playHtmlAudio(){
+  if(!bgMusic) return Promise.resolve(false);
+  bgMusic.muted=false;
+  bgMusic.volume=0.65;
+  try{
+    const p=bgMusic.play();
+    if(p && typeof p.then === "function"){
+      return p.then(()=>{
+        musicPlaying=true;
+        musicMode="html";
+        musicEndedAtBottom=false;
+        return true;
+      }).catch(()=>false);
+    }
+    musicPlaying=true;
+    musicMode="html";
+    musicEndedAtBottom=false;
+    return Promise.resolve(true);
+  }catch(e){
+    return Promise.resolve(false);
+  }
+}
+
+function startWebAudioFromBuffer(buffer){
+  const ctx=unlockAudioContext();
+  if(!ctx || !buffer) return false;
+  stopWebAudio();
+  try{ if(bgMusic) bgMusic.pause(); }catch(e){}
+  webSource=ctx.createBufferSource();
+  webGain=ctx.createGain();
+  webGain.gain.value=0.65;
+  webSource.buffer=buffer;
+  webSource.loop=true;
+  webSource.connect(webGain);
+  webGain.connect(ctx.destination);
+  webSource.start(0);
+  musicPlaying=true;
+  musicMode="webaudio";
+  musicEndedAtBottom=false;
+  return true;
+}
+
 function playViaWebAudio(){
-  if(webAudioStarted) return Promise.resolve(true);
   const ctx=unlockAudioContext();
   if(!ctx) return Promise.resolve(false);
+  if(decodedBuffer){
+    return Promise.resolve(startWebAudioFromBuffer(decodedBuffer));
+  }
   return fetch(musicSrc())
     .then(r=>r.arrayBuffer())
     .then(buf=>ctx.decodeAudioData(buf))
     .then(decoded=>{
-      if(webAudioStarted) return true;
-      const src=ctx.createBufferSource();
-      const gain=ctx.createGain();
-      gain.gain.value=0.65;
-      src.buffer=decoded;
-      src.loop=true;
-      src.connect(gain);
-      gain.connect(ctx.destination);
-      src.start(0);
-      webAudioStarted=true;
-      musicPlaying=true;
-      /* Stop HTML element so they don't double */
-      try{ bgMusic.pause(); }catch(e){}
-      return true;
+      decodedBuffer=decoded;
+      return startWebAudioFromBuffer(decoded);
     })
     .catch(()=>false);
 }
 
 function startMusicFromGesture(){
-  /* Must call play()/resume() synchronously in the tap handler */
   unlockAudioContext();
   return playHtmlAudio().then((ok)=>{
     if(ok) return true;
@@ -399,26 +441,182 @@ function startMusicFromGesture(){
   });
 }
 
-function openInvitation(e){
+function resumeMusic(){
+  if(musicPlaying && !musicEndedAtBottom) return;
+  if(musicMode === "webaudio" || (!bgMusic && decodedBuffer)){
+    playViaWebAudio();
+    return;
+  }
+  playHtmlAudio().then((ok)=>{
+    if(!ok) playViaWebAudio();
+  });
+}
+
+function clearAutoTimer(){
+  if(autoTimer){
+    window.clearTimeout(autoTimer);
+    autoTimer=0;
+  }
+}
+
+function cancelAutoAnim(){
+  if(autoRaf){
+    cancelAnimationFrame(autoRaf);
+    autoRaf=0;
+  }
+}
+
+function stopAutoScroll(){
+  autoOn=false;
+  clearAutoTimer();
+  cancelAutoAnim();
+}
+
+function easeInOutCubic(t){
+  return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
+}
+
+function softScrollTo(top, duration, onDone){
+  cancelAutoAnim();
+  const start=window.scrollY || document.documentElement.scrollTop || 0;
+  const dist=top - start;
+  if(Math.abs(dist) < 2 || reduceMotion || duration < 50){
+    window.scrollTo(0, top);
+    if(onDone) onDone();
+    return;
+  }
+  const t0=performance.now();
+  function frame(now){
+    if(!autoOn){
+      autoRaf=0;
+      return;
+    }
+    const p=Math.min(1, (now - t0) / duration);
+    window.scrollTo(0, start + dist * easeInOutCubic(p));
+    if(p < 1) autoRaf=requestAnimationFrame(frame);
+    else{
+      autoRaf=0;
+      if(onDone) onDone();
+    }
+  }
+  autoRaf=requestAnimationFrame(frame);
+}
+
+function goToScreen(i, onDone){
+  const screen=autoScreens[i];
+  if(!screen){
+    if(onDone) onDone();
+    return;
+  }
+  autoIndex=i;
+  ignoreInterruptUntil=Date.now() + 3200;
+  softScrollTo(Math.max(0, screen.offsetTop), 2400, onDone);
+}
+
+function finishAutoAtEnd(){
+  stopAutoScroll();
+  musicEndedAtBottom=true;
+  stopMusic();
+}
+
+function scheduleAfterDwell(){
+  clearAutoTimer();
+  if(!autoOn) return;
+  if(autoIndex >= autoScreens.length - 1){
+    /* Last screen shown — end music */
+    autoTimer=window.setTimeout(finishAutoAtEnd, 4000);
+    return;
+  }
+  autoTimer=window.setTimeout(()=>{
+    if(!autoOn) return;
+    const next=autoIndex + 1;
+    goToScreen(next, ()=>{
+      if(!autoOn) return;
+      if(next >= autoScreens.length - 1){
+        autoTimer=window.setTimeout(finishAutoAtEnd, 4000);
+      }else{
+        scheduleAfterDwell();
+      }
+    });
+  }, 4000);
+}
+
+function startAutoScroll(){
+  if(!autoScreens.length || autoOn) return;
+  autoOn=true;
+  autoIndex=0;
+  ignoreInterruptUntil=Date.now() + 1200;
+  window.scrollTo(0, 0);
+  scheduleAfterDwell();
+}
+
+function onUserWantManual(e){
+  if(!autoOn) return;
+  if(Date.now() < ignoreInterruptUntil) return;
+  const t=e && e.target;
+  if(t && t.closest && t.closest("#openGate")) return;
+  stopAutoScroll();
+}
+
+function screenVisibility(screen){
+  if(!screen) return 0;
+  const r=screen.getBoundingClientRect();
+  const vh=window.innerHeight || 1;
+  const visible=Math.min(r.bottom, vh) - Math.max(r.top, 0);
+  return Math.max(0, visible) / Math.min(r.height || vh, vh);
+}
+
+function syncMusicWithScrollPosition(){
+  if(!inviteOpened || !autoScreens.length) return;
+  if(autoOn) return; /* auto owns end-stop */
+  const first=autoScreens[0];
+  const last=autoScreens[autoScreens.length - 1];
+  const firstVis=screenVisibility(first);
+  const lastVis=screenVisibility(last);
+  if(lastVis > 0.55){
+    if(musicPlaying){
+      musicEndedAtBottom=true;
+      stopMusic();
+    }
+    return;
+  }
+  if(firstVis > 0.55 && musicEndedAtBottom){
+    resumeMusic();
+  }
+}
+
+let musicScrollTick=false;
+function onScrollMusicWatch(){
+  if(musicScrollTick) return;
+  musicScrollTick=true;
+  requestAnimationFrame(()=>{
+    musicScrollTick=false;
+    syncMusicWithScrollPosition();
+  });
+}
+
+function openInvitation(){
   if(inviteOpened) return;
   inviteOpened=true;
-  if(e && e.cancelable){
-    /* Don't preventDefault on touchstart — some Androids need the default path */
-  }
 
   const result=startMusicFromGesture();
   hideOpenGate();
 
+  window.setTimeout(()=>{
+    if(!reduceMotion) startAutoScroll();
+  }, 700);
+
   if(result && typeof result.then === "function"){
     result.then((ok)=>{
       if(ok) return;
-      /* Music failed — allow one more tap on page to retry */
       inviteOpened=false;
       const retry=()=>{
         startMusicFromGesture().then((ok2)=>{
           if(ok2){
+            inviteOpened=true;
             document.removeEventListener("pointerdown", retry, true);
             document.removeEventListener("touchstart", retry, true);
+            if(!autoOn && !reduceMotion) startAutoScroll();
           }
         });
       };
@@ -433,11 +631,16 @@ prepareHtmlAudio();
 
 if(openGate){
   document.body.classList.add("gate-locked");
-  /* pointerdown/touchstart = best cross-browser media unlock */
   openGate.addEventListener("pointerdown", openInvitation, {passive:true});
   openGate.addEventListener("touchstart", openInvitation, {passive:true});
   openGate.addEventListener("click", openInvitation);
 }else if(bgMusic){
   playHtmlAudio();
+  if(!reduceMotion) startAutoScroll();
 }
+
+window.addEventListener("wheel", onUserWantManual, {passive:true});
+window.addEventListener("touchstart", onUserWantManual, {passive:true});
+window.addEventListener("touchmove", onUserWantManual, {passive:true});
+window.addEventListener("scroll", onScrollMusicWatch, {passive:true});
 
