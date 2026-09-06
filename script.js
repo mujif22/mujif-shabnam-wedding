@@ -355,15 +355,11 @@ let autoIndex=0;
 let autoRaf=0;
 let ignoreInterruptUntil=0;
 
-/* ~3–4 sec pause on each screen */
+/* ~5 sec pause on each screen */
 function dwellFor(screen){
-  if(!screen) return 3500;
-  if(screen.classList.contains("blessing")) return 4000;
-  if(screen.classList.contains("event")) return 3800;
-  if(screen.classList.contains("couple")) return 3500;
-  if(screen.classList.contains("countdown-screen")) return 3500;
+  if(!screen) return 5000;
   if(screen.classList.contains("closing")) return 0;
-  return 3500; /* host / cover */
+  return 5000;
 }
 
 function nearestScreenIndex(){
