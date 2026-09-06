@@ -288,11 +288,12 @@ if(ctx && !reduceMotion){
   clearWillChange();
 }
 
-/* Music starts on first finger touch / scroll gesture (no button).
-   Do NOT call play() on page load — that often blocks later unlock on phones. */
+/* Safari blocks autoplay after opening a link.
+   Guests tap once on the open-gate → music starts + invitation opens. */
 const bgMusic=document.getElementById("bgMusic");
+const openGate=document.getElementById("openGate");
 let musicPlaying=false;
-let musicTrying=false;
+let inviteOpened=false;
 
 function musicSrc(){
   try{
@@ -302,50 +303,48 @@ function musicSrc(){
   }
 }
 
-function stopMusicUnlock(){
-  const opts={capture:true};
-  document.removeEventListener("touchstart", onMusicGesture, opts);
-  document.removeEventListener("touchmove", onMusicGesture, opts);
-  document.removeEventListener("touchend", onMusicGesture, opts);
-  document.removeEventListener("pointerdown", onMusicGesture, opts);
-  document.removeEventListener("pointermove", onMusicGesture, opts);
-  document.removeEventListener("click", onMusicGesture, opts);
+function hideOpenGate(){
+  if(!openGate) return;
+  openGate.classList.add("is-gone");
+  document.body.classList.remove("gate-locked");
+  window.setTimeout(()=>{
+    if(openGate && openGate.parentNode) openGate.parentNode.removeChild(openGate);
+  }, 750);
 }
 
-function onMusicGesture(){
-  if(musicPlaying || musicTrying || !bgMusic) return;
-  musicTrying=true;
+function startMusicFromGesture(){
+  if(!bgMusic || musicPlaying) return Promise.resolve(true);
   bgMusic.muted=false;
   bgMusic.volume=0.65;
-  if(!bgMusic.getAttribute("src") && !bgMusic.src){
-    bgMusic.src=musicSrc();
-  }
-  const attempt=bgMusic.play();
-  if(attempt && typeof attempt.then === "function"){
-    attempt.then(()=>{
+  bgMusic.src=musicSrc();
+  const p=bgMusic.play();
+  if(p && typeof p.then === "function"){
+    return p.then(()=>{
       musicPlaying=true;
-      musicTrying=false;
-      stopMusicUnlock();
-    }).catch(()=>{
-      musicTrying=false;
-      try{
-        const src=musicSrc();
-        bgMusic.src=src;
-        bgMusic.muted=false;
-        bgMusic.volume=0.65;
-        const retry=bgMusic.play();
-        if(retry && typeof retry.then === "function"){
-          retry.then(()=>{
-            musicPlaying=true;
-            stopMusicUnlock();
-          }).catch(()=>{});
-        }
-      }catch(e){}
+      return true;
+    }).catch(()=>false);
+  }
+  musicPlaying=true;
+  return Promise.resolve(true);
+}
+
+function openInvitation(e){
+  if(inviteOpened) return;
+  if(e){
+    e.preventDefault();
+    e.stopPropagation();
+  }
+  inviteOpened=true;
+  /* play() must stay inside this tap for Safari */
+  const done=startMusicFromGesture();
+  hideOpenGate();
+  if(done && typeof done.then === "function"){
+    done.then((ok)=>{
+      if(!ok && bgMusic){
+        /* rare retry still within same tick chain */
+        bgMusic.play().then(()=>{ musicPlaying=true; }).catch(()=>{});
+      }
     });
-  }else{
-    musicPlaying=true;
-    musicTrying=false;
-    stopMusicUnlock();
   }
 }
 
@@ -355,12 +354,15 @@ if(bgMusic){
   bgMusic.setAttribute("playsinline","");
   bgMusic.setAttribute("webkit-playsinline","");
   bgMusic.src=musicSrc();
-  const opts={capture:true, passive:true};
-  document.addEventListener("touchstart", onMusicGesture, opts);
-  document.addEventListener("touchmove", onMusicGesture, opts);
-  document.addEventListener("touchend", onMusicGesture, opts);
-  document.addEventListener("pointerdown", onMusicGesture, opts);
-  document.addEventListener("pointermove", onMusicGesture, opts);
-  document.addEventListener("click", onMusicGesture, opts);
+}
+
+if(openGate){
+  document.body.classList.add("gate-locked");
+  /* Prefer touchend/pointerup — most reliable unlock on iOS Safari */
+  openGate.addEventListener("pointerup", openInvitation, {passive:false});
+  openGate.addEventListener("touchend", openInvitation, {passive:false});
+  openGate.addEventListener("click", openInvitation);
+}else if(bgMusic){
+  bgMusic.play().then(()=>{ musicPlaying=true; }).catch(()=>{});
 }
 
