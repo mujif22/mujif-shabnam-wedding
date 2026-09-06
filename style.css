@@ -199,8 +199,6 @@ body.gate-locked{
 
 /* —— Host families (opening page) —— */
 .screen.host{
-  min-height:var(--screen-min);
-  min-height:-webkit-fill-available;
   justify-content:center;
   align-items:center;
   background:
@@ -209,9 +207,6 @@ body.gate-locked{
     linear-gradient(165deg,#062218 0%,#020c09 55%,#010705 100%);
   color:var(--ink);
   border-bottom:1px solid rgba(224,192,122,.16);
-  padding:76px 20px;
-  padding-top:max(76px,calc(56px + env(safe-area-inset-top)));
-  padding-bottom:max(76px,calc(56px + env(safe-area-inset-bottom)));
 }
 .host-blessing{
   margin:0 0 8px;
@@ -632,52 +627,58 @@ body.gate-locked{
   touch-action:pan-y;
 }
 .screen{
-  /* At least one full phone screen; grow if content is taller */
+  /* Same size as first (host) page on every section */
   min-height:var(--screen-min);
   min-height:-webkit-fill-available;
+  height:var(--screen-min);
+  height:-webkit-fill-available;
+  max-height:var(--screen-min);
+  max-height:-webkit-fill-available;
   position:relative;
   display:flex;
-  /* safe center → if content taller than screen, align to start (no top cut-off) */
   align-items:center;
-  align-items:safe center;
   justify-content:center;
-  overflow:visible;
-  padding:72px 20px;
-  padding-top:max(72px,calc(48px + env(safe-area-inset-top)));
-  padding-bottom:max(72px,calc(48px + env(safe-area-inset-bottom)));
+  overflow:hidden;
+  padding:76px 20px;
+  padding-top:max(76px,calc(56px + env(safe-area-inset-top)));
+  padding-bottom:max(76px,calc(56px + env(safe-area-inset-bottom)));
   touch-action:pan-y;
   box-sizing:border-box;
 }
-/* Cover — full first screen, content centered */
-.screen.cover{
+.screen.host,
+.screen.cover,
+.screen.couple,
+.screen.blessing,
+.screen.countdown-screen,
+.screen.closing,
+.screen.event{
   min-height:var(--screen-min);
   min-height:-webkit-fill-available;
-  justify-content:center;
+  height:var(--screen-min);
+  height:-webkit-fill-available;
+  max-height:var(--screen-min);
+  max-height:-webkit-fill-available;
   align-items:center;
+  justify-content:center;
+  overflow:hidden;
   padding:76px 20px;
   padding-top:max(76px,calc(56px + env(safe-area-inset-top)));
   padding-bottom:max(76px,calc(56px + env(safe-area-inset-bottom)));
 }
-/* Event pages — full screen min, grow for QR/maps, never clip */
-.screen.event{
-  overflow:visible;
-  height:auto;
-  min-height:var(--screen-min);
-  min-height:-webkit-fill-available;
-  align-items:flex-start;
-  padding-top:max(56px,calc(36px + env(safe-area-inset-top)));
-  padding-bottom:max(56px,calc(36px + env(safe-area-inset-bottom)));
-}
 .screen.event .content{
-  margin-block:8px 20px;
-  padding-block:12px;
+  margin-block:0;
+  padding-block:0;
   width:100%;
+  max-height:100%;
+  overflow:auto;
+  -webkit-overflow-scrolling:touch;
 }
 .content{
   width:min(100%,850px);
   position:relative;
   z-index:2;
   max-width:100%;
+  max-height:100%;
 }
 .narrow{
   max-width:650px;
@@ -2150,26 +2151,23 @@ h2 em.w{
 }
 
 @media(max-width:699px){
-  .screen{
-    padding-left:16px;
-    padding-right:16px;
-    /* Long sections: pin content to top so nothing is cut above the fold */
-    align-items:flex-start;
-  }
+  .screen,
   .screen.host,
   .screen.cover,
-  .screen.couple{
+  .screen.couple,
+  .screen.blessing,
+  .screen.countdown-screen,
+  .screen.closing,
+  .screen.event{
+    padding-left:16px;
+    padding-right:16px;
+    padding-top:max(76px,calc(56px + env(safe-area-inset-top)));
+    padding-bottom:max(76px,calc(56px + env(safe-area-inset-bottom)));
     align-items:center;
     justify-content:center;
-  }
-  /* Couple — fit one phone screen (side-by-side, tighter type) */
-  .screen.couple{
-    min-height:var(--screen-min);
-    min-height:-webkit-fill-available;
-    padding-top:max(36px,calc(20px + env(safe-area-inset-top)));
-    padding-bottom:max(36px,calc(20px + env(safe-area-inset-bottom)));
     overflow:hidden;
   }
+  /* Couple — side-by-side so it fits the locked screen height */
   .couple .eyebrow{
     margin-bottom:6px;
     font-size:10px;
@@ -2225,28 +2223,46 @@ h2 em.w{
     margin:8px auto;
     width:28px;
   }
+  /* Blessing / events / countdown — slightly tighter to fit one screen */
+  .blessing .arabic-verse{
+    font-size:clamp(17px,4.4vw,24px);
+    line-height:1.7;
+  }
+  .blessing .translation{
+    font-size:clamp(14px,3.6vw,17px);
+    line-height:1.45;
+  }
+  .event-card{padding:4px 0}
+  .event-date strong{font-size:clamp(48px,13vw,60px)}
+  .event .gold-btn{margin-top:10px; padding:12px 8px}
+  .event .qr-card{
+    margin:10px auto 0;
+    width:min(120px,28vw);
+  }
+  .event .qr-card img{
+    width:100%;
+    height:auto;
+  }
   .host-families{
     white-space:normal;
     font-size:clamp(36px,11vw,56px) !important;
   }
   h2{
-    font-size:clamp(34px,10vw,56px);
-    margin-bottom:24px;
+    font-size:clamp(30px,8.5vw,48px);
+    margin-bottom:16px;
   }
   .names{
     font-size:clamp(40px,12.5vw,64px);
     margin:28px 0 12px;
   }
   .arabic-verse{
-    font-size:clamp(20px,5.2vw,30px);
-    line-height:1.95;
+    font-size:clamp(18px,4.8vw,26px);
+    line-height:1.8;
   }
   .person-card{padding:10px 4px}
   .person-card h3{font-size:36px}
   .couple .person-card{padding:4px 2px}
   .couple .person-card h3{font-size:clamp(26px,7vw,32px)}
-  .event-card{padding:8px 0}
-  .event-date strong{font-size:clamp(56px,15vw,68px)}
   .event:before{inset:10px}
   .countdown{
     column-gap:clamp(4px,1.5vw,10px);
