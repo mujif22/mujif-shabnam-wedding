@@ -54,6 +54,7 @@ body{
   padding-right:env(safe-area-inset-right);
   touch-action:pan-y;
   -webkit-overflow-scrolling:touch;
+  overscroll-behavior-y:auto;
 }
 body:before{
   content:"";
@@ -630,16 +631,16 @@ body.gate-locked{
   touch-action:pan-y;
 }
 .screen{
-  /* Exact visible phone screen — auto-set via --app-h */
+  /* Natural page flow — min one screen tall, can grow; smooth manual scroll */
   width:100%;
   min-height:var(--app-h, 100svh);
-  height:var(--app-h, 100svh);
-  max-height:var(--app-h, 100svh);
+  height:auto;
+  max-height:none;
   position:relative;
   display:flex;
   align-items:center;
   justify-content:center;
-  overflow:hidden;
+  overflow:visible;
   padding:clamp(28px, 5.5vh, 76px) clamp(14px, 4vw, 20px);
   padding-top:max(clamp(28px, 5.5vh, 76px), env(safe-area-inset-top));
   padding-bottom:max(clamp(28px, 5.5vh, 76px), env(safe-area-inset-bottom));
@@ -655,11 +656,11 @@ body.gate-locked{
 .screen.event{
   width:100%;
   min-height:var(--app-h, 100svh);
-  height:var(--app-h, 100svh);
-  max-height:var(--app-h, 100svh);
+  height:auto;
+  max-height:none;
   align-items:center;
   justify-content:center;
-  overflow:hidden;
+  overflow:visible;
   padding:clamp(28px, 5.5vh, 76px) clamp(14px, 4vw, 20px);
   padding-top:max(clamp(28px, 5.5vh, 76px), env(safe-area-inset-top));
   padding-bottom:max(clamp(28px, 5.5vh, 76px), env(safe-area-inset-bottom));
@@ -674,7 +675,6 @@ body.gate-locked{
   position:relative;
   z-index:2;
   max-width:100%;
-  will-change:transform;
 }
 .narrow{
   max-width:650px;
@@ -2161,7 +2161,9 @@ h2 em.w{
     padding-bottom:max(clamp(24px, 4.5vh, 64px), env(safe-area-inset-bottom));
     align-items:center;
     justify-content:center;
-    overflow:hidden;
+    overflow:visible;
+    height:auto;
+    max-height:none;
   }
   /* Couple — side-by-side so it fits the locked screen height */
   .couple .eyebrow{
