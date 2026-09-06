@@ -672,11 +672,16 @@ function finishAutoAtEnd(){
   stopMusic();
 }
 
+function dwellMsForIndex(i){
+  /* First page 5s, every page from second onward 8s */
+  return i <= 0 ? 5000 : 8000;
+}
+
 function scheduleAfterDwell(){
   clearAutoTimer();
   if(!autoOn) return;
   if(autoIndex >= autoScreens.length - 1){
-    autoTimer=window.setTimeout(finishAutoAtEnd, 4000);
+    autoTimer=window.setTimeout(finishAutoAtEnd, dwellMsForIndex(autoIndex));
     return;
   }
   autoTimer=window.setTimeout(()=>{
@@ -685,12 +690,12 @@ function scheduleAfterDwell(){
     goToScreen(next, ()=>{
       if(!autoOn) return;
       if(next >= autoScreens.length - 1){
-        autoTimer=window.setTimeout(finishAutoAtEnd, 4000);
+        autoTimer=window.setTimeout(finishAutoAtEnd, dwellMsForIndex(next));
       }else{
         scheduleAfterDwell();
       }
     });
-  }, 4000);
+  }, dwellMsForIndex(autoIndex));
 }
 
 function startAutoScroll(){
