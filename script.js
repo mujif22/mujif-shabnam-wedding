@@ -288,59 +288,79 @@ if(ctx && !reduceMotion){
   clearWillChange();
 }
 
-/* Auto instrumental — no button.
-   Unmuted autoplay is blocked on most phones; we start muted,
-   then unmute on the guest's first tap/touch. */
+/* Music starts on first finger touch / scroll gesture (no button).
+   Do NOT call play() on page load — that often blocks later unlock on phones. */
 const bgMusic=document.getElementById("bgMusic");
-let musicAudible=false;
+let musicPlaying=false;
+let musicTrying=false;
 
-function unlockMusic(){
-  if(!bgMusic || musicAudible) return;
-  bgMusic.muted=false;
-  bgMusic.volume=0.6;
-  const p=bgMusic.play();
-  if(p && typeof p.then === "function"){
-    p.then(()=>{
-      musicAudible=true;
-      disarmMusicUnlock();
-    }).catch(()=>{});
-  }else{
-    musicAudible=true;
-    disarmMusicUnlock();
+function musicSrc(){
+  try{
+    return new URL("assets/instrumental.mp3", window.location.href).href;
+  }catch(e){
+    return "assets/instrumental.mp3";
   }
 }
 
-function armMusicUnlock(){
-  window.addEventListener("pointerdown", unlockMusic, {passive:true});
-  window.addEventListener("touchstart", unlockMusic, {passive:true});
-  window.addEventListener("click", unlockMusic, {passive:true});
+function stopMusicUnlock(){
+  const opts={capture:true};
+  document.removeEventListener("touchstart", onMusicGesture, opts);
+  document.removeEventListener("touchmove", onMusicGesture, opts);
+  document.removeEventListener("touchend", onMusicGesture, opts);
+  document.removeEventListener("pointerdown", onMusicGesture, opts);
+  document.removeEventListener("pointermove", onMusicGesture, opts);
+  document.removeEventListener("click", onMusicGesture, opts);
 }
 
-function disarmMusicUnlock(){
-  window.removeEventListener("pointerdown", unlockMusic);
-  window.removeEventListener("touchstart", unlockMusic);
-  window.removeEventListener("click", unlockMusic);
+function onMusicGesture(){
+  if(musicPlaying || musicTrying || !bgMusic) return;
+  musicTrying=true;
+  bgMusic.muted=false;
+  bgMusic.volume=0.65;
+  if(!bgMusic.getAttribute("src") && !bgMusic.src){
+    bgMusic.src=musicSrc();
+  }
+  const attempt=bgMusic.play();
+  if(attempt && typeof attempt.then === "function"){
+    attempt.then(()=>{
+      musicPlaying=true;
+      musicTrying=false;
+      stopMusicUnlock();
+    }).catch(()=>{
+      musicTrying=false;
+      try{
+        const src=musicSrc();
+        bgMusic.src=src;
+        bgMusic.muted=false;
+        bgMusic.volume=0.65;
+        const retry=bgMusic.play();
+        if(retry && typeof retry.then === "function"){
+          retry.then(()=>{
+            musicPlaying=true;
+            stopMusicUnlock();
+          }).catch(()=>{});
+        }
+      }catch(e){}
+    });
+  }else{
+    musicPlaying=true;
+    musicTrying=false;
+    stopMusicUnlock();
+  }
 }
 
 if(bgMusic){
   bgMusic.loop=true;
   bgMusic.preload="auto";
-  bgMusic.volume=0.6;
-  /* Try audible first (desktop may allow); else muted keep-alive */
-  bgMusic.muted=false;
-  const kick=bgMusic.play();
-  if(kick && typeof kick.then === "function"){
-    kick.then(()=>{
-      musicAudible=true;
-    }).catch(()=>{
-      bgMusic.muted=true;
-      bgMusic.play().catch(()=>{});
-      armMusicUnlock();
-    });
-  }else{
-    armMusicUnlock();
-  }
-  /* Always arm unlock so first phone tap turns sound on */
-  armMusicUnlock();
+  bgMusic.setAttribute("playsinline","");
+  bgMusic.setAttribute("webkit-playsinline","");
+  bgMusic.src=musicSrc();
+  const opts={capture:true, passive:true};
+  document.addEventListener("touchstart", onMusicGesture, opts);
+  document.addEventListener("touchmove", onMusicGesture, opts);
+  document.addEventListener("touchend", onMusicGesture, opts);
+  document.addEventListener("pointerdown", onMusicGesture, opts);
+  document.addEventListener("pointermove", onMusicGesture, opts);
+  document.addEventListener("click", onMusicGesture, opts);
 }
 
