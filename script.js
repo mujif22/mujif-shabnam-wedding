@@ -539,12 +539,24 @@ function easeInOutCubic(t){
   return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
 }
 
+function setScrollY(y){
+  const top=Math.max(0, y);
+  try{ window.scrollTo(0, top); }catch(e){}
+  document.documentElement.scrollTop=top;
+  document.body.scrollTop=top;
+}
+
+function getScrollY(){
+  return window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+}
+
 function softScrollTo(top, duration, onDone){
   cancelAutoAnim();
-  const start=window.scrollY || document.documentElement.scrollTop || 0;
+  const start=getScrollY();
   const dist=top - start;
-  if(Math.abs(dist) < 2 || reduceMotion || duration < 50){
-    window.scrollTo(0, top);
+  const ms=reduceMotion ? 0 : duration;
+  if(Math.abs(dist) < 2 || ms < 50){
+    setScrollY(top);
     if(onDone) onDone();
     return;
   }
@@ -554,11 +566,12 @@ function softScrollTo(top, duration, onDone){
       autoRaf=0;
       return;
     }
-    const p=Math.min(1, (now - t0) / duration);
-    window.scrollTo(0, start + dist * easeInOutCubic(p));
+    const p=Math.min(1, (now - t0) / ms);
+    setScrollY(start + dist * easeInOutCubic(p));
     if(p < 1) autoRaf=requestAnimationFrame(frame);
     else{
       autoRaf=0;
+      setScrollY(top);
       if(onDone) onDone();
     }
   }
@@ -572,10 +585,11 @@ function goToScreen(i, onDone){
     return;
   }
   autoIndex=i;
-  ignoreInterruptUntil=Date.now() + 3200;
-  /* Prefer layout top — works after fonts/safe-area settle */
-  const top=Math.max(0, Math.round(screen.getBoundingClientRect().top + (window.scrollY || window.pageYOffset || 0)));
-  softScrollTo(top, 2400, onDone);
+  /* Protect auto scroll from accidental touches while moving */
+  ignoreInterruptUntil=Date.now() + 4500;
+  scheduleFitScreens();
+  const top=Math.max(0, Math.round(screen.getBoundingClientRect().top + getScrollY()));
+  softScrollTo(top, 2200, onDone);
 }
 
 function finishAutoAtEnd(){
@@ -588,7 +602,6 @@ function scheduleAfterDwell(){
   clearAutoTimer();
   if(!autoOn) return;
   if(autoIndex >= autoScreens.length - 1){
-    /* Last screen shown — end music */
     autoTimer=window.setTimeout(finishAutoAtEnd, 4000);
     return;
   }
@@ -607,20 +620,51 @@ function scheduleAfterDwell(){
 }
 
 function startAutoScroll(){
-  if(!autoScreens.length || autoOn) return;
+  if(!autoScreens.length) return;
+  if(autoOn) return;
   autoOn=true;
-  autoIndex=0;
-  ignoreInterruptUntil=Date.now() + 1200;
-  window.scrollTo(0, 0);
+  autoIndex=nearestScreenIndexSafe();
+  /* Long grace so open-tap / finger lift doesn't kill auto on phones */
+  ignoreInterruptUntil=Date.now() + 5000;
+  setScrollY(autoScreens[autoIndex] ? Math.max(0, autoScreens[autoIndex].offsetTop) : 0);
   scheduleAfterDwell();
 }
+
+function nearestScreenIndexSafe(){
+  const y=getScrollY() + (window.innerHeight * 0.25);
+  let best=0, bestDist=Infinity;
+  autoScreens.forEach((s, i)=>{
+    const d=Math.abs((s.offsetTop || 0) - y);
+    if(d < bestDist){ bestDist=d; best=i; }
+  });
+  return best;
+}
+
+let touchStartY=0;
+let touchArmed=false;
 
 function onUserWantManual(e){
   if(!autoOn) return;
   if(Date.now() < ignoreInterruptUntil) return;
   const t=e && e.target;
-  if(t && t.closest && t.closest("#openGate")) return;
-  stopAutoScroll();
+  if(t && t.closest && (t.closest("#openGate") || t.closest(".gold-btn") || t.closest("a"))) return;
+
+  if(e.type === "wheel"){
+    stopAutoScroll();
+    return;
+  }
+  if(e.type === "touchstart"){
+    touchArmed=true;
+    touchStartY=(e.touches && e.touches[0]) ? e.touches[0].clientY : 0;
+    return; /* tap alone should NOT stop auto */
+  }
+  if(e.type === "touchmove" && touchArmed){
+    const y=(e.touches && e.touches[0]) ? e.touches[0].clientY : touchStartY;
+    if(Math.abs(y - touchStartY) > 18){
+      stopAutoScroll();
+      touchArmed=false;
+    }
+  }
 }
 
 function screenVisibility(screen){
@@ -633,7 +677,7 @@ function screenVisibility(screen){
 
 function syncMusicWithScrollPosition(){
   if(!inviteOpened || !autoScreens.length) return;
-  if(autoOn) return; /* auto owns end-stop */
+  if(autoOn) return;
   const first=autoScreens[0];
   const last=autoScreens[autoScreens.length - 1];
   const firstVis=screenVisibility(first);
@@ -667,21 +711,25 @@ function openInvitation(){
   const result=startMusicFromGesture();
   hideOpenGate();
 
+  /* Always start auto-scroll on every phone (even reduced-motion) */
+  ignoreInterruptUntil=Date.now() + 6000;
   window.setTimeout(()=>{
-    if(!reduceMotion) startAutoScroll();
-  }, 700);
+    startAutoScroll();
+    scheduleFitScreens();
+  }, 500);
+  window.setTimeout(()=>{
+    if(!autoOn) startAutoScroll();
+  }, 1600);
 
   if(result && typeof result.then === "function"){
     result.then((ok)=>{
       if(ok) return;
-      inviteOpened=false;
       const retry=()=>{
         startMusicFromGesture().then((ok2)=>{
           if(ok2){
-            inviteOpened=true;
             document.removeEventListener("pointerdown", retry, true);
             document.removeEventListener("touchstart", retry, true);
-            if(!autoOn && !reduceMotion) startAutoScroll();
+            if(!autoOn) startAutoScroll();
           }
         });
       };
@@ -701,7 +749,7 @@ if(openGate){
   openGate.addEventListener("click", openInvitation);
 }else if(bgMusic){
   playHtmlAudio();
-  if(!reduceMotion) startAutoScroll();
+  startAutoScroll();
 }
 
 window.addEventListener("wheel", onUserWantManual, {passive:true});
@@ -711,11 +759,10 @@ window.addEventListener("scroll", onScrollMusicWatch, {passive:true});
 
 /* Screen lock / tab switch / app background → stop music + auto-scroll */
 function onPageHidden(){
-  if(!document.hidden && document.visibilityState !== "hidden") return;
+  if(!(document.hidden || document.visibilityState === "hidden")) return;
   stopAutoScroll();
   if(musicPlaying || (bgMusic && !bgMusic.paused) || webSource){
     stopMusic();
-    /* So scrolling back to top can start music again */
     musicEndedAtBottom=true;
   }
   if(audioCtx && audioCtx.state === "running"){
@@ -731,8 +778,5 @@ window.addEventListener("pagehide", ()=>{
   stopMusic();
   musicEndedAtBottom=true;
 });
-window.addEventListener("blur", ()=>{
-  /* Some phones fire blur on lock */
-  if(document.hidden) onPageHidden();
-});
+/* Do not use window blur — many phones fire it without real screen lock */
 
