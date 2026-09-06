@@ -289,43 +289,58 @@ if(ctx && !reduceMotion){
 }
 
 /* Auto instrumental — no button.
-   Browsers often block unmuted autoplay until first tap/scroll. */
-const bgMusic=new Audio("assets/instrumental.mp3");
-bgMusic.loop=true;
-bgMusic.preload="auto";
-bgMusic.volume=0.55;
-let musicStarted=false;
+   Unmuted autoplay is blocked on most phones; we start muted,
+   then unmute on the guest's first tap/touch. */
+const bgMusic=document.getElementById("bgMusic");
+let musicAudible=false;
 
-function armMusicUnlock(){
-  window.addEventListener("pointerdown", tryStartMusic, {passive:true});
-  window.addEventListener("touchstart", tryStartMusic, {passive:true});
-  window.addEventListener("scroll", tryStartMusic, {passive:true});
-  window.addEventListener("keydown", tryStartMusic);
-}
-
-function disarmMusicUnlock(){
-  window.removeEventListener("pointerdown", tryStartMusic);
-  window.removeEventListener("touchstart", tryStartMusic);
-  window.removeEventListener("scroll", tryStartMusic);
-  window.removeEventListener("keydown", tryStartMusic);
-}
-
-function tryStartMusic(){
-  if(musicStarted) return;
+function unlockMusic(){
+  if(!bgMusic || musicAudible) return;
+  bgMusic.muted=false;
+  bgMusic.volume=0.6;
   const p=bgMusic.play();
   if(p && typeof p.then === "function"){
     p.then(()=>{
-      musicStarted=true;
+      musicAudible=true;
       disarmMusicUnlock();
-    }).catch(()=>{
-      /* Still blocked — keep listening for next gesture */
-    });
+    }).catch(()=>{});
   }else{
-    musicStarted=true;
+    musicAudible=true;
     disarmMusicUnlock();
   }
 }
 
-tryStartMusic();
-armMusicUnlock();
+function armMusicUnlock(){
+  window.addEventListener("pointerdown", unlockMusic, {passive:true});
+  window.addEventListener("touchstart", unlockMusic, {passive:true});
+  window.addEventListener("click", unlockMusic, {passive:true});
+}
+
+function disarmMusicUnlock(){
+  window.removeEventListener("pointerdown", unlockMusic);
+  window.removeEventListener("touchstart", unlockMusic);
+  window.removeEventListener("click", unlockMusic);
+}
+
+if(bgMusic){
+  bgMusic.loop=true;
+  bgMusic.preload="auto";
+  bgMusic.volume=0.6;
+  /* Try audible first (desktop may allow); else muted keep-alive */
+  bgMusic.muted=false;
+  const kick=bgMusic.play();
+  if(kick && typeof kick.then === "function"){
+    kick.then(()=>{
+      musicAudible=true;
+    }).catch(()=>{
+      bgMusic.muted=true;
+      bgMusic.play().catch(()=>{});
+      armMusicUnlock();
+    });
+  }else{
+    armMusicUnlock();
+  }
+  /* Always arm unlock so first phone tap turns sound on */
+  armMusicUnlock();
+}
 
