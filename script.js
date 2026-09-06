@@ -510,7 +510,9 @@ function goToScreen(i, onDone){
   }
   autoIndex=i;
   ignoreInterruptUntil=Date.now() + 3200;
-  softScrollTo(Math.max(0, screen.offsetTop), 2400, onDone);
+  /* Prefer layout top — works after fonts/safe-area settle */
+  const top=Math.max(0, Math.round(screen.getBoundingClientRect().top + (window.scrollY || window.pageYOffset || 0)));
+  softScrollTo(top, 2400, onDone);
 }
 
 function finishAutoAtEnd(){

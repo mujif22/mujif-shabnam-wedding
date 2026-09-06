@@ -15,6 +15,9 @@
   --foil:linear-gradient(115deg,#6e5420 0%,#c9a048 18%,#f6e2a0 36%,#fff8d6 48%,#e0c07a 58%,#a67c32 78%,#6e5420 100%);
   --foil-ink:linear-gradient(115deg,#2a1a08 0%,#6b4a18 22%,#9a7328 42%,#c49a45 52%,#7a5520 68%,#3d2a0e 100%);
   --lux-glow:rgba(224,192,122,.22);
+  /* Stable phone height (includes browser chrome) — avoids half-screen cut */
+  --screen-min:100vh;
+  --screen-min:100svh;
 }
 
 *,*::before,*::after{box-sizing:border-box}
@@ -23,6 +26,7 @@ html{
   text-size-adjust:100%;
   overflow-x:hidden;
   height:100%;
+  height:-webkit-fill-available;
 }
 @media(prefers-reduced-motion:no-preference){
   /* Keep auto — smooth scroll can feel like the page is skipping by itself */
@@ -185,8 +189,8 @@ body:before{
 }
 body.gate-locked{
   overflow:hidden;
-  height:100%;
-  height:100dvh;
+  height:var(--screen-min);
+  height:-webkit-fill-available;
 }
 @media(prefers-reduced-motion:reduce){
   .open-gate-hint{animation:none; opacity:.9}
@@ -195,10 +199,10 @@ body.gate-locked{
 
 /* —— Host families (opening page) —— */
 .screen.host{
-  min-height:100vh;
-  min-height:100svh;
-  min-height:100dvh;
+  min-height:var(--screen-min);
+  min-height:-webkit-fill-available;
   justify-content:center;
+  align-items:center;
   background:
     radial-gradient(ellipse 70% 45% at 50% 40%,rgba(224,192,122,.08),transparent 58%),
     radial-gradient(ellipse 100% 70% at 50% 50%,#163d30 0%,transparent 58%),
@@ -628,41 +632,46 @@ body.gate-locked{
   touch-action:pan-y;
 }
 .screen{
-  /* Continuous document flow — height follows content */
-  min-height:0;
+  /* At least one full phone screen; grow if content is taller */
+  min-height:var(--screen-min);
+  min-height:-webkit-fill-available;
   position:relative;
   display:flex;
+  /* safe center → if content taller than screen, align to start (no top cut-off) */
   align-items:center;
+  align-items:safe center;
   justify-content:center;
-  /* Never clip section text (overflow-x:hidden forces overflow-y:auto) */
   overflow:visible;
   padding:72px 20px;
   padding-top:max(72px,calc(48px + env(safe-area-inset-top)));
   padding-bottom:max(72px,calc(48px + env(safe-area-inset-bottom)));
   touch-action:pan-y;
+  box-sizing:border-box;
 }
 /* Cover — full first screen, content centered */
 .screen.cover{
-  min-height:100vh;
-  min-height:100svh;
-  min-height:100dvh;
+  min-height:var(--screen-min);
+  min-height:-webkit-fill-available;
   justify-content:center;
+  align-items:center;
   padding:76px 20px;
   padding-top:max(76px,calc(56px + env(safe-area-inset-top)));
   padding-bottom:max(76px,calc(56px + env(safe-area-inset-bottom)));
 }
-/* Event pages — natural height, never clip QR / maps */
+/* Event pages — full screen min, grow for QR/maps, never clip */
 .screen.event{
   overflow:visible;
   height:auto;
-  min-height:0;
+  min-height:var(--screen-min);
+  min-height:-webkit-fill-available;
   align-items:flex-start;
   padding-top:max(56px,calc(36px + env(safe-area-inset-top)));
   padding-bottom:max(56px,calc(36px + env(safe-area-inset-bottom)));
 }
 .screen.event .content{
-  margin-block:auto;
+  margin-block:8px 20px;
   padding-block:12px;
+  width:100%;
 }
 .content{
   width:min(100%,850px);
@@ -2144,6 +2153,17 @@ h2 em.w{
   .screen{
     padding-left:16px;
     padding-right:16px;
+    /* Long sections: pin content to top so nothing is cut above the fold */
+    align-items:flex-start;
+  }
+  .screen.host,
+  .screen.cover{
+    align-items:center;
+    justify-content:center;
+  }
+  .host-families{
+    white-space:normal;
+    font-size:clamp(36px,11vw,56px) !important;
   }
   h2{
     font-size:clamp(34px,10vw,56px);
