@@ -3,196 +3,243 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#071d17">
+<meta name="theme-color" content="#020c09">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="format-detection" content="telephone=no">
 <meta name="description" content="Mujif & Shabnam — Wedding Invitation. Nikah 27 September 2026 • Walima 29 September 2026.">
 <meta property="og:title" content="Mujif & Shabnam — Wedding Invitation">
 <meta property="og:description" content="Nikah 27 September 2026 • Walima 29 September 2026">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://mujif22.github.io/mujif-shabnam-wedding/">
+<meta property="og:image" content="https://mujif22.github.io/mujif-shabnam-wedding/assets/og-cover.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Mujif & Shabnam — Wedding Invitation">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Mujif & Shabnam — Wedding Invitation">
+<meta name="twitter:description" content="Nikah 27 September 2026 • Walima 29 September 2026">
+<meta name="twitter:image" content="https://mujif22.github.io/mujif-shabnam-wedding/assets/og-cover.jpg">
 <title>Mujif & Shabnam — Wedding Invitation</title>
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/og-cover.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Great+Vibes&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div class="grain"></div>
+<div class="gold-dust" aria-hidden="true"></div>
+<canvas class="spark-canvas" id="sparkCanvas" aria-hidden="true"></canvas>
 
-<section class="screen hero" id="open">
-  <div class="moon"></div><div class="stars"></div>
-  <div class="lantern l1">✦</div><div class="lantern l2">✦</div>
-  <div class="arch arch-hero"></div>
-  <div class="hero-content">
-    <div class="arabic-small">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
-    <div class="eyebrow">A BLESSED UNION</div>
-    <h1>Rooted in Faith<br><em>Bound by Love</em></h1>
-    <p class="hero-sub">Guided by Allah • Joined by Dua</p>
-    <button class="seal-button" id="openBtn" aria-label="Open invitation">
-      <span class="seal">م<br><small>و</small></span>
-      <span class="open-label">TAP TO OPEN</span>
-    </button>
-  </div>
-  <div class="scroll-hint">SCROLL TO BEGIN <span>↓</span></div>
-</section>
+<button class="music-btn" id="musicBtn" type="button" aria-pressed="false" aria-label="Toggle ambient sound" title="Sound">♪</button>
 
 <main id="invitation">
-<section class="screen parchment invitation">
-  <div class="ornament top"></div>
-  <div class="content narrow">
-    <div class="arabic">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
-    <div class="eyebrow dark">WEDDING INVITATION</div>
-    <div class="rule"><i></i></div>
-    <p class="invite-copy">With the blessings of Allah and our beloved families,<br>we joyfully invite you to celebrate<br>the beginning of a beautiful journey.</p>
-    <div class="names">Mujif <span>&</span> Shabnam</div>
-    <p class="tagline">Two Souls • One Journey • In Sha Allah</p>
-    <div class="date-pill">27 SEPTEMBER 2026</div>
+
+<section class="screen host" id="host">
+  <div class="edge-rail light" aria-hidden="true"></div>
+  <div class="jali soft" aria-hidden="true"></div>
+  <div class="screen-glow" aria-hidden="true"></div>
+  <div class="section-filigree light" aria-hidden="true"><i></i></div>
+  <div class="ornament top light"><i></i></div>
+  <div class="content narrow center reveal anim-stagger">
+    <p class="arabic-small anim-item" lang="ar" dir="rtl">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</p>
+    <p class="host-blessing anim-item split-words">With the blessings of Allah</p>
+    <div class="title-flourish anim-item" aria-hidden="true"><i></i></div>
+    <p class="host-eyebrow anim-item split-words">THE FAMILIES OF</p>
+    <h2 class="host-families anim-item split-words">Attar <em>&</em> Shaikh</h2>
+    <p class="host-invite anim-item split-words">cordially invite you to celebrate<br>the sacred Nikah &amp; Walima of</p>
+    <p class="host-couple anim-item split-words">Mujif <em>&</em> Shabnam</p>
+    <p class="host-note anim-item split-words">Your presence will be an honour and a blessing, Insha’Allah.</p>
   </div>
-  <div class="ornament bottom"></div>
+  <div class="ornament bottom light"><i></i></div>
+</section>
+
+<section class="screen cover" id="cover">
+  <div class="gate-rays" aria-hidden="true"></div>
+  <div class="gate-vignette" aria-hidden="true"></div>
+  <div class="gate-frame" aria-hidden="true">
+    <span class="c tl"></span><span class="c tr"></span><span class="c bl"></span><span class="c br"></span>
+    <span class="inner-line"></span><span class="mid-line"></span>
+  </div>
+  <div class="gate-pattern" aria-hidden="true"></div>
+  <div class="gate-moon" aria-hidden="true"></div>
+  <div class="gate-lantern left" aria-hidden="true"><span></span><span></span></div>
+  <div class="gate-lantern right" aria-hidden="true"><span></span><span></span></div>
+  <div class="filigree top" aria-hidden="true">
+    <svg viewBox="0 0 320 40"><path d="M20 20h80M300 20h-80M160 6c8 8 8 20 0 28-8-8-8-20 0-28zm-40 14h30m50 0h30M160 12v16" stroke="#e0c07a" stroke-width="1" fill="none" opacity=".7"/><circle cx="160" cy="20" r="2.5" fill="#e0c07a"/></svg>
+  </div>
+  <div class="filigree bottom" aria-hidden="true">
+    <svg viewBox="0 0 320 40"><path d="M20 20h80M300 20h-80M160 6c8 8 8 20 0 28-8-8-8-20 0-28zm-40 14h30m50 0h30" stroke="#e0c07a" stroke-width="1" fill="none" opacity=".55"/><circle cx="160" cy="20" r="2.5" fill="#e0c07a"/></svg>
+  </div>
+  <div class="edge-rail light" aria-hidden="true"></div>
+  <div class="content center reveal anim-stagger">
+    <p class="gate-kicker anim-item split-words">WEDDING INVITATION</p>
+    <div class="gate-divider anim-item" aria-hidden="true"><i></i></div>
+    <h1 class="gate-title anim-item split-words">Mujif <em>&</em> Shabnam</h1>
+    <p class="gate-scroll-hint anim-item" aria-hidden="true"><span></span>Scroll</p>
+    <p class="gate-sub anim-item split-words">Rooted in Faith • Bound by Love</p>
+    <div class="gate-dates anim-item">
+      <p class="split-words"><b>Nikah</b><span>27 September 2026</span></p>
+      <p class="split-words"><b>Walima</b><span>29 September 2026</span></p>
+    </div>
+  </div>
 </section>
 
 <section class="screen blessing">
+  <div class="edge-rail light" aria-hidden="true"></div>
   <div class="arch arch-green"></div>
-  <div class="content narrow center">
-    <div class="eyebrow gold">A BEAUTIFUL DU'A</div>
-    <div class="arabic-verse">وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً</div>
-    <div class="verse-line"></div>
-    <p class="translation">“And among His signs is that He created for you spouses from among yourselves so that you may find tranquility in them; and He placed between you affection and mercy.”</p>
-    <div class="verse-ref">QUR’AN • 30:21</div>
-    <div class="blessing-note">May Allah bless this union with love, peace, barakah and endless happiness.</div>
+  <div class="jali" aria-hidden="true"></div>
+  <div class="screen-glow" aria-hidden="true"></div>
+  <div class="section-filigree light" aria-hidden="true"><i></i></div>
+  <div class="ornament top light"><i></i></div>
+  <div class="content narrow center reveal anim-stagger">
+    <div class="eyebrow gold anim-item split-words">A BEAUTIFUL AYAH</div>
+    <div class="arabic-verse anim-item" lang="ar" dir="rtl">وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً</div>
+    <div class="verse-line anim-item"></div>
+    <p class="translation anim-item">“And among His signs is that He created for you spouses from among yourselves so that you may find tranquility in them; and He placed between you affection and mercy.”</p>
+    <div class="verse-ref anim-item split-words">QUR’AN • 30:21</div>
+    <div class="blessing-note anim-item split-words">May Allah bless this union with love, peace, barakah and endless happiness.</div>
   </div>
+  <div class="ornament bottom light"><i></i></div>
 </section>
 
 <section class="screen couple">
-  <div class="content">
-    <div class="eyebrow gold">THE COUPLE</div>
-    <h2>A New Chapter<br><em>Begins Together</em></h2>
+  <div class="edge-rail light" aria-hidden="true"></div>
+  <div class="jali soft" aria-hidden="true"></div>
+  <div class="screen-glow" aria-hidden="true"></div>
+  <div class="couple-bloom" aria-hidden="true"></div>
+  <div class="section-filigree light" aria-hidden="true"><i></i></div>
+  <div class="ornament top light"><i></i></div>
+  <div class="content reveal anim-stagger">
+    <div class="eyebrow gold anim-item split-words">THE COUPLE</div>
+    <h2 class="anim-item split-words">A New Chapter<br><em>Begins Together</em></h2>
+    <p class="couple-lead anim-item split-words">Two hearts • One niyyah • Forever in Allah’s care</p>
+    <div class="couple-rule anim-item" aria-hidden="true"><i></i></div>
     <div class="couple-grid">
-      <article class="person-card">
-        <div class="monogram">M</div><div class="card-label">THE GROOM</div>
-        <h3>Mujif</h3>
+      <article class="person-card anim-item">
+        <div class="card-label">THE GROOM</div>
+        <h3 class="foil-soft split-words">Mujif</h3>
         <p>Son of Attar Gafur Hasan</p>
         <div class="mini-rule"></div>
         <p>Resident of Ieet<br>Taluka Bhoom, District Dharashiv</p>
       </article>
-      <div class="amp">&</div>
-      <article class="person-card">
-        <div class="monogram">S</div><div class="card-label">THE BRIDE</div>
-        <h3>Shabnam</h3>
-        <p>Daughter of Shaikh Rahim Ansar<br>(Baba Attar)</p>
+      <div class="amp anim-item" aria-hidden="true">&</div>
+      <article class="person-card anim-item">
+        <div class="card-label">THE BRIDE</div>
+        <h3 class="foil-soft split-words">Shabnam</h3>
+        <p>Daughter of Shaikh Rahim Ansar</p>
         <div class="mini-rule"></div>
         <p>Resident of Dindrud<br>Taluka Majalgaon, District Beed</p>
       </article>
     </div>
   </div>
+  <div class="ornament bottom light"><i></i></div>
 </section>
 
 <section class="screen event nikah">
-  <div class="content event-content">
-    <div class="event-number">01</div>
-    <div class="eyebrow dark">THE NIKAH</div>
-    <h2>A Sacred<br><em>Beginning</em></h2>
+  <div class="edge-rail" aria-hidden="true"></div>
+  <div class="event-wash" aria-hidden="true"></div>
+  <div class="event-bloom" aria-hidden="true"></div>
+  <div class="section-filigree" aria-hidden="true"><i></i></div>
+  <div class="ornament top"><i></i></div>
+  <div class="content event-content reveal anim-stagger">
+    <h2 class="anim-item split-words title-hero">Nikah</h2>
+    <div class="title-flourish anim-item" aria-hidden="true"><i></i></div>
     <div class="event-card">
-      <div class="event-date"><strong>27</strong><span>SEPTEMBER<br>2026</span></div>
-      <div class="event-meta"><b>SUNDAY</b><span>11:30 AM</span></div>
-      <div class="gold-line"></div>
-      <h3>Swaraj Mangal Karyalaya</h3>
-      <p>Telgaon Road, Dindrud<br>Taluka Majalgaon, District Beed</p>
-      <a class="gold-btn" href="#" onclick="openMap(nikahMap);return false;">GET DIRECTIONS ↗</a>
+      <div class="event-date anim-item"><strong>27</strong><span>SEPTEMBER<br>2026</span></div>
+      <div class="event-meta anim-item"><b>SUNDAY</b><span>11:30 AM</span></div>
+      <div class="gold-line anim-item" aria-hidden="true"></div>
+      <h3 class="anim-item split-words">Swaraj Mangal Karyalaya</h3>
+      <p class="anim-item">Telgaon Road, Dindrud<br>Taluka Majalgaon, District Beed</p>
+      <a class="gold-btn anim-item" href="https://www.google.com/maps/search/?api=1&amp;query=Swaraj+Mangal+Karyalaya+Dindrud+Beed" target="_blank" rel="noopener noreferrer"><svg class="map-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>OPEN IN MAPS</a>
+      <div class="qr-card anim-item">
+        <img src="assets/nikah-qr.png" alt="QR code for Nikah venue" width="156" height="156">
+        <span>SCAN FOR NIKAH LOCATION</span>
+      </div>
     </div>
   </div>
+  <div class="ornament bottom"><i></i></div>
 </section>
 
 <section class="screen event walima">
-  <div class="content event-content">
-    <div class="event-number">02</div>
-    <div class="eyebrow dark">THE WALIMA</div>
-    <h2>A Celebration<br><em>Together</em></h2>
+  <div class="edge-rail" aria-hidden="true"></div>
+  <div class="event-wash" aria-hidden="true"></div>
+  <div class="event-bloom" aria-hidden="true"></div>
+  <div class="section-filigree" aria-hidden="true"><i></i></div>
+  <div class="ornament top"><i></i></div>
+  <div class="content event-content reveal anim-stagger">
+    <h2 class="anim-item split-words title-hero">Walima</h2>
+    <div class="title-flourish anim-item" aria-hidden="true"><i></i></div>
     <div class="event-card">
-      <div class="event-date"><strong>29</strong><span>SEPTEMBER<br>2026</span></div>
-      <div class="event-meta"><b>TUESDAY</b><span>AFTER ZUHR NAMAZ</span></div>
-      <div class="gold-line"></div>
-      <h3>Rudra Mangal Karyalaya</h3>
-      <p>Pakhrud Road, Ieet<br>Taluka Bhoom, District Dharashiv</p>
-      <a class="gold-btn" href="#" onclick="openMap(walimaMap);return false;">GET DIRECTIONS ↗</a>
+      <div class="event-date anim-item"><strong>29</strong><span>SEPTEMBER<br>2026</span></div>
+      <div class="event-meta anim-item"><b>TUESDAY</b><span>AFTER ZUHR NAMAZ</span></div>
+      <div class="gold-line anim-item" aria-hidden="true"></div>
+      <h3 class="anim-item split-words">Rudra Mangal Karyalaya</h3>
+      <p class="anim-item">Pakhrud Road, Ieet<br>Taluka Bhoom, District Dharashiv</p>
+      <a class="gold-btn anim-item" href="https://maps.app.goo.gl/BQpYjiWpXdY7hcud9" target="_blank" rel="noopener noreferrer"><svg class="map-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>OPEN IN MAPS</a>
+      <div class="qr-card anim-item">
+        <img src="assets/walima-qr.png" alt="QR code for Walima venue" width="156" height="156">
+        <span>SCAN FOR WALIMA LOCATION</span>
+      </div>
     </div>
   </div>
+  <div class="ornament bottom"><i></i></div>
 </section>
 
 <section class="screen countdown-screen">
-  <div class="content center">
-    <div class="eyebrow gold">COUNTDOWN TO NIKAH</div>
-    <h2>The Wait Is<br><em>Almost Over</em></h2>
-    <div class="countdown" id="countdown">
-      <div><strong id="days">--</strong><span>DAYS</span></div>
-      <i></i><div><strong id="hours">--</strong><span>HOURS</span></div>
-      <i></i><div><strong id="minutes">--</strong><span>MINUTES</span></div>
-      <i></i><div><strong id="seconds">--</strong><span>SECONDS</span></div>
+  <div class="edge-rail light" aria-hidden="true"></div>
+  <div class="jali soft" aria-hidden="true"></div>
+  <div class="screen-glow tall" aria-hidden="true"></div>
+  <div class="section-filigree light" aria-hidden="true"><i></i></div>
+  <div class="ornament top light"><i></i></div>
+  <div class="content center reveal anim-stagger">
+    <div class="eyebrow gold anim-item split-words">COUNTDOWN TO NIKAH</div>
+    <h2 class="anim-item split-words">The Wait Is<br><em>Almost Over</em></h2>
+    <div class="countdown anim-item" id="countdown">
+      <div class="count-box"><strong id="days">--</strong><span>DAYS</span></div>
+      <i></i>
+      <div class="count-box"><strong id="hours">--</strong><span>HOURS</span></div>
+      <i></i>
+      <div class="count-box"><strong id="minutes">--</strong><span>MINUTES</span></div>
+      <i></i>
+      <div class="count-box"><strong id="seconds">--</strong><span>SECONDS</span></div>
     </div>
-    <p class="count-note">Until two hearts begin one beautiful journey, In Sha Allah.</p>
+    <p class="count-target anim-item split-words">27 September 2026 · Sunday · 11:30 AM</p>
+    <p class="count-note anim-item split-words">Until two hearts begin one beautiful journey, Insha’Allah.</p>
   </div>
-</section>
-
-<section class="screen venue">
-  <div class="venue-arch"></div>
-  <div class="content center">
-    <div class="eyebrow gold">NIKAH • VENUE</div>
-    <div class="venue-icon">⌂</div>
-    <h2>Swaraj Mangal<br><em>Karyalaya</em></h2>
-    <p>Telgaon Road, Dindrud<br>Taluka Majalgaon, District Beed</p>
-    <a class="gold-btn" href="#" onclick="openMap(nikahMap);return false;">OPEN IN MAPS ↗</a>
-    <div class="qr-card"><img src="assets/nikah-qr.png" alt="QR code for Nikah venue"><span>SCAN FOR LOCATION</span></div>
-  </div>
-</section>
-
-<section class="screen venue venue-alt">
-  <div class="venue-arch"></div>
-  <div class="content center">
-    <div class="eyebrow gold">WALIMA • VENUE</div>
-    <div class="venue-icon">⌂</div>
-    <h2>Rudra Mangal<br><em>Karyalaya</em></h2>
-    <p>Pakhrud Road, Ieet<br>Taluka Bhoom, District Dharashiv</p>
-    <a class="gold-btn" href="#" onclick="openMap(walimaMap);return false;">OPEN IN MAPS ↗</a>
-    <div class="qr-card"><img src="assets/walima-qr.png" alt="QR code for Walima venue"><span>SCAN FOR LOCATION</span></div>
-  </div>
-</section>
-
-<section class="screen rsvp">
-  <div class="content center">
-    <div class="eyebrow gold">YOUR PRESENCE MATTERS</div>
-    <h2>Will You<br><em>Join Us?</em></h2>
-    <p>Your presence and blessings will make our celebration even more special.</p>
-    <div class="rsvp-box">
-      <span>RSVP VIA WHATSAPP</span>
-      <a id="rsvpBtn" class="whatsapp-btn" href="#">SEND RSVP <b>↗</b></a>
-      <small>Replace the WhatsApp number in <b>script.js</b> before publishing.</small>
-    </div>
-  </div>
-</section>
-
-<section class="screen dua parchment">
-  <div class="content narrow center">
-    <div class="arabic">اللَّهُمَّ بَارِكْ لَهُمَا وَبَارِكْ عَلَيْهِمَا وَاجْمَعْ بَيْنَهُمَا فِي خَيْرٍ</div>
-    <div class="eyebrow dark">A SPECIAL NOTE</div>
-    <div class="rule"><i></i></div>
-    <h2>With Love,<br><em>With Dua</em></h2>
-    <p>We ask Allah to fill this new journey with sakinah, mawaddah and rahmah, and to keep our families close in every season of life.</p>
-    <div class="dua-mark">✦</div>
-  </div>
+  <div class="ornament bottom light"><i></i></div>
 </section>
 
 <section class="screen closing">
-  <div class="moon"></div><div class="stars"></div>
-  <div class="content center">
-    <div class="eyebrow gold">THANK YOU</div>
-    <h2>For Being a Part<br><em>of Our Story</em></h2>
-    <div class="closing-names">Mujif <span>&</span> Shabnam</div>
-    <div class="closing-date">27 SEPTEMBER 2026</div>
-    <div class="rule gold-rule"><i></i></div>
-    <p>Dua Always ♡</p>
-    <div class="arabic-small">جَزَاكُمُ اللّٰهُ خَيْرًا</div>
+  <div class="edge-rail light" aria-hidden="true"></div>
+  <div class="gate-pattern soft"></div>
+  <div class="gate-moon"></div>
+  <div class="screen-glow tall" aria-hidden="true"></div>
+  <div class="filigree top closing-filigree" aria-hidden="true">
+    <svg viewBox="0 0 320 40"><path d="M20 20h80M300 20h-80M160 6c8 8 8 20 0 28-8-8-8-20 0-28zm-40 14h30m50 0h30" stroke="#e0c07a" stroke-width="1" fill="none" opacity=".55"/><circle cx="160" cy="20" r="2.5" fill="#e0c07a"/></svg>
   </div>
+  <div class="section-filigree light" aria-hidden="true"><i></i></div>
+  <div class="ornament top light"><i></i></div>
+  <div class="content center reveal anim-stagger">
+    <div class="arabic-small anim-item" lang="ar" dir="rtl">اللَّهُمَّ بَارِكْ لَهُمَا وَبَارِكْ عَلَيْهِمَا وَاجْمَعْ بَيْنَهُمَا فِي خَيْرٍ</div>
+    <div class="eyebrow gold anim-item split-words">WITH LOVE &amp; DUA</div>
+    <h2 class="anim-item split-words">For Being a Part<br><em>of Our Story</em></h2>
+    <p class="closing-note anim-item split-words">We ask Allah to fill this journey with sakinah, mawaddah and rahmah.</p>
+    <div class="closing-dates anim-item">
+      <span>Nikah 27 Sep</span>
+      <i></i>
+      <span>Walima 29 Sep</span>
+    </div>
+    <div class="rule gold-rule anim-item"><i></i></div>
+    <p class="anim-item split-words">Keep us in your duas</p>
+    <div class="arabic-small anim-item" lang="ar" dir="rtl">جَزَاكُمُ اللّٰهُ خَيْرًا</div>
+  </div>
+  <div class="ornament bottom light"><i></i></div>
 </section>
-</main>
 
+</main>
 <script src="script.js"></script>
 </body>
 </html>

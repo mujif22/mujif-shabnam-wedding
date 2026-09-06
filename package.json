@@ -1,0 +1,23 @@
+{
+  "name": "mujif-shabnam-wedding-invitation-premium-v4",
+  "version": "1.0.0",
+  "description": "Mobile-first static wedding invitation (emerald velvet + champagne gold).",
+  "main": "script.js",
+  "scripts": {
+    "generate:qr": "node scripts/generate-qr.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mujif22/mujif-shabnam-wedding.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mujif22/mujif-shabnam-wedding/issues"
+  },
+  "homepage": "https://github.com/mujif22/mujif-shabnam-wedding#readme",
+  "dependencies": {
+    "qrcode": "^1.5.4"
+  }
+}

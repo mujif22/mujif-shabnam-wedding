@@ -1,28 +1,21 @@
 # Mujif & Shabnam — Premium Wedding Invitation v4
 
-A mobile-first, ₹0-friendly static wedding invitation website.
+Mobile-first static wedding invitation (emerald velvet + champagne gold).
 
-## Publish free with GitHub Pages
-1. Create a **public** GitHub repository.
-2. Upload `index.html`, `style.css`, `script.js`, and the `assets` folder.
-3. Open **Settings → Pages**.
-4. Select **Deploy from a branch**, choose `main` and `/root`.
-5. Your HTTPS website will be available on a `github.io` address.
+## Publish with GitHub Pages
+1. Push this repo to GitHub (`mujif22/mujif-shabnam-wedding`).
+2. **Settings → Pages** → Deploy from `main` / root.
+3. Site URL: `https://mujif22.github.io/mujif-shabnam-wedding/`
 
-## Before publishing
-Open `script.js` and set:
-`const whatsappNumber="YOUR_COUNTRY_CODE_AND_NUMBER";`
-Use digits only, e.g. `919876543210`.
+Open Graph preview uses that URL + `assets/og-cover.jpg`. After first deploy, share the link once in WhatsApp to refresh the preview cache if needed.
 
 ## Included
-- 12 vertically stacked mobile-first screens
-- Premium emerald / ivory / antique-gold visual system
-- Opening seal interaction
-- Live countdown to Nikah
-- Google Maps direction buttons
-- QR codes for both venues
-- WhatsApp RSVP hook
-- Open Graph title/description for WhatsApp link preview
-- No bride/groom photos
-- No venue photos
-- No login, OTP, payment, popup, download, or tracking
+- 8 vertically stacked screens (cover → closing)
+- Live countdown to Nikah (27 Sep 2026, 11:30 IST)
+- Google Maps links + QR codes for Nikah & Walima
+- Manual ambient sound (♪)
+- WhatsApp-ready OG image (`assets/og-cover.jpg`)
+- No RSVP form, phone number, couple photos, or tracking
+
+## Local preview
+Open `index.html` in a browser, or serve the folder with any static server.
