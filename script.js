@@ -1,6 +1,67 @@
 const reduceMotion=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const isCoarse=window.matchMedia("(pointer: coarse)").matches;
 
+/* —— Auto full-screen fit per phone —— */
+function syncAppViewport(){
+  const vv=window.visualViewport;
+  const h=Math.max(1, Math.round((vv && vv.height) ? vv.height : window.innerHeight));
+  const w=Math.max(1, Math.round((vv && vv.width) ? vv.width : window.innerWidth));
+  const root=document.documentElement;
+  root.style.setProperty("--app-h", h + "px");
+  root.style.setProperty("--app-w", w + "px");
+  root.style.setProperty("--screen-min", h + "px");
+}
+
+function fitScreenContents(){
+  document.querySelectorAll("#invitation > .screen").forEach(screen=>{
+    const content=screen.querySelector(":scope > .content");
+    if(!content) return;
+    content.style.transform="none";
+    const cs=window.getComputedStyle(screen);
+    const padY=(parseFloat(cs.paddingTop) || 0) + (parseFloat(cs.paddingBottom) || 0);
+    const padX=(parseFloat(cs.paddingLeft) || 0) + (parseFloat(cs.paddingRight) || 0);
+    const availH=Math.max(1, screen.clientHeight - padY);
+    const availW=Math.max(1, screen.clientWidth - padX);
+    const needH=content.scrollHeight;
+    const needW=content.scrollWidth;
+    let scale=1;
+    if(needH > availH) scale=Math.min(scale, availH / needH);
+    if(needW > availW) scale=Math.min(scale, availW / needW);
+    scale=Math.max(0.66, Math.min(1, scale * 0.98));
+    if(scale < 0.995){
+      content.style.transform=`scale(${scale})`;
+      content.style.transformOrigin="center center";
+    }
+  });
+}
+
+let fitRaf=0;
+function scheduleFitScreens(){
+  if(fitRaf) cancelAnimationFrame(fitRaf);
+  fitRaf=requestAnimationFrame(()=>{
+    fitRaf=0;
+    syncAppViewport();
+    fitScreenContents();
+  });
+}
+
+syncAppViewport();
+window.addEventListener("resize", scheduleFitScreens, {passive:true});
+window.addEventListener("orientationchange", ()=>{
+  window.setTimeout(scheduleFitScreens, 120);
+  window.setTimeout(scheduleFitScreens, 400);
+});
+if(window.visualViewport){
+  window.visualViewport.addEventListener("resize", scheduleFitScreens, {passive:true});
+  window.visualViewport.addEventListener("scroll", scheduleFitScreens, {passive:true});
+}
+window.addEventListener("load", scheduleFitScreens);
+if(document.fonts && document.fonts.ready){
+  document.fonts.ready.then(scheduleFitScreens);
+}
+window.setTimeout(scheduleFitScreens, 50);
+window.setTimeout(scheduleFitScreens, 300);
+
 /* Never restore mid-page — always open on the first host screen */
 if("scrollRestoration" in history) history.scrollRestoration="manual";
 
@@ -325,7 +386,9 @@ function hideOpenGate(){
   document.body.classList.remove("gate-locked");
   window.setTimeout(()=>{
     if(openGate && openGate.parentNode) openGate.parentNode.removeChild(openGate);
+    scheduleFitScreens();
   }, 750);
+  scheduleFitScreens();
 }
 
 function prepareHtmlAudio(){

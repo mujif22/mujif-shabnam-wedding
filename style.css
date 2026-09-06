@@ -15,9 +15,10 @@
   --foil:linear-gradient(115deg,#6e5420 0%,#c9a048 18%,#f6e2a0 36%,#fff8d6 48%,#e0c07a 58%,#a67c32 78%,#6e5420 100%);
   --foil-ink:linear-gradient(115deg,#2a1a08 0%,#6b4a18 22%,#9a7328 42%,#c49a45 52%,#7a5520 68%,#3d2a0e 100%);
   --lux-glow:rgba(224,192,122,.22);
-  /* Stable phone height (includes browser chrome) — avoids half-screen cut */
-  --screen-min:100vh;
-  --screen-min:100svh;
+  /* Filled by JS to exact phone visible height; CSS fallbacks below */
+  --app-h:100svh;
+  --app-w:100vw;
+  --screen-min:var(--app-h);
 }
 
 *,*::before,*::after{box-sizing:border-box}
@@ -107,6 +108,9 @@ body:before{
 .open-gate{
   position:fixed;
   inset:0;
+  width:100%;
+  height:var(--app-h, 100svh);
+  min-height:var(--app-h, 100svh);
   z-index:300;
   display:flex;
   align-items:center;
@@ -189,8 +193,7 @@ body:before{
 }
 body.gate-locked{
   overflow:hidden;
-  height:var(--screen-min);
-  height:-webkit-fill-available;
+  height:var(--app-h, 100svh);
 }
 @media(prefers-reduced-motion:reduce){
   .open-gate-hint{animation:none; opacity:.9}
@@ -627,21 +630,19 @@ body.gate-locked{
   touch-action:pan-y;
 }
 .screen{
-  /* Same size as first (host) page on every section */
-  min-height:var(--screen-min);
-  min-height:-webkit-fill-available;
-  height:var(--screen-min);
-  height:-webkit-fill-available;
-  max-height:var(--screen-min);
-  max-height:-webkit-fill-available;
+  /* Exact visible phone screen — auto-set via --app-h */
+  width:100%;
+  min-height:var(--app-h, 100svh);
+  height:var(--app-h, 100svh);
+  max-height:var(--app-h, 100svh);
   position:relative;
   display:flex;
   align-items:center;
   justify-content:center;
   overflow:hidden;
-  padding:76px 20px;
-  padding-top:max(76px,calc(56px + env(safe-area-inset-top)));
-  padding-bottom:max(76px,calc(56px + env(safe-area-inset-bottom)));
+  padding:clamp(28px, 5.5vh, 76px) clamp(14px, 4vw, 20px);
+  padding-top:max(clamp(28px, 5.5vh, 76px), env(safe-area-inset-top));
+  padding-bottom:max(clamp(28px, 5.5vh, 76px), env(safe-area-inset-bottom));
   touch-action:pan-y;
   box-sizing:border-box;
 }
@@ -652,33 +653,28 @@ body.gate-locked{
 .screen.countdown-screen,
 .screen.closing,
 .screen.event{
-  min-height:var(--screen-min);
-  min-height:-webkit-fill-available;
-  height:var(--screen-min);
-  height:-webkit-fill-available;
-  max-height:var(--screen-min);
-  max-height:-webkit-fill-available;
+  width:100%;
+  min-height:var(--app-h, 100svh);
+  height:var(--app-h, 100svh);
+  max-height:var(--app-h, 100svh);
   align-items:center;
   justify-content:center;
   overflow:hidden;
-  padding:76px 20px;
-  padding-top:max(76px,calc(56px + env(safe-area-inset-top)));
-  padding-bottom:max(76px,calc(56px + env(safe-area-inset-bottom)));
+  padding:clamp(28px, 5.5vh, 76px) clamp(14px, 4vw, 20px);
+  padding-top:max(clamp(28px, 5.5vh, 76px), env(safe-area-inset-top));
+  padding-bottom:max(clamp(28px, 5.5vh, 76px), env(safe-area-inset-bottom));
 }
 .screen.event .content{
   margin-block:0;
   padding-block:0;
   width:100%;
-  max-height:100%;
-  overflow:auto;
-  -webkit-overflow-scrolling:touch;
 }
 .content{
   width:min(100%,850px);
   position:relative;
   z-index:2;
   max-width:100%;
-  max-height:100%;
+  will-change:transform;
 }
 .narrow{
   max-width:650px;
@@ -2159,10 +2155,10 @@ h2 em.w{
   .screen.countdown-screen,
   .screen.closing,
   .screen.event{
-    padding-left:16px;
-    padding-right:16px;
-    padding-top:max(76px,calc(56px + env(safe-area-inset-top)));
-    padding-bottom:max(76px,calc(56px + env(safe-area-inset-bottom)));
+    padding-left:clamp(12px, 3.5vw, 16px);
+    padding-right:clamp(12px, 3.5vw, 16px);
+    padding-top:max(clamp(24px, 4.5vh, 64px), env(safe-area-inset-top));
+    padding-bottom:max(clamp(24px, 4.5vh, 64px), env(safe-area-inset-bottom));
     align-items:center;
     justify-content:center;
     overflow:hidden;
