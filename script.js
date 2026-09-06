@@ -1,5 +1,4 @@
 const reduceMotion=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-const musicBtn=document.getElementById("musicBtn");
 const isCoarse=window.matchMedia("(pointer: coarse)").matches;
 
 /* Never restore mid-page — always open on the first host screen */
@@ -289,60 +288,44 @@ if(ctx && !reduceMotion){
   clearWillChange();
 }
 
-/* Ambient audio (manual ♪ only) */
-let audioCtx=null, master=null, ambientNodes=[], ambientOn=false;
+/* Auto instrumental — no button.
+   Browsers often block unmuted autoplay until first tap/scroll. */
+const bgMusic=new Audio("assets/instrumental.mp3");
+bgMusic.loop=true;
+bgMusic.preload="auto";
+bgMusic.volume=0.55;
+let musicStarted=false;
 
-function getAudio(){
-  if(!audioCtx){
-    const AC=window.AudioContext || window.webkitAudioContext;
-    if(!AC) return null;
-    audioCtx=new AC();
-    master=audioCtx.createGain();
-    master.gain.value=0.0001;
-    master.connect(audioCtx.destination);
+function armMusicUnlock(){
+  window.addEventListener("pointerdown", tryStartMusic, {passive:true});
+  window.addEventListener("touchstart", tryStartMusic, {passive:true});
+  window.addEventListener("scroll", tryStartMusic, {passive:true});
+  window.addEventListener("keydown", tryStartMusic);
+}
+
+function disarmMusicUnlock(){
+  window.removeEventListener("pointerdown", tryStartMusic);
+  window.removeEventListener("touchstart", tryStartMusic);
+  window.removeEventListener("scroll", tryStartMusic);
+  window.removeEventListener("keydown", tryStartMusic);
+}
+
+function tryStartMusic(){
+  if(musicStarted) return;
+  const p=bgMusic.play();
+  if(p && typeof p.then === "function"){
+    p.then(()=>{
+      musicStarted=true;
+      disarmMusicUnlock();
+    }).catch(()=>{
+      /* Still blocked — keep listening for next gesture */
+    });
+  }else{
+    musicStarted=true;
+    disarmMusicUnlock();
   }
-  return audioCtx;
 }
 
-function startAmbient(){
-  const ctxA=getAudio();
-  if(!ctxA || ambientNodes.length) return;
-  if(ctxA.state==="suspended") ctxA.resume();
-  const freqs=[174.61, 220, 261.63];
-  ambientNodes=freqs.map((freq, i)=>{
-    const o=ctxA.createOscillator();
-    const g=ctxA.createGain();
-    o.type="sine";
-    o.frequency.value=freq;
-    g.gain.value=0.012 + i*0.004;
-    o.connect(g); g.connect(master);
-    o.start();
-    return {o, g};
-  });
-  const now=ctxA.currentTime;
-  master.gain.cancelScheduledValues(now);
-  master.gain.linearRampToValueAtTime(0.22, now + 1.2);
-  ambientOn=true;
-  if(musicBtn) musicBtn.setAttribute("aria-pressed","true");
-}
-
-function stopAmbient(){
-  if(!audioCtx || !ambientNodes.length) return;
-  const now=audioCtx.currentTime;
-  master.gain.cancelScheduledValues(now);
-  master.gain.linearRampToValueAtTime(0.0001, now + 0.6);
-  ambientNodes.forEach(({o})=>{
-    try{o.stop(now + 0.7)}catch(e){}
-  });
-  ambientNodes=[];
-  ambientOn=false;
-  if(musicBtn) musicBtn.setAttribute("aria-pressed","false");
-}
-
-if(musicBtn){
-  musicBtn.addEventListener("click", ()=>{
-    if(ambientOn) stopAmbient();
-    else startAmbient();
-  });
-}
+tryStartMusic();
+armMusicUnlock();
 
