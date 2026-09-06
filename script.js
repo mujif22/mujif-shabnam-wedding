@@ -288,12 +288,15 @@ if(ctx && !reduceMotion){
   clearWillChange();
 }
 
-/* Safari blocks autoplay after opening a link.
-   Guests tap once on the open-gate → music starts + invitation opens. */
+/* Cross-browser music: one tap on open-gate.
+   Safari/Chrome/Firefox/Samsung — play on pointerdown (strongest gesture). */
 const bgMusic=document.getElementById("bgMusic");
 const openGate=document.getElementById("openGate");
+const openGateHint=openGate ? openGate.querySelector(".open-gate-hint") : null;
 let musicPlaying=false;
 let inviteOpened=false;
+let audioCtx=null;
+let webAudioStarted=false;
 
 function musicSrc(){
   try{
@@ -312,57 +315,129 @@ function hideOpenGate(){
   }, 750);
 }
 
-function startMusicFromGesture(){
-  if(!bgMusic || musicPlaying) return Promise.resolve(true);
+function prepareHtmlAudio(){
+  if(!bgMusic) return;
+  bgMusic.loop=true;
+  bgMusic.preload="auto";
+  bgMusic.playsInline=true;
+  bgMusic.setAttribute("playsinline","");
+  bgMusic.setAttribute("webkit-playsinline","");
+  /* Set src once — resetting src inside the tap breaks Chrome/Android */
+  const abs=musicSrc();
+  const source=bgMusic.querySelector("source");
+  if(source) source.src=abs;
+  if(!bgMusic.src || bgMusic.src.indexOf("instrumental.mp3") === -1){
+    bgMusic.src=abs;
+  }
+  try{ bgMusic.load(); }catch(e){}
+}
+
+function playHtmlAudio(){
+  if(!bgMusic) return Promise.resolve(false);
+  if(musicPlaying && !bgMusic.paused) return Promise.resolve(true);
   bgMusic.muted=false;
   bgMusic.volume=0.65;
-  bgMusic.src=musicSrc();
-  const p=bgMusic.play();
-  if(p && typeof p.then === "function"){
-    return p.then(()=>{
-      musicPlaying=true;
-      return true;
-    }).catch(()=>false);
+  try{
+    const p=bgMusic.play();
+    if(p && typeof p.then === "function"){
+      return p.then(()=>{
+        musicPlaying=true;
+        return true;
+      }).catch(()=>false);
+    }
+    musicPlaying=true;
+    return Promise.resolve(true);
+  }catch(e){
+    return Promise.resolve(false);
   }
-  musicPlaying=true;
-  return Promise.resolve(true);
+}
+
+function unlockAudioContext(){
+  try{
+    const AC=window.AudioContext || window.webkitAudioContext;
+    if(!AC) return null;
+    if(!audioCtx) audioCtx=new AC();
+    if(audioCtx.state === "suspended") audioCtx.resume();
+    return audioCtx;
+  }catch(e){
+    return null;
+  }
+}
+
+function playViaWebAudio(){
+  if(webAudioStarted) return Promise.resolve(true);
+  const ctx=unlockAudioContext();
+  if(!ctx) return Promise.resolve(false);
+  return fetch(musicSrc())
+    .then(r=>r.arrayBuffer())
+    .then(buf=>ctx.decodeAudioData(buf))
+    .then(decoded=>{
+      if(webAudioStarted) return true;
+      const src=ctx.createBufferSource();
+      const gain=ctx.createGain();
+      gain.gain.value=0.65;
+      src.buffer=decoded;
+      src.loop=true;
+      src.connect(gain);
+      gain.connect(ctx.destination);
+      src.start(0);
+      webAudioStarted=true;
+      musicPlaying=true;
+      /* Stop HTML element so they don't double */
+      try{ bgMusic.pause(); }catch(e){}
+      return true;
+    })
+    .catch(()=>false);
+}
+
+function startMusicFromGesture(){
+  /* Must call play()/resume() synchronously in the tap handler */
+  unlockAudioContext();
+  return playHtmlAudio().then((ok)=>{
+    if(ok) return true;
+    return playViaWebAudio();
+  });
 }
 
 function openInvitation(e){
   if(inviteOpened) return;
-  if(e){
-    e.preventDefault();
-    e.stopPropagation();
-  }
   inviteOpened=true;
-  /* play() must stay inside this tap for Safari */
-  const done=startMusicFromGesture();
+  if(e && e.cancelable){
+    /* Don't preventDefault on touchstart — some Androids need the default path */
+  }
+
+  const result=startMusicFromGesture();
   hideOpenGate();
-  if(done && typeof done.then === "function"){
-    done.then((ok)=>{
-      if(!ok && bgMusic){
-        /* rare retry still within same tick chain */
-        bgMusic.play().then(()=>{ musicPlaying=true; }).catch(()=>{});
-      }
+
+  if(result && typeof result.then === "function"){
+    result.then((ok)=>{
+      if(ok) return;
+      /* Music failed — allow one more tap on page to retry */
+      inviteOpened=false;
+      const retry=()=>{
+        startMusicFromGesture().then((ok2)=>{
+          if(ok2){
+            document.removeEventListener("pointerdown", retry, true);
+            document.removeEventListener("touchstart", retry, true);
+          }
+        });
+      };
+      document.addEventListener("pointerdown", retry, {capture:true, passive:true});
+      document.addEventListener("touchstart", retry, {capture:true, passive:true});
+      if(openGateHint) openGateHint.textContent="Tap again for music";
     });
   }
 }
 
-if(bgMusic){
-  bgMusic.loop=true;
-  bgMusic.preload="auto";
-  bgMusic.setAttribute("playsinline","");
-  bgMusic.setAttribute("webkit-playsinline","");
-  bgMusic.src=musicSrc();
-}
+prepareHtmlAudio();
 
 if(openGate){
   document.body.classList.add("gate-locked");
-  /* Prefer touchend/pointerup — most reliable unlock on iOS Safari */
-  openGate.addEventListener("pointerup", openInvitation, {passive:false});
-  openGate.addEventListener("touchend", openInvitation, {passive:false});
+  /* pointerdown/touchstart = best cross-browser media unlock */
+  openGate.addEventListener("pointerdown", openInvitation, {passive:true});
+  openGate.addEventListener("touchstart", openInvitation, {passive:true});
   openGate.addEventListener("click", openInvitation);
 }else if(bgMusic){
-  bgMusic.play().then(()=>{ musicPlaying=true; }).catch(()=>{});
+  playHtmlAudio();
 }
 
