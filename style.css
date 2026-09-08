@@ -2799,3 +2799,7 @@ body.lang-hi .countdown-screen [data-i18n="countdown_target"]{
   text-align:center !important;
   max-width:92vw !important;
 }
+/* Hindi closing: keep Arabic top/bottom; hide extra rule line */
+body.lang-hi .closing .gold-rule{
+  display:none !important;
+}
