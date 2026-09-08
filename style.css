@@ -165,6 +165,40 @@ body.lang-hi .countdown-screen h2[data-i18n-html="countdown_title"],
 body.lang-hi .countdown-screen .count-note{
   display:none !important;
 }
+/* Hindi countdown: fill empty space — bigger eyebrow, numbers, date */
+body.lang-hi .countdown-screen .eyebrow{
+  font-size:clamp(16px,4.6vw,22px);
+  letter-spacing:.08em;
+  margin-bottom:8px;
+}
+body.lang-hi .countdown-screen .countdown{
+  margin:28px auto 28px;
+  max-width:min(720px,100%);
+  column-gap:clamp(8px,3vw,22px);
+}
+body.lang-hi .countdown-screen .count-box{
+  padding:18px 4px;
+}
+body.lang-hi .countdown-screen .count-box strong{
+  font-family:"Noto Serif Devanagari","Cormorant Garamond",serif;
+  font-size:clamp(48px,14vw,78px);
+  line-height:1.15;
+}
+body.lang-hi .countdown-screen .count-box span{
+  font-size:clamp(12px,3.4vw,16px);
+  letter-spacing:.06em;
+  margin-top:10px;
+  color:rgba(224,192,122,.85);
+}
+body.lang-hi .countdown-screen .count-target{
+  font-family:"Noto Serif Devanagari","Cinzel",serif;
+  font-size:clamp(15px,4.2vw,20px);
+  letter-spacing:.06em;
+  text-transform:none;
+  margin:28px 0 0;
+  line-height:1.55;
+  color:#f0e2b8;
+}
 body.lang-hi .gate-title .w,
 body.lang-hi .host-couple .w,
 body.lang-hi .host-families .w,
