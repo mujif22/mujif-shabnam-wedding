@@ -147,9 +147,13 @@ setInterval(tick, 1000);
 /* —— Word-by-word smooth reveal —— */
 function splitWords(root){
   if(!root || root.dataset.split === "1" || reduceMotion) return;
+  /* Word-split + foil clip breaks Devanagari matras — skip in Hindi */
+  if(document.body.classList.contains("lang-hi")) return;
   root.dataset.split="1";
-  const wantFoil=root.classList.contains("foil");
-  const wantFoilSoft=root.classList.contains("foil-soft");
+  const wantFoil=root.classList.contains("foil") || root.dataset.foil === "1";
+  const wantFoilSoft=root.classList.contains("foil-soft") || root.dataset.foilSoft === "1";
+  if(wantFoil) root.dataset.foil="1";
+  if(wantFoilSoft) root.dataset.foilSoft="1";
   let i=0;
 
   function wrapText(textNode){
@@ -195,13 +199,205 @@ function splitWords(root){
   }
 
   walk(root);
-  if(wantFoil) root.classList.remove("foil");
-  if(wantFoilSoft) root.classList.remove("foil-soft");
   root.classList.add("is-split");
   root.style.setProperty("--wc", String(Math.max(i, 1)));
 }
 
-document.querySelectorAll(".split-words").forEach(splitWords);
+/* —— Bilingual EN / Hindi —— */
+const I18N={
+  en:{
+    wedding_invitation:"WEDDING INVITATION",
+    names_amp:"Mujif <em>&</em> Shabnam",
+    tap_to_open:"Tap to open",
+    tap_again_music:"Tap again for music",
+    host_blessing:"With the blessings of Allah",
+    host_eyebrow:"THE FAMILIES OF",
+    host_families:"Attar <em>&</em> Shaikh",
+    host_invite:"cordially invite you to celebrate<br>the sacred Nikah &amp; Walima of",
+    host_note:"Your presence will be an honour and a blessing, Insha’Allah.",
+    gate_sub:"Rooted in Faith • Bound by Love",
+    gate_nikah_row:"<b>Nikah</b><span>27 September 2026</span>",
+    gate_walima_row:"<b>Walima</b><span>29 September 2026</span>",
+    ayah_eyebrow:"A BEAUTIFUL AYAH",
+    ayah_translation:"“And among His signs is that He created for you spouses from among yourselves so that you may find tranquility in them; and He placed between you affection and mercy.”",
+    ayah_ref:"QUR’AN • 30:21",
+    blessing_note:"May Allah bless this union with love, peace, barakah and endless happiness.",
+    couple_eyebrow:"THE COUPLE",
+    couple_title:"A New Chapter<br><em>Begins Together</em>",
+    couple_lead:"Two hearts • One niyyah • Forever in Allah’s care",
+    groom_label:"THE GROOM",
+    groom_name:"Mujif",
+    groom_parent:"Son of Attar Gafur Hasan",
+    groom_place:"Resident of Ieet<br>Taluka Bhoom, District Dharashiv",
+    bride_label:"THE BRIDE",
+    bride_name:"Shabnam",
+    bride_parent:"Daughter of Shaikh Rahim Ansar",
+    bride_place:"Resident of Dindrud<br>Taluka Majalgaon, District Beed",
+    nikah:"Nikah",
+    nikah_month_year:"SEPTEMBER<br>2026",
+    nikah_day:"SUNDAY",
+    nikah_time:"11:30 AM",
+    nikah_venue:"Swaraj Mangal Karyalaya",
+    nikah_address:"Telgaon Road, Dindrud<br>Taluka Majalgaon, District Beed",
+    open_maps:"OPEN IN MAPS",
+    nikah_qr:"SCAN FOR NIKAH LOCATION",
+    nikah_qr_alt:"QR code for Nikah venue",
+    walima:"Walima",
+    walima_month_year:"SEPTEMBER<br>2026",
+    walima_day:"TUESDAY",
+    walima_time:"AFTER ZUHR NAMAZ",
+    walima_venue:"Rudra Mangal Karyalaya",
+    walima_address:"Pakhrud Road, Ieet<br>Taluka Bhoom, District Dharashiv",
+    walima_qr:"SCAN FOR WALIMA LOCATION",
+    walima_qr_alt:"QR code for Walima venue",
+    countdown_eyebrow:"COUNTDOWN TO NIKAH",
+    countdown_title:"The Wait Is<br><em>Almost Over</em>",
+    unit_days:"DAYS",
+    unit_hours:"HOURS",
+    unit_minutes:"MINUTES",
+    unit_seconds:"SECONDS",
+    countdown_target:"27 September 2026 · Sunday · 11:30 AM",
+    countdown_note:"Until two hearts begin one beautiful journey, Insha’Allah.",
+    closing_eyebrow:"WITH LOVE & DUA",
+    closing_title:"For Being a Part<br><em>of Our Story</em>",
+    closing_note:"We ask Allah to fill this journey with sakinah, mawaddah and rahmah.",
+    closing_nikah:"Nikah 27 Sep",
+    closing_walima:"Walima 29 Sep",
+    keep_duas:"Keep us in your duas"
+  },
+  hi:{
+    wedding_invitation:"जश्ने शादी",
+    names_amp:"मुजिफ <em>&</em> शबनम",
+    tap_to_open:"खोलने के लिए टैप करें",
+    tap_again_music:"संगीत के लिए फिर टैप करें",
+    host_blessing:"अल्लाह की रहमतों के साथ",
+    host_eyebrow:"परिवार",
+    host_families:"आतार <em>&</em> शेख",
+    host_invite:"आपको सादर आमंत्रित करते हैं<br>पवित्र निकाह व वलीमा में",
+    host_note:"आपकी उपस्थिति हमारे लिए सम्मान और बरकत होगी, इंशाअल्लाह।",
+    gate_sub:"ईमान में जड़ें • प्रेम में बंधन",
+    gate_nikah_row:"<b>निकाह</b><span>27 सितंबर 2026</span>",
+    gate_walima_row:"<b>वलीमा</b><span>29 सितंबर 2026</span>",
+    ayah_eyebrow:"एक सुंदर आयत",
+    ayah_translation:"“और अल्लाह की निशानियों में से है कि उसने तुम्हारे लिए तुम्हारी ही जाति से जोड़े पैदा किए ताकि तुम उनके पास सुकून पाओ, और तुम्हारे बीच प्रेम और रहमत रख दी।”",
+    ayah_ref:"क़ुरआन • ३०:२१",
+    blessing_note:"अल्लाह इस मिलन को प्रेम, सुकून, बरकत और अनंत खुशियों से नवाज़े।",
+    couple_eyebrow:"दूल्हा-दुल्हन",
+    couple_title:"एक नया अध्याय<br><em>साथ शुरू</em>",
+    couple_lead:"दो दिल • एक नीयत • अल्लाह की हिफ़ाज़त में",
+    groom_label:"नुरेचश्म",
+    groom_name:"मुजिफ",
+    groom_parent:"वलद : आतार गफूर हसन",
+    groom_place:"साकिन : ईट<br>ता. भूम जि. धाराशिव",
+    bride_label:"नुरेचश्मी",
+    bride_name:"शबनम",
+    bride_parent:"बिन्त : शेख रहीम अन्सर",
+    bride_place:"साकिन : दिंद्रुड<br>ता. माजलगाव जि. बीड",
+    nikah:"निकाह",
+    nikah_month_year:"सितंबर<br>2026",
+    nikah_day:"इतवार",
+    nikah_time:"सुबह 11:30 बजे",
+    nikah_venue:"स्वराज मंगल कार्यालय",
+    nikah_address:"तेलगांव रोड, दिंद्रुड<br>ता. माजलगाव जि. बीड",
+    open_maps:"मानचित्र में खोलें",
+    nikah_qr:"निकाह स्थान के लिए स्कैन करें",
+    nikah_qr_alt:"निकाह स्थान का क्यूआर कोड",
+    walima:"वलीमा",
+    walima_month_year:"सितंबर<br>2026",
+    walima_day:"मंगलवार",
+    walima_time:"जोहर के बाद",
+    walima_venue:"रुद्रा मंगल कार्यालय",
+    walima_address:"पखरूड रोड, ईट<br>ता. भूम जि. धाराशिव",
+    walima_qr:"वलीमा स्थान के लिए स्कैन करें",
+    walima_qr_alt:"वलीमा स्थान का क्यूआर कोड",
+    countdown_eyebrow:"निकाह की उलटी गिनती",
+    countdown_title:"इंतज़ार<br><em>अब थोड़ा सा</em>",
+    unit_days:"दिन",
+    unit_hours:"घंटे",
+    unit_minutes:"मिनट",
+    unit_seconds:"सेकंड",
+    countdown_target:"27 सितंबर 2026 · इतवार · सुबह 11:30",
+    countdown_note:"जब तक दो दिल एक खूबसूरत सफ़र शुरू करें, इंशाअल्लाह।",
+    closing_eyebrow:"प्रेम और दुआओं के साथ",
+    closing_title:"हमारी कहानी का<br><em>हिस्सा बनने के लिए</em>",
+    closing_note:"हम अल्लाह से दुआ करते हैं कि यह सफ़र सकीना, मवद्दत और रहमत से भरा हो।",
+    closing_nikah:"निकाह 27 सितंबर",
+    closing_walima:"वलीमा 29 सितंबर",
+    keep_duas:"हमें अपनी दुआओं में याद रखिए"
+  }
+};
+
+const LANG_KEY="wedding-lang";
+let currentLang="en";
+
+function t(key){
+  const dict=I18N[currentLang] || I18N.en;
+  return (dict && dict[key] != null) ? dict[key] : (I18N.en[key] || key);
+}
+
+function setLanguage(lang){
+  const next=(lang === "hi") ? "hi" : "en";
+  currentLang=next;
+  try{ localStorage.setItem(LANG_KEY, next); }catch(_e){}
+
+  document.documentElement.lang=next === "hi" ? "hi" : "en";
+  document.body.classList.remove("lang-en","lang-hi");
+  document.body.classList.add(next === "hi" ? "lang-hi" : "lang-en");
+
+  const dict=I18N[next] || I18N.en;
+
+  document.querySelectorAll("[data-i18n]").forEach(el=>{
+    const key=el.getAttribute("data-i18n");
+    if(key && dict[key] != null) el.textContent=dict[key];
+  });
+  document.querySelectorAll("[data-i18n-html]").forEach(el=>{
+    const key=el.getAttribute("data-i18n-html");
+    if(key && dict[key] != null) el.innerHTML=dict[key];
+  });
+  document.querySelectorAll("[data-i18n-alt]").forEach(el=>{
+    const key=el.getAttribute("data-i18n-alt");
+    if(key && dict[key] != null) el.setAttribute("alt", dict[key]);
+  });
+
+  document.querySelectorAll(".split-words").forEach(el=>{
+    delete el.dataset.split;
+    el.classList.remove("is-split");
+    if(el.dataset.foil === "1") el.classList.add("foil");
+    if(el.dataset.foilSoft === "1") el.classList.add("foil-soft");
+  });
+  if(next !== "hi"){
+    document.querySelectorAll(".split-words").forEach(splitWords);
+  }
+
+  document.querySelectorAll(".lang-btn").forEach(btn=>{
+    const active=btn.getAttribute("data-lang") === next;
+    btn.classList.toggle("is-active", active);
+    btn.setAttribute("aria-pressed", active ? "true" : "false");
+  });
+}
+
+function initLanguage(){
+  let saved="en";
+  try{ saved=localStorage.getItem(LANG_KEY) || "en"; }catch(_e){}
+  setLanguage(saved === "hi" ? "hi" : "en");
+
+  const switcher=document.getElementById("langSwitch");
+  if(!switcher) return;
+  switcher.addEventListener("click", (e)=>{
+    e.stopPropagation();
+    const btn=e.target && e.target.closest ? e.target.closest(".lang-btn") : null;
+    if(!btn) return;
+    e.preventDefault();
+    const lang=btn.getAttribute("data-lang");
+    if(lang) setLanguage(lang);
+  });
+  ["pointerdown","touchstart"].forEach(evt=>{
+    switcher.addEventListener(evt, (e)=>{ e.stopPropagation(); }, {passive:true});
+  });
+}
+
+initLanguage();
+
 
 /*
   Upar scroll  = start → end (page scroll down)
@@ -381,8 +577,19 @@ function musicSrc(){
   }
 }
 
+function pinLangSwitchAfterOpen(){
+  const switcher=document.getElementById("langSwitch");
+  if(!switcher) return;
+  switcher.classList.remove("lang-switch-gate");
+  switcher.classList.add("is-fixed");
+  if(switcher.parentNode !== document.body){
+    document.body.appendChild(switcher);
+  }
+}
+
 function hideOpenGate(){
   if(!openGate) return;
+  pinLangSwitchAfterOpen();
   openGate.classList.add("is-gone");
   document.body.classList.remove("gate-locked");
   window.setTimeout(()=>{
@@ -789,8 +996,9 @@ function onScrollMusicWatch(){
   });
 }
 
-function openInvitation(){
+function openInvitation(e){
   if(inviteOpened) return;
+  if(e && e.target && e.target.closest && e.target.closest(".lang-switch, .lang-btn")) return;
   inviteOpened=true;
 
   const result=startMusicFromGesture();
@@ -822,7 +1030,7 @@ function openInvitation(){
       };
       document.addEventListener("pointerdown", retry, {capture:true, passive:true});
       document.addEventListener("touchstart", retry, {capture:true, passive:true});
-      if(openGateHint) openGateHint.textContent="Tap again for music";
+      if(openGateHint) openGateHint.textContent=t("tap_again_music");
     });
   }
 }

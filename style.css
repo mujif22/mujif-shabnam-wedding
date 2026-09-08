@@ -56,6 +56,180 @@ body{
   -webkit-overflow-scrolling:touch;
   overscroll-behavior-y:auto;
 }
+body.lang-hi{
+  font-family:"Noto Serif Devanagari","Cormorant Garamond",serif;
+}
+body.lang-hi .open-gate-kicker,
+body.lang-hi .open-gate-hint,
+body.lang-hi .gate-kicker,
+body.lang-hi .host-eyebrow,
+body.lang-hi .eyebrow,
+body.lang-hi .card-label,
+body.lang-hi .verse-ref,
+body.lang-hi .event-meta,
+body.lang-hi .gold-btn,
+body.lang-hi .qr-card span,
+body.lang-hi .count-box span,
+body.lang-hi .lang-btn{
+  font-family:"Noto Serif Devanagari","Cinzel",serif;
+  letter-spacing:.06em;
+  text-transform:none;
+}
+body.lang-hi .lang-btn{
+  letter-spacing:.04em;
+  padding:6px 8px;
+  line-height:1.4;
+  overflow:visible;
+}
+body.lang-hi .open-gate-names,
+body.lang-hi .gate-title,
+body.lang-hi .host-families,
+body.lang-hi .host-couple,
+body.lang-hi h2,
+body.lang-hi .person-card h3,
+body.lang-hi .title-hero{
+  font-family:"Noto Serif Devanagari","Cormorant Garamond",serif;
+  letter-spacing:.02em;
+}
+body.lang-hi .open-gate-names em,
+body.lang-hi .gate-title em,
+body.lang-hi .host-families em,
+body.lang-hi .host-couple em,
+body.lang-hi h2 em{
+  font-family:"Noto Serif Devanagari","Great Vibes",serif;
+  font-style:normal;
+}
+body.lang-hi .translation,
+body.lang-hi .blessing-note,
+body.lang-hi .host-invite,
+body.lang-hi .host-note,
+body.lang-hi .couple-lead,
+body.lang-hi .person-card p,
+body.lang-hi .event-card p,
+body.lang-hi .count-note,
+body.lang-hi .closing-note{
+  letter-spacing:.02em;
+  line-height:1.65;
+}
+
+/* Devanagari matras clip with background-clip:text — use solid gold instead */
+body.lang-hi .gate-title .w,
+body.lang-hi .gate-title em,
+body.lang-hi .open-gate-names,
+body.lang-hi .open-gate-names em,
+body.lang-hi .host-couple .w,
+body.lang-hi .host-couple em,
+body.lang-hi .host-families .w,
+body.lang-hi .host-families em,
+body.lang-hi .person-card .foil-soft,
+body.lang-hi .person-card .foil-soft .w,
+body.lang-hi .person-card h3 .w,
+body.lang-hi h2 em,
+body.lang-hi h2 em.w,
+body.lang-hi .title-hero .w,
+body.lang-hi .foil,
+body.lang-hi .foil-soft{
+  background:none !important;
+  -webkit-background-clip:border-box !important;
+  background-clip:border-box !important;
+  -webkit-text-fill-color:currentColor !important;
+  color:#f3e3b8 !important;
+  animation:none !important;
+  filter:none;
+}
+body.lang-hi .gate-title em,
+body.lang-hi .open-gate-names em,
+body.lang-hi .host-couple em,
+body.lang-hi .host-families em,
+body.lang-hi h2 em{
+  color:var(--gold) !important;
+}
+body.lang-hi .gate-title,
+body.lang-hi .open-gate-names,
+body.lang-hi .host-couple,
+body.lang-hi .host-families,
+body.lang-hi .person-card h3,
+body.lang-hi h2.title-hero,
+body.lang-hi .couple h2{
+  line-height:1.45;
+  padding-top:.18em;
+  padding-bottom:.22em;
+  overflow:visible;
+}
+body.lang-hi .gate-title{
+  white-space:normal;
+  letter-spacing:.02em;
+}
+body.lang-hi .gate-title .w,
+body.lang-hi .host-couple .w,
+body.lang-hi .host-families .w,
+body.lang-hi .person-card h3 .w{
+  padding:.08em .02em;
+  line-height:1.45;
+  overflow:visible;
+}
+
+/* —— Language switch on first page (open gate) —— */
+.lang-switch{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:8px 14px;
+  border:1px solid rgba(224,192,122,.4);
+  background:rgba(2,12,9,.45);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  border-radius:999px;
+  box-shadow:0 8px 28px rgba(0,0,0,.22);
+  pointer-events:auto;
+  cursor:default;
+}
+.lang-switch-gate{
+  position:absolute;
+  top:max(18px, env(safe-area-inset-top));
+  left:50%;
+  transform:translateX(-50%);
+  z-index:2;
+}
+.lang-switch.is-fixed{
+  position:fixed;
+  top:max(14px, env(safe-area-inset-top));
+  right:max(14px, env(safe-area-inset-right));
+  left:auto;
+  transform:none;
+  z-index:320;
+  padding:6px 10px;
+  gap:6px;
+}
+.lang-btn{
+  margin:0;
+  padding:6px 10px;
+  border:0;
+  background:transparent;
+  font-family:"Cinzel",serif;
+  font-size:12px;
+  letter-spacing:.16em;
+  color:rgba(224,192,122,.55);
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+  transition:color .25s var(--ease);
+}
+.lang-switch.is-fixed .lang-btn{
+  padding:4px 6px;
+  font-size:11px;
+  letter-spacing:.14em;
+}
+.lang-btn.is-active{
+  color:#f3e3b8;
+  text-shadow:0 0 12px rgba(224,192,122,.35);
+}
+.lang-sep{
+  color:rgba(224,192,122,.35);
+  font-size:11px;
+  line-height:1;
+  user-select:none;
+}
 body:before{
   content:"";
   position:fixed;
@@ -116,6 +290,7 @@ body:before{
   display:flex;
   align-items:center;
   justify-content:center;
+  /* lang switch sits absolute inside this first page */
   padding:28px 22px;
   padding-top:max(28px,env(safe-area-inset-top));
   padding-bottom:max(28px,env(safe-area-inset-bottom));
