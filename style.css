@@ -2803,3 +2803,26 @@ body.lang-hi .countdown-screen [data-i18n="countdown_target"]{
 body.lang-hi .closing .gold-rule{
   display:none !important;
 }
+/* Hindi closing — enlarge the two small body lines (dua + dates) */
+body.lang-hi .closing .closing-note,
+body.lang-hi .closing .closing-note .w,
+body.lang-hi .closing [data-i18n="closing_note"]{
+  font-family:"Noto Serif Devanagari","Cormorant Garamond",serif !important;
+  font-size:clamp(20px,5.2vw,26px) !important;
+  line-height:1.7 !important;
+  max-width:22em !important;
+  margin:12px auto 22px !important;
+  font-style:normal !important;
+  color:#e8dcc4 !important;
+}
+body.lang-hi .closing .closing-dates,
+body.lang-hi .closing .closing-dates span,
+body.lang-hi .closing [data-i18n="closing_nikah"],
+body.lang-hi .closing [data-i18n="closing_walima"]{
+  font-family:"Noto Serif Devanagari","Cinzel",serif !important;
+  font-size:clamp(16px,4.4vw,20px) !important;
+  letter-spacing:.06em !important;
+  text-transform:none !important;
+  margin:10px 0 14px !important;
+  color:#f0d78a !important;
+}
