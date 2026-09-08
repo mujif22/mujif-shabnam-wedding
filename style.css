@@ -160,6 +160,11 @@ body.lang-hi .gate-title{
   white-space:normal;
   letter-spacing:.02em;
 }
+/* Hindi countdown: hide title + note only */
+body.lang-hi .countdown-screen h2[data-i18n-html="countdown_title"],
+body.lang-hi .countdown-screen .count-note{
+  display:none !important;
+}
 body.lang-hi .gate-title .w,
 body.lang-hi .host-couple .w,
 body.lang-hi .host-families .w,
