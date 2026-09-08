@@ -2770,15 +2770,15 @@ body.lang-hi .countdown-screen .count-box span{
   margin-top:12px !important;
   color:rgba(224,192,122,.9) !important;
 }
+/* Hindi date/time — same size & style as English count-target */
 body.lang-hi .countdown-screen .count-target,
 body.lang-hi .countdown-screen .count-target .w,
 body.lang-hi .countdown-screen [data-i18n="countdown_target"]{
-  font-family:"Noto Serif Devanagari",serif !important;
-  font-size:22px !important;
-  font-size:clamp(20px,5.8vw,28px) !important;
-  letter-spacing:.03em !important;
+  font-family:"Cinzel","Noto Serif Devanagari",serif !important;
+  font-size:clamp(11px,2.8vw,12px) !important;
+  letter-spacing:.16em !important;
   text-transform:none !important;
-  margin:4vh 0 0 !important;
-  line-height:1.65 !important;
-  color:#f0e2b8 !important;
+  margin:18px 0 10px !important;
+  line-height:1.45 !important;
+  color:var(--gold) !important;
 }
