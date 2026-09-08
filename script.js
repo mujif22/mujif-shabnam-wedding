@@ -310,7 +310,7 @@ const I18N={
     walima_address:"पखरूड रोड, ईट<br>ता. भूम जि. धाराशिव",
     walima_qr:"वलीमा की जगह स्कैन करें",
     walima_qr_alt:"वलीमा जगह का क्यूआर कोड",
-    countdown_eyebrow:"निकाह तक का इंतज़ार",
+    countdown_eyebrow:"इंतज़ार",
     countdown_title:"",
     unit_days:"दिन",
     unit_hours:"घंटे",
