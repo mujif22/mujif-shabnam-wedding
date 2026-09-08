@@ -165,40 +165,6 @@ body.lang-hi .countdown-screen h2[data-i18n-html="countdown_title"],
 body.lang-hi .countdown-screen .count-note{
   display:none !important;
 }
-/* Hindi countdown: fill empty space — bigger eyebrow, numbers, date */
-body.lang-hi .countdown-screen .eyebrow{
-  font-size:clamp(16px,4.6vw,22px);
-  letter-spacing:.08em;
-  margin-bottom:8px;
-}
-body.lang-hi .countdown-screen .countdown{
-  margin:28px auto 28px;
-  max-width:min(720px,100%);
-  column-gap:clamp(8px,3vw,22px);
-}
-body.lang-hi .countdown-screen .count-box{
-  padding:18px 4px;
-}
-body.lang-hi .countdown-screen .count-box strong{
-  font-family:"Noto Serif Devanagari","Cormorant Garamond",serif;
-  font-size:clamp(48px,14vw,78px);
-  line-height:1.15;
-}
-body.lang-hi .countdown-screen .count-box span{
-  font-size:clamp(12px,3.4vw,16px);
-  letter-spacing:.06em;
-  margin-top:10px;
-  color:rgba(224,192,122,.85);
-}
-body.lang-hi .countdown-screen .count-target{
-  font-family:"Noto Serif Devanagari","Cinzel",serif;
-  font-size:clamp(15px,4.2vw,20px);
-  letter-spacing:.06em;
-  text-transform:none;
-  margin:28px 0 0;
-  line-height:1.55;
-  color:#f0e2b8;
-}
 body.lang-hi .gate-title .w,
 body.lang-hi .host-couple .w,
 body.lang-hi .host-families .w,
@@ -2063,6 +2029,18 @@ h2 em.w{
   text-transform:uppercase;
   color:var(--gold);
 }
+/* English countdown heading — same look as old eyebrow */
+.count-heading{
+  font-family:"Cinzel",serif;
+  font-size:clamp(10px,2.8vw,12px);
+  letter-spacing:.26em;
+  font-weight:500;
+  margin-bottom:18px;
+  word-break:break-word;
+  text-transform:uppercase;
+  color:#f0d78a;
+  text-shadow:0 0 22px rgba(224,192,122,.35);
+}
 .count-note{
   font-family:"Cormorant Garamond",serif;
   font-size:19px;
@@ -2751,17 +2729,24 @@ img{max-width:100%;height:auto}
 
 /* —— Hindi countdown ONLY (English untouched) —— */
 body.lang-hi .countdown-screen .content{
-  padding-top:8vh !important;
+  padding-top:6vh !important;
   padding-bottom:6vh !important;
 }
-body.lang-hi .countdown-screen .eyebrow.gold{
-  font-size:clamp(22px,6.5vw,34px) !important;
-  letter-spacing:.04em !important;
-  line-height:1.45 !important;
-  margin:0 0 4vh !important;
+body.lang-hi .countdown-screen .count-heading,
+body.lang-hi .countdown-screen .count-heading .w,
+body.lang-hi .countdown-screen [data-i18n="countdown_eyebrow"]{
+  font-family:"Noto Serif Devanagari",serif !important;
+  font-size:32px !important;
+  font-size:clamp(28px,8.5vw,40px) !important;
+  letter-spacing:.03em !important;
+  line-height:1.5 !important;
+  text-transform:none !important;
+  margin:0 0 3.5vh !important;
+  color:#f0d78a !important;
+  text-shadow:0 0 22px rgba(224,192,122,.35) !important;
 }
 body.lang-hi .countdown-screen .countdown{
-  margin:4vh auto 4vh !important;
+  margin:3vh auto 3vh !important;
   max-width:min(92vw,780px) !important;
   column-gap:clamp(10px,3.5vw,28px) !important;
 }
@@ -2785,11 +2770,15 @@ body.lang-hi .countdown-screen .count-box span{
   margin-top:12px !important;
   color:rgba(224,192,122,.9) !important;
 }
-body.lang-hi .countdown-screen .count-target{
-  font-size:clamp(18px,5vw,26px) !important;
-  letter-spacing:.04em !important;
+body.lang-hi .countdown-screen .count-target,
+body.lang-hi .countdown-screen .count-target .w,
+body.lang-hi .countdown-screen [data-i18n="countdown_target"]{
+  font-family:"Noto Serif Devanagari",serif !important;
+  font-size:22px !important;
+  font-size:clamp(20px,5.8vw,28px) !important;
+  letter-spacing:.03em !important;
   text-transform:none !important;
-  margin:5vh 0 0 !important;
-  line-height:1.6 !important;
+  margin:4vh 0 0 !important;
+  line-height:1.65 !important;
   color:#f0e2b8 !important;
 }
