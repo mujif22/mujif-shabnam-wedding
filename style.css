@@ -2729,42 +2729,73 @@ img{max-width:100%;height:auto}
 
 /* —— Hindi countdown ONLY (English untouched) —— */
 body.lang-hi .countdown-screen .content{
-  padding-top:6vh !important;
-  padding-bottom:6vh !important;
+  padding-top:8vh !important;
+  padding-bottom:8vh !important;
+  display:flex !important;
+  flex-direction:column !important;
+  justify-content:center !important;
+  align-items:center !important;
+  min-height:calc(var(--app-h, 100svh) - 40px) !important;
+  box-sizing:border-box !important;
 }
+/* Heading — clear & large */
 body.lang-hi .countdown-screen .count-heading,
 body.lang-hi .countdown-screen .count-heading .w,
 body.lang-hi .countdown-screen [data-i18n="countdown_eyebrow"]{
   font-family:"Noto Serif Devanagari",serif !important;
-  font-size:32px !important;
-  font-size:clamp(28px,8.5vw,40px) !important;
-  letter-spacing:.03em !important;
-  line-height:1.5 !important;
+  font-size:clamp(36px,10vw,52px) !important;
+  font-weight:600 !important;
+  letter-spacing:.04em !important;
+  line-height:1.4 !important;
   text-transform:none !important;
-  margin:0 0 3.5vh !important;
-  color:#f0d78a !important;
-  text-shadow:0 0 22px rgba(224,192,122,.35) !important;
+  margin:0 0 5vh !important;
+  color:#f3e3b8 !important;
+  text-shadow:0 0 24px rgba(224,192,122,.4) !important;
 }
-/* Numbers + दिन/घंटे/मिनट/सेकंड — same as English (Cormorant + Cinzel) */
+body.lang-hi .countdown-screen .countdown{
+  margin:0 auto 4vh !important;
+  width:100% !important;
+  max-width:min(650px,100%) !important;
+  column-gap:clamp(6px,2.5vw,18px) !important;
+}
+body.lang-hi .countdown-screen .count-box{
+  padding:12px 2px !important;
+}
+/* Digits — exact English Cormorant + foil look */
 body.lang-hi .countdown-screen .count-box strong{
   font:500 clamp(34px,8.5vw,54px)/1.18 "Cormorant Garamond",serif !important;
+  background:var(--foil) !important;
+  background-size:200% auto !important;
+  -webkit-background-clip:text !important;
+  background-clip:text !important;
+  -webkit-text-fill-color:transparent !important;
+  color:transparent !important;
+  animation:foilShine 7s linear infinite !important;
+  text-shadow:none !important;
+  filter:drop-shadow(0 10px 18px rgba(0,0,0,.35));
+  padding:.08em 0 .14em !important;
 }
+/* Labels दिन/घंटे — readable, slightly larger than English micro-type */
 body.lang-hi .countdown-screen .count-box span{
-  font-family:"Cinzel","Noto Serif Devanagari",serif !important;
-  font-size:clamp(8px,2.1vw,11px) !important;
-  letter-spacing:.1em !important;
-  margin-top:6px !important;
-  color:#9c9a8d !important;
+  font-family:"Noto Serif Devanagari","Cinzel",serif !important;
+  font-size:clamp(11px,3vw,14px) !important;
+  letter-spacing:.06em !important;
+  margin-top:8px !important;
+  color:rgba(224,192,122,.88) !important;
+  text-transform:none !important;
 }
-/* Date line — keep previous larger Hindi style */
+/* Date line — large & clear */
 body.lang-hi .countdown-screen .count-target,
 body.lang-hi .countdown-screen .count-target .w,
 body.lang-hi .countdown-screen [data-i18n="countdown_target"]{
   font-family:"Noto Serif Devanagari",serif !important;
-  font-size:clamp(20px,5.8vw,28px) !important;
-  letter-spacing:.03em !important;
+  font-size:clamp(18px,5vw,24px) !important;
+  font-weight:500 !important;
+  letter-spacing:.04em !important;
   text-transform:none !important;
-  margin:4vh 0 0 !important;
-  line-height:1.65 !important;
+  margin:2vh 0 0 !important;
+  line-height:1.7 !important;
   color:#f0e2b8 !important;
+  text-align:center !important;
+  max-width:92vw !important;
 }
