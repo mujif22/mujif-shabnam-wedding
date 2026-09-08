@@ -2745,40 +2745,26 @@ body.lang-hi .countdown-screen [data-i18n="countdown_eyebrow"]{
   color:#f0d78a !important;
   text-shadow:0 0 22px rgba(224,192,122,.35) !important;
 }
-body.lang-hi .countdown-screen .countdown{
-  margin:3vh auto 3vh !important;
-  max-width:min(92vw,780px) !important;
-  column-gap:clamp(10px,3.5vw,28px) !important;
-}
-body.lang-hi .countdown-screen .count-box{
-  padding:20px 2px !important;
-}
+/* Numbers + दिन/घंटे/मिनट/सेकंड — same as English (Cormorant + Cinzel) */
 body.lang-hi .countdown-screen .count-box strong{
-  font:500 clamp(56px,18vw,96px)/1.12 "Noto Serif Devanagari","Cormorant Garamond",serif !important;
-  background:none !important;
-  -webkit-background-clip:border-box !important;
-  background-clip:border-box !important;
-  -webkit-text-fill-color:#f6e8c0 !important;
-  color:#f6e8c0 !important;
-  animation:none !important;
-  filter:drop-shadow(0 10px 18px rgba(0,0,0,.35));
-  text-shadow:0 0 28px rgba(224,192,122,.35) !important;
+  font:500 clamp(34px,8.5vw,54px)/1.18 "Cormorant Garamond",serif !important;
 }
 body.lang-hi .countdown-screen .count-box span{
-  font-size:clamp(14px,4vw,20px) !important;
-  letter-spacing:.05em !important;
-  margin-top:12px !important;
-  color:rgba(224,192,122,.9) !important;
+  font-family:"Cinzel","Noto Serif Devanagari",serif !important;
+  font-size:clamp(8px,2.1vw,11px) !important;
+  letter-spacing:.1em !important;
+  margin-top:6px !important;
+  color:#9c9a8d !important;
 }
-/* Hindi date/time — same size & style as English count-target */
+/* Date line — keep previous larger Hindi style */
 body.lang-hi .countdown-screen .count-target,
 body.lang-hi .countdown-screen .count-target .w,
 body.lang-hi .countdown-screen [data-i18n="countdown_target"]{
-  font-family:"Cinzel","Noto Serif Devanagari",serif !important;
-  font-size:clamp(11px,2.8vw,12px) !important;
-  letter-spacing:.16em !important;
+  font-family:"Noto Serif Devanagari",serif !important;
+  font-size:clamp(20px,5.8vw,28px) !important;
+  letter-spacing:.03em !important;
   text-transform:none !important;
-  margin:18px 0 10px !important;
-  line-height:1.45 !important;
-  color:var(--gold) !important;
+  margin:4vh 0 0 !important;
+  line-height:1.65 !important;
+  color:#f0e2b8 !important;
 }
