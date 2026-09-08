@@ -2826,3 +2826,33 @@ body.lang-hi .closing [data-i18n="closing_walima"]{
   margin:10px 0 14px !important;
   color:#f0d78a !important;
 }
+/* Hindi: hide couple eyebrow near top ornament */
+body.lang-hi .couple .eyebrow,
+body.lang-hi .couple [data-i18n="couple_eyebrow"]{
+  display:none !important;
+}
+/* Hindi: push Nikah / Walima titles below top design */
+body.lang-hi .screen.event.nikah,
+body.lang-hi .screen.event.walima{
+  padding-top:max(clamp(48px, 9vh, 88px), calc(env(safe-area-inset-top) + 36px)) !important;
+}
+body.lang-hi .event.nikah .event-content,
+body.lang-hi .event.walima .event-content{
+  padding-top:clamp(8px,2vh,20px) !important;
+}
+body.lang-hi .event.nikah .title-hero,
+body.lang-hi .event.walima .title-hero,
+body.lang-hi .event.nikah .title-hero .w,
+body.lang-hi .event.walima .title-hero .w{
+  margin-top:clamp(8px,2vh,20px) !important;
+  padding-top:.15em !important;
+  padding-bottom:.2em !important;
+  overflow:visible !important;
+  background:none !important;
+  -webkit-background-clip:border-box !important;
+  background-clip:border-box !important;
+  -webkit-text-fill-color:#f3e3b8 !important;
+  color:#f3e3b8 !important;
+  animation:none !important;
+  filter:drop-shadow(0 12px 24px rgba(0,0,0,.35));
+}
