@@ -278,7 +278,7 @@ const I18N={
     host_blessing:"",
     host_eyebrow:"",
     host_hi_title:"जश्ने शादी",
-    host_families:"आतार <em>&</em> शेख",
+    host_families:"आतार <em>&</em> शेख़",
     host_invite:"",
     host_note:"",
     host_hi_date:"27-Sep-2026",
@@ -337,7 +337,7 @@ const I18N={
   }
 };
 
-const LANG_KEY="wedding-lang-v2";
+const LANG_KEY="wedding-lang-v3";
 let currentLang="hi";
 
 function t(key){
