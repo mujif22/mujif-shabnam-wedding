@@ -208,7 +208,7 @@ const I18N={
   en:{
     wedding_invitation:"WEDDING INVITATION",
     names_amp:"Mujif <em>&</em> Shabnam",
-    tap_to_open:"Tap to open",
+    tap_to_open:"Tap to open →",
     tap_again_music:"Tap again for music",
     host_blessing:"With the blessings of Allah",
     host_eyebrow:"THE FAMILIES OF",
@@ -273,7 +273,7 @@ const I18N={
   hi:{
     wedding_invitation:"जश्ने शादी",
     names_amp:"मुजिफ <em>&</em> शबनम",
-    tap_to_open:"दावतनामा खोलें",
+    tap_to_open:"दावत-नामा खोलें →",
     tap_again_music:"मौसीक़ी के लिए फिर टैप करें",
     host_blessing:"",
     host_eyebrow:"",

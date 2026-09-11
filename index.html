@@ -38,7 +38,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<link rel="stylesheet" href="style.css?v=20260911h2">
+<link rel="stylesheet" href="style.css?v=gate2">
 </head>
 <body class="lang-hi">
 <div class="grain"></div>
@@ -49,6 +49,19 @@
 </audio>
 
 <div class="open-gate" id="openGate" role="dialog" aria-modal="true" aria-label="Open wedding invitation">
+  <div class="gate-rays" aria-hidden="true"></div>
+  <div class="gate-vignette" aria-hidden="true"></div>
+  <div class="gate-frame" aria-hidden="true">
+    <span class="c tl"></span><span class="c tr"></span><span class="c bl"></span><span class="c br"></span>
+    <span class="inner-line"></span><span class="mid-line"></span>
+  </div>
+  <div class="gate-pattern" aria-hidden="true"></div>
+  <div class="gate-moon open-gate-moon" aria-hidden="true"></div>
+  <div class="gate-lantern left" aria-hidden="true"><span></span><span></span></div>
+  <div class="gate-lantern right" aria-hidden="true"><span></span><span></span></div>
+  <div class="filigree top open-gate-filigree" aria-hidden="true">
+    <svg viewBox="0 0 320 40"><path d="M20 20h80M300 20h-80M160 6c8 8 8 20 0 28-8-8-8-20 0-28zm-40 14h30m50 0h30M160 12v16" stroke="#e0c07a" stroke-width="1" fill="none" opacity=".7"/><circle cx="160" cy="20" r="2.5" fill="#e0c07a"/></svg>
+  </div>
   <div class="lang-switch lang-switch-gate" id="langSwitch" role="group" aria-label="Language">
     <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
     <span class="lang-sep" aria-hidden="true">|</span>
@@ -56,10 +69,11 @@
   </div>
   <div class="open-gate-inner">
     <p class="open-gate-arabic" lang="ar" dir="rtl">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</p>
+    <div class="open-gate-rule" aria-hidden="true"><i></i></div>
     <p class="open-gate-kicker" data-i18n="wedding_invitation">जश्ने शादी</p>
     <h1 class="open-gate-names" data-i18n-html="names_amp">मुजिफ <em>&</em> शबनम</h1>
     <div class="open-gate-line" aria-hidden="true"><i></i></div>
-    <p class="open-gate-hint" data-i18n="tap_to_open">दावतनामा खोलें</p>
+    <p class="open-gate-hint" data-i18n="tap_to_open">दावत-नामा खोलें →</p>
   </div>
 </div>
 
@@ -275,6 +289,6 @@
 </section>
 
 </main>
-<script src="script.js?v=20260911h2"></script>
+<script src="script.js?v=gate2"></script>
 </body>
 </html>

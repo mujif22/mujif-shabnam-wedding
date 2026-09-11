@@ -194,7 +194,7 @@ body.lang-hi .person-card h3 .w{
   top:max(18px, env(safe-area-inset-top));
   left:50%;
   transform:translateX(-50%);
-  z-index:2;
+  z-index:20;
 }
 .lang-switch.is-fixed{
   position:fixed;
@@ -301,32 +301,72 @@ body:before{
   background:
     radial-gradient(ellipse 70% 45% at 50% 42%,rgba(224,192,122,.1),transparent 58%),
     radial-gradient(ellipse 100% 70% at 50% 50%,#163d30 0%,transparent 58%),
+    radial-gradient(circle at 50% 100%,#0c2e24 0%,transparent 48%),
     linear-gradient(165deg,#062218 0%,#020c09 55%,#010705 100%);
   color:var(--ink);
   cursor:pointer;
   -webkit-tap-highlight-color:transparent;
   transition:opacity .7s var(--ease), visibility .7s;
+  overflow:hidden;
 }
 .open-gate.is-gone{
   opacity:0;
   visibility:hidden;
   pointer-events:none;
 }
+.open-gate .gate-rays,
+.open-gate .gate-vignette,
+.open-gate .gate-frame,
+.open-gate .gate-pattern,
+.open-gate .gate-moon,
+.open-gate .gate-lantern,
+.open-gate .filigree{
+  z-index:0;
+}
+.open-gate .gate-lantern{
+  top:max(56px, calc(env(safe-area-inset-top) + 42px));
+}
+.open-gate-moon{
+  top:42% !important;
+  opacity:.5;
+}
+.open-gate-filigree{
+  top:max(72px, calc(env(safe-area-inset-top) + 58px));
+  left:50%;
+  transform:translateX(-50%);
+  width:min(280px, 78vw);
+  z-index:1;
+}
 .open-gate-inner{
+  position:relative;
+  z-index:4;
   text-align:center;
-  max-width:22rem;
+  max-width:min(22rem, 92vw);
+  padding:8px 10px 12px;
 }
 .open-gate-arabic{
-  margin:0 0 18px;
-  font-family:"Cormorant Garamond",serif;
+  margin:0 0 12px;
+  font-family:"Amiri","Noto Naskh Arabic","Cormorant Garamond",serif;
   font-size:clamp(18px,5vw,24px);
   line-height:1.7;
-  color:rgba(240,226,192,.9);
+  color:rgba(240,226,192,.95);
+  text-shadow:0 0 18px rgba(224,192,122,.25);
+}
+.open-gate-rule{
+  display:flex;
+  justify-content:center;
+  margin:0 0 14px;
+}
+.open-gate-rule i{
+  display:block;
+  width:56px;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(224,192,122,.8),transparent);
 }
 .open-gate-kicker{
-  margin:0 0 10px;
+  margin:0 0 14px;
   font-family:"Cinzel",serif;
-  font-size:clamp(10px,2.8vw,12px);
+  font-size:clamp(11px,3vw,13px);
   letter-spacing:.28em;
   text-transform:uppercase;
   color:var(--gold);
@@ -334,11 +374,12 @@ body:before{
 .open-gate-names{
   margin:0;
   font-family:"Cormorant Garamond",serif;
-  font-size:clamp(40px,11vw,64px);
+  font-size:clamp(42px,12vw,68px);
   font-weight:500;
   line-height:1.15;
   color:#f3e3b8;
   letter-spacing:.02em;
+  text-shadow:0 10px 28px rgba(0,0,0,.4);
 }
 .open-gate-names em{
   font-family:"Great Vibes",cursive;
@@ -350,26 +391,83 @@ body:before{
 .open-gate-line{
   display:flex;
   justify-content:center;
-  margin:18px 0 22px;
+  margin:20px 0 26px;
 }
 .open-gate-line i{
   display:block;
-  width:72px;
+  width:88px;
   height:1px;
-  background:linear-gradient(90deg,transparent,rgba(224,192,122,.85),transparent);
+  background:linear-gradient(90deg,transparent,rgba(224,192,122,.9),transparent);
+  position:relative;
 }
+.open-gate-line i:before,
+.open-gate-line i:after{
+  content:"";
+  position:absolute;
+  top:50%;
+  width:5px;
+  height:5px;
+  border:1px solid rgba(224,192,122,.75);
+  transform:translateY(-50%) rotate(45deg);
+  background:rgba(2,12,9,.65);
+}
+.open-gate-line i:before{left:-10px}
+.open-gate-line i:after{right:-10px}
 .open-gate-hint{
-  margin:0;
+  margin:0 auto;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  min-height:44px;
+  padding:12px 22px;
+  border:1px solid rgba(224,192,122,.72);
+  border-radius:999px;
+  background:rgba(2,12,9,.35);
+  box-shadow:0 0 0 1px rgba(224,192,122,.12), 0 10px 28px rgba(0,0,0,.28);
   font-family:"Cinzel",serif;
   font-size:clamp(11px,3vw,13px);
-  letter-spacing:.22em;
+  letter-spacing:.18em;
   text-transform:uppercase;
-  color:rgba(224,192,122,.92);
+  color:rgba(243,227,184,.95);
   animation:gatePulse 1.8s ease-in-out infinite;
 }
+body.lang-hi .open-gate-kicker{
+  font-family:"Noto Serif Devanagari",serif;
+  font-size:clamp(16px,4.4vw,20px);
+  letter-spacing:.12em;
+  text-transform:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+}
+body.lang-hi .open-gate-kicker:before,
+body.lang-hi .open-gate-kicker:after{
+  content:"";
+  width:7px;
+  height:7px;
+  border:1px solid rgba(224,192,122,.8);
+  transform:rotate(45deg);
+  flex:0 0 auto;
+}
+body.lang-hi .open-gate-names{
+  font-family:"Noto Serif Devanagari",serif;
+  font-size:clamp(40px,11.5vw,62px);
+  font-weight:600;
+  line-height:1.35;
+  letter-spacing:.02em;
+}
+body.lang-hi .open-gate-hint{
+  font-family:"Noto Serif Devanagari",serif;
+  font-size:clamp(14px,3.8vw,17px);
+  letter-spacing:.04em;
+  text-transform:none;
+  padding:13px 24px;
+}
 @keyframes gatePulse{
-  0%,100%{opacity:.55}
-  50%{opacity:1}
+  0%,100%{opacity:.72; box-shadow:0 0 0 1px rgba(224,192,122,.12), 0 10px 28px rgba(0,0,0,.28)}
+  50%{opacity:1; box-shadow:0 0 0 1px rgba(224,192,122,.28), 0 12px 32px rgba(224,192,122,.12)}
 }
 body.gate-locked{
   overflow:hidden;
