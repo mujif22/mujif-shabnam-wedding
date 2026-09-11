@@ -1,3 +1,13 @@
+/* Old cached shells → force latest welcome */
+(function(){
+  try{
+    if(!document.querySelector(".welcome-scene")){
+      location.replace("index.html?r=" + Date.now());
+      return;
+    }
+  }catch(_e){}
+})();
+
 const reduceMotion=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const isCoarse=window.matchMedia("(pointer: coarse)").matches;
 let inviteOpened=false;
@@ -207,8 +217,9 @@ function splitWords(root){
 const I18N={
   en:{
     wedding_invitation:"WEDDING INVITATION",
+    welcome_title:"<span class=\"wt1\">Wedding</span><br><span class=\"wt2\">Invitation</span>",
     names_amp:"Mujif <em>&</em> Shabnam",
-    tap_to_open:"Tap to open →",
+    tap_to_open:"Tap to open",
     tap_again_music:"Tap again for music",
     host_blessing:"With the blessings of Allah",
     host_eyebrow:"THE FAMILIES OF",
@@ -272,8 +283,9 @@ const I18N={
   },
   hi:{
     wedding_invitation:"जश्ने शादी",
+    welcome_title:"<span class=\"wt1\">जश्ने</span><br><span class=\"wt2\">शादी</span>",
     names_amp:"मुजिफ <em>&</em> शबनम",
-    tap_to_open:"दावत-नामा खोलें →",
+    tap_to_open:"खोलने के लिए टैप करें",
     tap_again_music:"मौसीक़ी के लिए फिर टैप करें",
     host_blessing:"",
     host_eyebrow:"",
