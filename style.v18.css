@@ -77,8 +77,8 @@ body.lang-hi .lang-btn{
   text-transform:none;
 }
 /* First-page titles: zero letter-spacing — Devanagari matras break otherwise */
-body.lang-hi .card-stage .title-wedding,
-body.lang-hi .card-stage .title-invitation{
+body.lang-hi .emerald-gate .title-wedding,
+body.lang-hi .emerald-gate .title-invitation{
   letter-spacing:0 !important;
 }
 body.lang-hi .lang-btn{
