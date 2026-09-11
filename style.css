@@ -160,8 +160,7 @@ body.lang-hi .gate-title{
   white-space:normal;
   letter-spacing:.02em;
 }
-/* Hindi countdown: hide title + note only */
-body.lang-hi .countdown-screen h2[data-i18n-html="countdown_title"],
+/* Hindi countdown: hide note only */
 body.lang-hi .countdown-screen .count-note{
   display:none !important;
 }
@@ -2743,14 +2742,26 @@ body.lang-hi .countdown-screen .count-heading,
 body.lang-hi .countdown-screen .count-heading .w,
 body.lang-hi .countdown-screen [data-i18n="countdown_eyebrow"]{
   font-family:"Noto Serif Devanagari",serif !important;
-  font-size:clamp(36px,10vw,52px) !important;
+  font-size:clamp(18px,5vw,24px) !important;
   font-weight:600 !important;
-  letter-spacing:.04em !important;
+  letter-spacing:.06em !important;
+  line-height:1.45 !important;
+  text-transform:none !important;
+  margin:0 0 1.2vh !important;
+  color:var(--gold) !important;
+  text-shadow:0 0 18px rgba(224,192,122,.28) !important;
+}
+body.lang-hi .countdown-screen h2[data-i18n-html="countdown_title"],
+body.lang-hi .countdown-screen h2[data-i18n-html="countdown_title"] .w{
+  font-family:"Noto Serif Devanagari",serif !important;
+  font-size:clamp(28px,7.5vw,42px) !important;
+  font-weight:600 !important;
+  letter-spacing:.03em !important;
   line-height:1.4 !important;
   text-transform:none !important;
-  margin:0 0 5vh !important;
+  margin:0 0 4vh !important;
   color:#f3e3b8 !important;
-  text-shadow:0 0 24px rgba(224,192,122,.4) !important;
+  text-shadow:0 0 24px rgba(224,192,122,.35) !important;
 }
 body.lang-hi .countdown-screen .countdown{
   margin:0 auto 4vh !important;
@@ -2828,8 +2839,42 @@ body.lang-hi .closing [data-i18n="closing_walima"]{
 }
 /* Hindi: hide couple eyebrow near top ornament */
 body.lang-hi .couple .eyebrow,
-body.lang-hi .couple [data-i18n="couple_eyebrow"]{
+body.lang-hi .couple [data-i18n="couple_eyebrow"],
+body.lang-hi .couple-lead{
   display:none !important;
+}
+/* Hindi host page: user copy starts at family names */
+body.lang-hi .host-blessing,
+body.lang-hi .host-eyebrow,
+body.lang-hi .host-couple{
+  display:none !important;
+}
+body.lang-hi .host-note [lang="ar"]{
+  display:block;
+  margin-top:10px;
+  font-family:"Amiri","Noto Naskh Arabic",serif;
+  font-size:1.05em;
+  letter-spacing:0;
+}
+/* Hindi event cards: longer day/time + map labels */
+body.lang-hi .event-meta{
+  flex-direction:column;
+  gap:8px;
+  letter-spacing:.02em;
+  text-transform:none;
+}
+body.lang-hi .event-meta span{
+  padding-left:0;
+  border-left:0;
+}
+body.lang-hi .event .gold-btn{
+  font-size:clamp(11px,3.1vw,13px);
+  letter-spacing:.04em;
+  text-transform:none;
+  white-space:normal;
+  line-height:1.35;
+  padding:12px 14px;
+  text-align:center;
 }
 /* Hindi: push Nikah / Walima titles further below top design */
 body.lang-hi .screen.event.nikah,
