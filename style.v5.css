@@ -59,8 +59,8 @@ body{
 body.lang-hi{
   font-family:"Noto Serif Devanagari","Cormorant Garamond",serif;
 }
-body.lang-hi .invitation-title,
-body.lang-hi .page-one-hint,
+body.lang-hi .invitation-page .title,
+body.lang-hi .invite-hint,
 body.lang-hi .gate-kicker,
 body.lang-hi .host-eyebrow,
 body.lang-hi .eyebrow,
@@ -286,12 +286,9 @@ body:before{
 }
 
 /* —— Open gate (Safari needs one tap before sound) —— */
-/* =========================================
-   PAGE 1 — WEDDING INVITATION (welcome / open gate)
-   Natural Ivory + Sage Green + Antique Gold
-   ========================================= */
+/* PAGE 1 — Natural Islamic Wedding Invitation */
 
-.page-one {
+.invitation-page {
   position: fixed;
   inset: 0;
   z-index: 300;
@@ -302,245 +299,254 @@ body:before{
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   background:
-    radial-gradient(
-      ellipse at 50% 42%,
-      rgba(255, 250, 231, 0.95) 0%,
-      rgba(247, 242, 220, 0.92) 42%,
-      rgba(224, 225, 198, 0.96) 100%
+    linear-gradient(
+      180deg,
+      #f8f4df 0%,
+      #f3efd9 48%,
+      #dfe2c9 100%
     );
-  color: #254638;
+  color: #264b3c;
   transition: opacity .7s var(--ease), visibility .7s;
 }
-.page-one.is-gone{
-  opacity:0;
-  visibility:hidden;
-  pointer-events:none;
+.invitation-page.is-gone {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
-.page-one::before {
+
+/* Soft natural daylight */
+.invitation-page::before {
   content: "";
   position: absolute;
   inset: 0;
-  pointer-events: none;
   background:
     radial-gradient(
-      circle at 50% 55%,
-      rgba(255, 255, 245, 0.75),
-      transparent 48%
+      circle at 50% 42%,
+      rgba(255,255,255,.75),
+      transparent 45%
     ),
     linear-gradient(
       180deg,
-      rgba(255, 255, 255, 0.25),
-      rgba(224, 225, 198, 0.12)
+      rgba(255,255,255,.18),
+      transparent 60%
     );
+  pointer-events: none;
 }
-.page-one .islamic-frame {
+
+/* Main Islamic frame */
+.invitation-page .frame {
   position: absolute;
   inset: 12px;
-  border: 1px solid rgba(174, 132, 45, 0.75);
-  border-radius: 150px 150px 0 0;
+  border: 1px solid rgba(181,139,52,.72);
+  border-radius: 120px 120px 0 0;
   box-shadow:
-    inset 0 0 0 5px rgba(255, 255, 255, 0.22),
-    inset 0 0 35px rgba(171, 133, 57, 0.12);
+    inset 0 0 0 4px rgba(255,255,255,.25),
+    inset 0 0 35px rgba(181,139,52,.10);
   pointer-events: none;
 }
-.page-one .islamic-frame::after {
-  content: "";
+
+/* Top arch */
+.invitation-page .arch {
   position: absolute;
-  inset: 8px;
-  border: 1px solid rgba(174, 132, 45, 0.38);
-  border-radius: 142px 142px 0 0;
-}
-.page-one .arch {
-  position: absolute;
-  top: 0;
+  top: -1px;
   left: 50%;
-  width: min(78vw, 900px);
-  height: 155px;
+  width: 58%;
+  height: 135px;
   transform: translateX(-50%);
-  border: 2px solid #b48a3b;
-  border-top: none;
-  border-radius: 0 0 180px 180px;
-  opacity: 0.9;
+  border: 2px solid rgba(181,139,52,.75);
+  border-top: 0;
+  border-radius: 0 0 160px 160px;
   pointer-events: none;
 }
-.page-one .gold-divider {
-  width: 180px;
+
+/* Center content */
+.invitation-page .content,
+.invitation-page .invite-welcome-content {
+  position: relative;
+  z-index: 5;
+  min-height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 24px 180px;
+  box-sizing: border-box;
+}
+
+/* Arabic */
+.invitation-page .bismillah {
+  font-family: "Noto Nastaliq Urdu", serif;
+  font-size: clamp(25px, 4vw, 42px);
+  line-height: 1.8;
+  color: #28503f;
+  margin-bottom: 12px;
+}
+
+/* Gold separator */
+.invitation-page .divider {
+  width: 190px;
   height: 1px;
-  margin: 18px auto;
-  background: linear-gradient(90deg, transparent, #b48a3b, #d8b967, #b48a3b, transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #b58a35,
+    #d5b45f,
+    #b58a35,
+    transparent
+  );
+  margin: 10px auto 28px;
   position: relative;
 }
-.page-one .gold-divider::after {
+.invitation-page .divider::after {
   content: "◆";
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  font-size: 9px;
-  color: #b48a3b;
-  background: #f4f0dc;
-  padding: 0 7px;
+  background: #f5f0dc;
+  padding: 0 8px;
+  color: #b58a35;
+  font-size: 8px;
 }
-.page-one .page-content {
-  position: relative;
-  z-index: 5;
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: clamp(90px, 12vh, 140px) 24px 70px;
-  text-align: center;
-  box-sizing: border-box;
-}
-.page-one .bismillah {
-  font-family: "Noto Nastaliq Urdu", "Amiri", serif;
-  font-size: clamp(25px, 4vw, 42px);
-  line-height: 1.8;
-  color: #294d3d;
-  margin-bottom: 12px;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
-}
-.page-one .invitation-title {
-  position: relative;
-  font-family: "Cormorant Garamond", "Times New Roman", serif;
+
+/* Main title */
+.invitation-page .title {
+  margin: 0;
+  font-family:
+    "Cormorant Garamond",
+    Georgia,
+    serif;
+  font-size: clamp(54px, 9vw, 96px);
+  line-height: .9;
   font-weight: 600;
-  font-size: clamp(48px, 9vw, 92px);
-  line-height: 0.92;
-  letter-spacing: -0.025em;
-  color: #254638;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8), 0 3px 12px rgba(52, 67, 46, 0.08);
-  margin: 15px 0 10px;
+  letter-spacing: -1.5px;
+  color: #234b3a;
 }
-.page-one .invitation-title span {
+.invitation-page .title span {
   display: block;
-  font-size: 0.72em;
-  margin-top: 7px;
-  letter-spacing: 0.01em;
+  font-size: .72em;
+  margin-top: 12px;
+  letter-spacing: -.5px;
 }
-.page-one .center-ornament {
-  width: 125px;
-  height: 42px;
-  margin: 5px auto 0;
+
+/* Gold ornament below title */
+.invitation-page .ornament {
+  width: 150px;
+  height: 45px;
+  margin-top: 18px;
   position: relative;
+  top: auto;
+  left: auto;
+  right: auto;
+  bottom: auto;
+  pointer-events: none;
 }
-.page-one .center-ornament::before {
+.invitation-page .ornament::before {
   content: "❧";
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%) rotate(180deg);
+  transform: translate(-50%, -50%);
+  color: #b58a35;
   font-size: 42px;
-  color: #b48a3b;
+  background: none;
+  width: auto;
+  height: auto;
 }
-.page-one .page-one-hint {
-  margin: 22px auto 0;
+.invitation-page .ornament::after {
+  display: none;
+}
+
+.invitation-page .invite-hint {
+  margin: 28px auto 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 10px 18px;
-  border: 1px solid rgba(180, 138, 59, 0.55);
+  border: 1px solid rgba(181,139,52,.55);
   border-radius: 999px;
-  background: rgba(255, 252, 245, 0.55);
+  background: rgba(255,252,245,.55);
   font-family: "Cinzel", serif;
   font-size: clamp(10px, 2.8vw, 12px);
   letter-spacing: .16em;
   text-transform: uppercase;
-  color: #254638;
+  color: #264b3c;
   animation: gatePulse 1.8s ease-in-out infinite;
 }
-.page-one .landscape {
+
+/* Natural landscape */
+.invitation-page .scene {
   position: absolute;
-  left: 0; right: 0; bottom: 0;
-  height: 42%;
-  opacity: 0.48;
-  background: linear-gradient(to top, rgba(91, 113, 80, 0.42), rgba(91, 113, 80, 0.04));
-  clip-path: polygon(0 68%, 8% 64%, 15% 70%, 23% 52%, 29% 65%, 38% 57%, 46% 66%, 55% 49%, 63% 61%, 71% 54%, 80% 64%, 88% 50%, 95% 61%, 100% 56%, 100% 100%, 0 100%);
-  pointer-events: none;
-}
-.page-one .horizon-glow {
-  position: absolute;
-  left: 50%;
-  bottom: 8%;
-  width: 380px;
-  height: 100px;
-  transform: translateX(-50%);
-  background: radial-gradient(ellipse, rgba(236, 202, 117, 0.35), transparent 70%);
-  filter: blur(15px);
-  pointer-events: none;
-}
-.page-one .lantern {
-  position: absolute;
-  top: 18%;
-  width: 48px;
-  height: 76px;
-  border: 1px solid rgba(178, 139, 59, 0.85);
-  border-radius: 45% 45% 35% 35%;
-  background: linear-gradient(90deg, rgba(174, 132, 45, 0.25), rgba(255, 238, 177, 0.55), rgba(174, 132, 45, 0.25));
-  box-shadow: 0 0 22px rgba(224, 177, 70, 0.32);
-  opacity: 0.9;
-  pointer-events: none;
-  z-index: 4;
-}
-.page-one .lantern.left { left: 5%; }
-.page-one .lantern.right { right: 5%; }
-.page-one .lantern::after {
-  content: "";
-  position: absolute;
-  inset: 12px;
-  border-radius: 50%;
-  background: rgba(255, 218, 125, 0.5);
-  filter: blur(8px);
-}
-.page-one .floral-corner {
-  position: absolute;
-  bottom: -5px;
-  width: min(260px, 30vw);
-  height: min(180px, 28vw);
-  opacity: 0.92;
-  pointer-events: none;
-  z-index: 6;
-  filter: drop-shadow(0 6px 10px rgba(40, 60, 35, 0.18));
-}
-.page-one .floral-corner.left { left: -10px; }
-.page-one .floral-corner.right { right: -10px; transform: scaleX(-1); }
-.page-one .floral-corner::before,
-.page-one .floral-corner::after {
-  content: "";
-  position: absolute;
+  z-index: 1;
+  left: 0;
+  right: 0;
   bottom: 0;
-  border-radius: 60% 40% 55% 45%;
-}
-.page-one .floral-corner::before {
-  left: 8%;
-  width: 58%;
-  height: 88%;
+  height: 43%;
   background:
-    radial-gradient(ellipse at 40% 30%, #3f7a4d 0%, #1e4a2c 72%),
-    radial-gradient(circle at 68% 22%, #fff 0 3px, transparent 4px),
-    radial-gradient(circle at 42% 48%, #fff 0 2.5px, transparent 3.5px),
-    radial-gradient(circle at 58% 62%, #fff8e8 0 3px, transparent 4px);
+    linear-gradient(
+      to top,
+      rgba(112,132,92,.40),
+      rgba(112,132,92,.04)
+    );
+  opacity: .75;
+  pointer-events: none;
 }
-.page-one .floral-corner::after {
-  right: 4%;
-  width: 48%;
-  height: 72%;
+
+/* Warm sunlight */
+.invitation-page .sun-glow {
+  position: absolute;
+  left: 63%;
+  bottom: 25%;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
   background:
-    radial-gradient(ellipse at 50% 40%, #4a8a55 0%, #245530 75%),
-    radial-gradient(circle at 45% 28%, #fff 0 2.5px, transparent 3.5px),
-    radial-gradient(circle at 62% 52%, #fff 0 2px, transparent 3px);
+    radial-gradient(
+      circle,
+      rgba(242,201,108,.35),
+      transparent 68%
+    );
+  filter: blur(12px);
+  pointer-events: none;
 }
-body.lang-hi .page-one .invitation-title {
+
+/* Lantern */
+.invitation-page .lantern {
+  position: absolute;
+  z-index: 4;
+  top: 22%;
+  width: 48px;
+  height: 78px;
+  border: 1px solid #bd9341;
+  border-radius: 50%;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(206,166,74,.16),
+      rgba(255,229,153,.55),
+      rgba(206,166,74,.16)
+    );
+  box-shadow:
+    0 0 22px rgba(213,169,67,.28);
+  pointer-events: none;
+}
+.invitation-page .lantern.left { left: 5%; }
+.invitation-page .lantern.right { right: 5%; }
+
+body.lang-hi .invitation-page .title {
   font-family: "Noto Serif Devanagari", "Cormorant Garamond", serif;
   letter-spacing: 0.02em;
-  line-height: 1.15;
+  line-height: 1.12;
 }
-body.lang-hi .page-one .page-one-hint {
+body.lang-hi .invitation-page .invite-hint {
   font-family: "Noto Serif Devanagari", serif;
   letter-spacing: 0.04em;
   text-transform: none;
   font-size: clamp(13px, 3.5vw, 15px);
 }
+
 @keyframes gatePulse {
   0%, 100% { opacity: .7; }
   50% { opacity: 1; }
@@ -550,22 +556,37 @@ body.gate-locked {
   height: var(--app-h, 100svh);
 }
 @media (prefers-reduced-motion: reduce) {
-  .page-one-hint { animation: none; opacity: .9; }
-  .page-one { transition: none; }
+  .invite-hint { animation: none; opacity: .9; }
+  .invitation-page { transition: none; }
 }
+
+/* Mobile */
 @media (max-width: 600px) {
-  .page-one .page-content { padding: 90px 18px 55px; }
-  .page-one .bismillah { font-size: 24px; margin-bottom: 18px; }
-  .page-one .invitation-title { font-size: clamp(44px, 14vw, 68px); }
-  .page-one .invitation-title span { font-size: 0.70em; }
-  .page-one .islamic-frame { inset: 7px; border-radius: 90px 90px 0 0; }
-  .page-one .islamic-frame::after { border-radius: 82px 82px 0 0; }
-  .page-one .arch { width: 90vw; height: 105px; }
-  .page-one .lantern { width: 32px; height: 55px; }
-  .page-one .lantern.left { left: 2%; }
-  .page-one .lantern.right { right: 2%; }
-  .page-one .floral-corner { width: 42vw; height: 34vw; }
-  .page-one .landscape { height: 35%; }
+  .invitation-page .content,
+  .invitation-page .invite-welcome-content {
+    padding: 85px 18px 130px;
+  }
+  .invitation-page .bismillah {
+    font-size: 23px;
+  }
+  .invitation-page .title {
+    font-size: 54px;
+  }
+  .invitation-page .arch {
+    width: 88%;
+    height: 105px;
+  }
+  .invitation-page .frame {
+    inset: 7px;
+    border-radius: 85px 85px 0 0;
+  }
+  .invitation-page .lantern {
+    width: 32px;
+    height: 55px;
+  }
+  .invitation-page .scene {
+    height: 34%;
+  }
 }
 
 /* —— Host families (opening page) —— */

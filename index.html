@@ -38,7 +38,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<link rel="stylesheet" href="style.v5.css">
+<link rel="stylesheet" href="style.v6.css">
 </head>
 <body class="lang-hi">
 <div class="grain"></div>
@@ -48,15 +48,15 @@
   <source src="assets/instrumental.mp3" type="audio/mpeg">
 </audio>
 
-<div class="page-one" id="openGate" role="dialog" aria-modal="true" aria-label="Open wedding invitation">
-  <div class="islamic-frame" aria-hidden="true"></div>
+<div class="invitation-page" id="openGate" role="dialog" aria-modal="true" aria-label="Open wedding invitation">
+  <div class="frame" aria-hidden="true"></div>
   <div class="arch" aria-hidden="true"></div>
 
   <div class="lantern left" aria-hidden="true"></div>
   <div class="lantern right" aria-hidden="true"></div>
 
-  <div class="landscape" aria-hidden="true"></div>
-  <div class="horizon-glow" aria-hidden="true"></div>
+  <div class="scene" aria-hidden="true"></div>
+  <div class="sun-glow" aria-hidden="true"></div>
 
   <div class="lang-switch lang-switch-gate" id="langSwitch" role="group" aria-label="Language">
     <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
@@ -64,16 +64,13 @@
     <button type="button" class="lang-btn is-active" data-lang="hi" aria-pressed="true">हिं</button>
   </div>
 
-  <div class="page-content">
+  <div class="content invite-welcome-content">
     <div class="bismillah" lang="ar" dir="rtl">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
-    <div class="gold-divider" aria-hidden="true"></div>
-    <h1 class="invitation-title" data-i18n-html="welcome_title">जश्ने<span>शादी</span></h1>
-    <div class="center-ornament" aria-hidden="true"></div>
-    <p class="page-one-hint open-gate-hint" data-i18n="tap_to_open">खोलने के लिए टैप करें</p>
+    <div class="divider" aria-hidden="true"></div>
+    <h1 class="title" data-i18n-html="welcome_title">जश्ने<span>शादी</span></h1>
+    <div class="ornament" aria-hidden="true"></div>
+    <p class="invite-hint open-gate-hint" data-i18n="tap_to_open">खोलने के लिए टैप करें</p>
   </div>
-
-  <div class="floral-corner left" aria-hidden="true"></div>
-  <div class="floral-corner right" aria-hidden="true"></div>
 </div>
 
 <main id="invitation">
@@ -288,6 +285,6 @@
 </section>
 
 </main>
-<script src="script.v5.js"></script>
+<script src="script.v6.js"></script>
 </body>
 </html>

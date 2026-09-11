@@ -1,7 +1,7 @@
 /* Old cached shells → force latest welcome */
 (function(){
   try{
-    if(!document.querySelector(".page-one")){
+    if(!document.querySelector(".invitation-page")){
       location.replace("index.html?r=" + Date.now());
       return;
     }
