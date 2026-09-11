@@ -2843,18 +2843,91 @@ body.lang-hi .couple [data-i18n="couple_eyebrow"],
 body.lang-hi .couple-lead{
   display:none !important;
 }
-/* Hindi host page: user copy starts at family names */
-body.lang-hi .host-blessing,
-body.lang-hi .host-eyebrow,
-body.lang-hi .host-couple{
+/* Hindi first page — match invitation card layout */
+body.lang-en .host-hi-title,
+body.lang-en .host-hi-rule,
+body.lang-en .host-hi-dateblock{
   display:none !important;
 }
-body.lang-hi .host-note [lang="ar"]{
+body.lang-hi .host-blessing,
+body.lang-hi .host-eyebrow,
+body.lang-hi .host-couple,
+body.lang-hi .host-invite,
+body.lang-hi .host-note{
+  display:none !important;
+}
+body.lang-hi .host .content{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:0;
+  padding-top:clamp(24px, 6vh, 48px);
+  padding-bottom:clamp(24px, 6vh, 48px);
+}
+body.lang-hi .host .arabic-small{
+  margin:0 0 18px;
+  color:rgba(248,244,232,.92);
+}
+body.lang-hi .host .host-flourish-main{
+  margin:0 0 18px;
+}
+body.lang-hi .host-hi-title{
   display:block;
-  margin-top:10px;
-  font-family:"Amiri","Noto Naskh Arabic",serif;
-  font-size:1.05em;
-  letter-spacing:0;
+  margin:0 0 6px;
+  font-family:"Noto Serif Devanagari",serif;
+  font-size:clamp(34px, 9.5vw, 52px);
+  font-weight:600;
+  line-height:1.35;
+  letter-spacing:.04em;
+  color:#f3e3b8;
+  text-shadow:0 8px 22px rgba(0,0,0,.35);
+}
+body.lang-hi .host .host-hi-rule{
+  display:block;
+  margin:14px auto;
+  width:min(220px, 62vw);
+}
+body.lang-hi .host .host-families{
+  margin:4px 0 6px !important;
+  font-family:"Noto Serif Devanagari",serif !important;
+  font-size:clamp(40px, 11vw, 64px) !important;
+  font-weight:600;
+  white-space:normal;
+  line-height:1.35 !important;
+  color:#f3e3b8 !important;
+  filter:drop-shadow(0 10px 22px rgba(0,0,0,.38));
+}
+body.lang-hi .host .host-families em{
+  font-family:"Great Vibes","Noto Serif Devanagari",cursive !important;
+  color:var(--gold) !important;
+  font-size:.55em;
+}
+body.lang-hi .host-hi-dateblock{
+  display:block;
+  margin:4px 0 0;
+  text-align:center;
+}
+body.lang-hi .host-hi-date,
+body.lang-hi .host-hi-day{
+  margin:0;
+  font-family:"Cormorant Garamond",serif;
+  font-weight:500;
+  letter-spacing:.08em;
+  color:rgba(240,226,192,.9);
+}
+body.lang-hi .host-hi-date{
+  font-size:clamp(22px, 5.8vw, 30px);
+  line-height:1.35;
+}
+body.lang-hi .host-hi-day{
+  margin-top:4px;
+  font-size:clamp(18px, 4.6vw, 24px);
+  line-height:1.35;
+  color:rgba(232,220,196,.82);
+}
+body.lang-hi .host .host-hi-rule-bottom{
+  margin-top:18px;
 }
 /* Hindi event cards: longer day/time + map labels */
 body.lang-hi .event-meta{
