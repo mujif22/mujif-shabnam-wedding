@@ -331,8 +331,8 @@ const I18N={
   }
 };
 
-const LANG_KEY="wedding-lang";
-let currentLang="en";
+const LANG_KEY="wedding-lang-v2";
+let currentLang="hi";
 
 function t(key){
   const dict=I18N[currentLang] || I18N.en;
@@ -381,9 +381,9 @@ function setLanguage(lang){
 }
 
 function initLanguage(){
-  let saved="en";
-  try{ saved=localStorage.getItem(LANG_KEY) || "en"; }catch(_e){}
-  setLanguage(saved === "hi" ? "hi" : "en");
+  let saved="hi";
+  try{ saved=localStorage.getItem(LANG_KEY) || "hi"; }catch(_e){}
+  setLanguage(saved === "en" ? "en" : "hi");
 
   const switcher=document.getElementById("langSwitch");
   if(!switcher) return;
