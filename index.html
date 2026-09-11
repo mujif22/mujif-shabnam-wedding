@@ -38,7 +38,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<link rel="stylesheet" href="style.v8.css">
+<link rel="stylesheet" href="style.v9.css">
 </head>
 <body class="lang-hi">
 <div class="grain"></div>
@@ -49,8 +49,7 @@
 </audio>
 
 <div class="welcome-gate" id="openGate" role="dialog" aria-modal="true" aria-label="Open wedding invitation">
-  <div class="wg-bg" aria-hidden="true"></div>
-  <div class="wg-veil" aria-hidden="true"></div>
+  <img class="wg-exact" src="assets/welcome-exact.jpg" alt="" decoding="async" fetchpriority="high">
 
   <div class="lang-switch lang-switch-gate" id="langSwitch" role="group" aria-label="Language">
     <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
@@ -58,13 +57,15 @@
     <button type="button" class="lang-btn is-active" data-lang="hi" aria-pressed="true">हिं</button>
   </div>
 
-  <div class="wg-center">
+  <!-- English title is already in the photo; Hindi replaces that band -->
+  <div class="wg-hi-copy" aria-hidden="true">
     <p class="wg-bismillah" lang="ar" dir="rtl">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</p>
     <div class="wg-rule" aria-hidden="true"></div>
     <h1 class="wg-title" data-i18n-html="welcome_title">जश्ने<span>शादी</span></h1>
     <div class="wg-flourish" aria-hidden="true"></div>
-    <p class="wg-cta open-gate-hint" data-i18n="tap_to_open">खोलने के लिए टैप करें</p>
   </div>
+
+  <p class="wg-cta open-gate-hint" data-i18n="tap_to_open">खोलने के लिए टैप करें</p>
 </div>
 <main id="invitation">
 
@@ -278,6 +279,6 @@
 </section>
 
 </main>
-<script src="script.v8.js"></script>
+<script src="script.v9.js"></script>
 </body>
 </html>
