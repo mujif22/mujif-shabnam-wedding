@@ -38,7 +38,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<link rel="stylesheet" href="style.v6.css">
+<link rel="stylesheet" href="style.v7.css">
 </head>
 <body class="lang-hi">
 <div class="grain"></div>
@@ -48,15 +48,36 @@
   <source src="assets/instrumental.mp3" type="audio/mpeg">
 </audio>
 
-<div class="invitation-page" id="openGate" role="dialog" aria-modal="true" aria-label="Open wedding invitation">
-  <div class="frame" aria-hidden="true"></div>
-  <div class="arch" aria-hidden="true"></div>
+<div class="welcome-gate" id="openGate" role="dialog" aria-modal="true" aria-label="Open wedding invitation">
+  <div class="wg-sky" aria-hidden="true"></div>
+  <div class="wg-sun" aria-hidden="true"></div>
+  <div class="wg-mist" aria-hidden="true"></div>
+  <div class="wg-hills" aria-hidden="true"></div>
+  <div class="wg-water" aria-hidden="true"></div>
+  <div class="wg-mosque" aria-hidden="true">
+    <span class="wg-dome"></span>
+    <span class="wg-tower t1"></span>
+    <span class="wg-tower t2"></span>
+    <span class="wg-tower t3"></span>
+    <span class="wg-tower t4"></span>
+    <span class="wg-hall"></span>
+  </div>
+  <div class="wg-birds" aria-hidden="true"></div>
 
-  <div class="lantern left" aria-hidden="true"></div>
-  <div class="lantern right" aria-hidden="true"></div>
+  <div class="wg-portal" aria-hidden="true">
+    <div class="wg-portal-fill"></div>
+    <div class="wg-portal-lattice"></div>
+    <div class="wg-portal-rim"></div>
+    <div class="wg-portal-rail"></div>
+  </div>
 
-  <div class="scene" aria-hidden="true"></div>
-  <div class="sun-glow" aria-hidden="true"></div>
+  <div class="wg-lamp l1" aria-hidden="true"><i></i><b></b><em></em></div>
+  <div class="wg-lamp l2" aria-hidden="true"><i></i><b></b><em></em></div>
+  <div class="wg-lamp l3" aria-hidden="true"><i></i><b></b><em></em></div>
+  <div class="wg-lamp l4" aria-hidden="true"><i></i><b></b><em></em></div>
+
+  <div class="wg-flora left" aria-hidden="true"></div>
+  <div class="wg-flora right" aria-hidden="true"></div>
 
   <div class="lang-switch lang-switch-gate" id="langSwitch" role="group" aria-label="Language">
     <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
@@ -64,15 +85,14 @@
     <button type="button" class="lang-btn is-active" data-lang="hi" aria-pressed="true">हिं</button>
   </div>
 
-  <div class="content invite-welcome-content">
-    <div class="bismillah" lang="ar" dir="rtl">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
-    <div class="divider" aria-hidden="true"></div>
-    <h1 class="title" data-i18n-html="welcome_title">जश्ने<span>शादी</span></h1>
-    <div class="ornament" aria-hidden="true"></div>
-    <p class="invite-hint open-gate-hint" data-i18n="tap_to_open">खोलने के लिए टैप करें</p>
+  <div class="wg-center">
+    <p class="wg-bismillah" lang="ar" dir="rtl">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</p>
+    <div class="wg-rule" aria-hidden="true"></div>
+    <h1 class="wg-title" data-i18n-html="welcome_title">जश्ने<span>शादी</span></h1>
+    <div class="wg-flourish" aria-hidden="true"></div>
+    <p class="wg-cta open-gate-hint" data-i18n="tap_to_open">खोलने के लिए टैप करें</p>
   </div>
 </div>
-
 <main id="invitation">
 
 <section class="screen host" id="host">
@@ -285,6 +305,6 @@
 </section>
 
 </main>
-<script src="script.v6.js"></script>
+<script src="script.v7.js"></script>
 </body>
 </html>
