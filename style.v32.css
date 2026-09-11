@@ -2248,7 +2248,7 @@ h2 em.w{
 a.gold-btn,
 .event .gold-btn,
 .event-card .gold-btn{
-  display:inline-flex !important;
+  display:flex !important;
   align-items:center !important;
   justify-content:center !important;
   gap:10px !important;
@@ -2256,7 +2256,7 @@ a.gold-btn,
   padding:14px 26px !important;
   min-height:52px !important;
   min-width:min(260px, 82vw) !important;
-  width:auto !important;
+  width:fit-content !important;
   max-width:100%;
   border:1.5px solid #c9a048 !important;
   border-radius:12px !important;
