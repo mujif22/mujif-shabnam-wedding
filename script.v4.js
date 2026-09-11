@@ -1,7 +1,7 @@
 /* Old cached shells → force latest welcome */
 (function(){
   try{
-    if(!document.querySelector(".welcome-scene")){
+    if(!document.querySelector(".page-one")){
       location.replace("index.html?r=" + Date.now());
       return;
     }
@@ -217,7 +217,7 @@ function splitWords(root){
 const I18N={
   en:{
     wedding_invitation:"WEDDING INVITATION",
-    welcome_title:"<span class=\"wt1\">Wedding</span><br><span class=\"wt2\">Invitation</span>",
+    welcome_title:"Wedding<span>Invitation</span>",
     names_amp:"Mujif <em>&</em> Shabnam",
     tap_to_open:"Tap to open",
     tap_again_music:"Tap again for music",
@@ -283,7 +283,7 @@ const I18N={
   },
   hi:{
     wedding_invitation:"जश्ने शादी",
-    welcome_title:"<span class=\"wt1\">जश्ने</span><br><span class=\"wt2\">शादी</span>",
+    welcome_title:"जश्ने<span>शादी</span>",
     names_amp:"मुजिफ <em>&</em> शबनम",
     tap_to_open:"खोलने के लिए टैप करें",
     tap_again_music:"मौसीक़ी के लिए फिर टैप करें",
