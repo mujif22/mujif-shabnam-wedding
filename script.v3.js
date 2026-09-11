@@ -1,13 +1,3 @@
-/* Old cached index shells → force fresh Hindi splash */
-(function(){
-  try{
-    if(!document.querySelector(".open-gate-moon")){
-      location.replace("hi.html?r=" + Date.now());
-      return;
-    }
-  }catch(_e){}
-})();
-
 const reduceMotion=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const isCoarse=window.matchMedia("(pointer: coarse)").matches;
 let inviteOpened=false;
