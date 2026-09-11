@@ -152,6 +152,61 @@
     a.gold-btn::before{ animation:none !important; opacity:.7 !important; }
   }
 </style>
+<style id="maps-or-force">
+  .maps-or,
+  .event .maps-or,
+  .event-card .maps-or{
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    gap:12px !important;
+    width:min(240px, 78vw) !important;
+    margin:12px auto 8px !important;
+    opacity:1 !important;
+    visibility:visible !important;
+    transform:none !important;
+    animation:none !important;
+    position:relative !important;
+    z-index:3 !important;
+  }
+  .maps-or::before,
+  .maps-or::after,
+  .event .maps-or::before,
+  .event .maps-or::after{
+    content:"" !important;
+    flex:1 1 auto !important;
+    height:1px !important;
+    background:linear-gradient(90deg, transparent, rgba(224,192,122,.75), transparent) !important;
+  }
+  .maps-or span,
+  .event .maps-or span{
+    display:inline-flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    min-width:42px !important;
+    padding:4px 12px !important;
+    border:1px solid rgba(224,192,122,.7) !important;
+    border-radius:999px !important;
+    background:rgba(22,53,41,.92) !important;
+    color:#f6e2a0 !important;
+    -webkit-text-fill-color:#f6e2a0 !important;
+    font-family:"Cinzel",serif !important;
+    font-size:12px !important;
+    font-weight:700 !important;
+    letter-spacing:.16em !important;
+    line-height:1.1 !important;
+    text-transform:uppercase !important;
+    opacity:1 !important;
+    visibility:visible !important;
+  }
+  body.lang-hi .maps-or span,
+  body.lang-hi .event .maps-or span{
+    font-family:"Noto Sans Devanagari",sans-serif !important;
+    font-size:14px !important;
+    letter-spacing:.02em !important;
+    text-transform:none !important;
+  }
+</style>
 <style id="qr-label-force">
   .qr-card,
   .event .qr-card{
@@ -201,8 +256,8 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- build-v54 -->
-<link rel="stylesheet" href="style.v54.css?v=54-or">
+<!-- build-v55 -->
+<link rel="stylesheet" href="style.v55.css?v=55-or-visible">
 </head>
 <body class="lang-hi">
 <div class="grain"></div>
@@ -326,7 +381,7 @@
       <h3 class="anim-item split-words" data-i18n="nikah_venue">Swaraj Mangal Karyalaya</h3>
       <p class="anim-item" data-i18n-html="nikah_address">Telgaon Road, Dindrud<br>Taluka Majalgaon, District Beed</p>
       <a class="gold-btn anim-item" href="https://www.google.com/maps/search/?api=1&amp;query=Swaraj+Mangal+Karyalaya+Dindrud+Beed" target="_blank" rel="noopener noreferrer"><svg class="map-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span data-i18n="nikah_maps">OPEN IN MAP</span></a>
-      <div class="maps-or anim-item" aria-hidden="false"><span data-i18n="maps_or">OR</span></div>
+      <div class="maps-or" role="separator"><span data-i18n="maps_or">OR</span></div>
       <div class="qr-card anim-item">
         <img src="assets/nikah-qr.png" alt="QR code for Nikah venue" width="156" height="156" data-i18n-alt="nikah_qr_alt">
         <span data-i18n="nikah_qr">SCAN FOR NIKAH LOCATION</span>
@@ -349,7 +404,7 @@
       <h3 class="anim-item split-words" data-i18n="walima_venue">Rudra Mangal Karyalaya</h3>
       <p class="anim-item" data-i18n-html="walima_address">Pakhrud Road, Ieet<br>Taluka Bhoom, District Dharashiv</p>
       <a class="gold-btn anim-item" href="https://maps.app.goo.gl/BQpYjiWpXdY7hcud9" target="_blank" rel="noopener noreferrer"><svg class="map-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span data-i18n="walima_maps">OPEN IN MAP</span></a>
-      <div class="maps-or anim-item" aria-hidden="false"><span data-i18n="maps_or">OR</span></div>
+      <div class="maps-or" role="separator"><span data-i18n="maps_or">OR</span></div>
       <div class="qr-card anim-item">
         <img src="assets/walima-qr.png" alt="QR code for Walima venue" width="156" height="156" data-i18n-alt="walima_qr_alt">
         <span data-i18n="walima_qr">SCAN FOR WALIMA LOCATION</span>
@@ -410,6 +465,6 @@
 </section>
 
 </main>
-<script src="script.v54.js?v=54-or"></script>
+<script src="script.v55.js?v=55-or-visible"></script>
 </body>
 </html>
