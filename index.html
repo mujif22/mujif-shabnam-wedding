@@ -59,6 +59,40 @@
     letter-spacing:0 !important;
   }
 </style>
+<style id="gate-title-force">
+  /* Always show Wedding / Invitation (EN) and जश्ने / शादी (HI) */
+  .emerald-gate .title-wedding,
+  .emerald-gate .title-invitation,
+  .welcome-gate .title-wedding,
+  .welcome-gate .title-invitation{
+    display:block !important;
+    opacity:1 !important;
+    visibility:visible !important;
+    color:#f3e3b8 !important;
+    -webkit-text-fill-color:#f3e3b8 !important;
+    background:none !important;
+    -webkit-background-clip:border-box !important;
+    background-clip:border-box !important;
+    transform:none !important;
+  }
+  .emerald-gate .title-invitation,
+  .welcome-gate .title-invitation{
+    color:#e8d09a !important;
+    -webkit-text-fill-color:#e8d09a !important;
+  }
+  body.lang-hi .emerald-gate .title-wedding,
+  body.lang-hi .emerald-gate .title-invitation,
+  body.lang-hi .welcome-gate .title-wedding,
+  body.lang-hi .welcome-gate .title-invitation{
+    color:#f0d78a !important;
+    -webkit-text-fill-color:#f0d78a !important;
+  }
+  .emerald-gate-sheet{
+    transform:none !important;
+    margin-top:0 !important;
+    margin-bottom:0 !important;
+  }
+</style>
 <style id="maps-btn-force">
   a.gold-btn,
   .event a.gold-btn,
@@ -257,8 +291,8 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- build-v59 -->
-<link rel="stylesheet" href="style.v59.css?v=59-reception">
+<!-- build-v60 -->
+<link rel="stylesheet" href="style.v60.css?v=60-gate-titles">
 </head>
 <body class="lang-hi">
 <div class="grain"></div>
@@ -466,6 +500,6 @@
 </section>
 
 </main>
-<script src="script.v59.js?v=59-reception"></script>
+<script src="script.v60.js?v=60-gate-titles"></script>
 </body>
 </html>
