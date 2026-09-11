@@ -2742,7 +2742,7 @@ h2 em.w{
   }
   .event-card{padding:4px 0}
   .event-date strong{font-size:clamp(48px,13vw,60px)}
-  .event .gold-btn{margin-top:10px; padding:12px 8px}
+  .event .gold-btn{margin-top:14px; padding:13px 20px; min-width:min(240px, 86vw)}
   .event .qr-card{
     margin:10px auto 0;
     width:min(120px,28vw);
