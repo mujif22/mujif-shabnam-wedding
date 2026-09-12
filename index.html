@@ -64,21 +64,31 @@
     transform:none !important;
     margin-top:0 !important;
     margin-bottom:0 !important;
+    width:min(620px, 96vw) !important;
+    max-width:96vw !important;
   }
   .gate-bilingual{
-    display:grid !important;
-    grid-template-columns:1fr 1fr !important;
-    gap:clamp(12px, 3vw, 28px) !important;
-    width:min(560px, 94vw) !important;
+    display:flex !important;
+    flex-direction:row !important;
+    justify-content:center !important;
     align-items:stretch !important;
-    margin:10px auto 0 !important;
+    gap:0 !important;
+    width:100% !important;
+    margin:14px auto 0 !important;
   }
   .gate-lang-col{
     display:flex !important;
+    flex:1 1 50% !important;
     flex-direction:column !important;
     align-items:center !important;
+    justify-content:space-between !important;
     text-align:center !important;
-    gap:10px !important;
+    gap:14px !important;
+    padding:8px 10px !important;
+    min-width:0 !important;
+  }
+  .gate-lang-col + .gate-lang-col{
+    border-left:1px solid rgba(224,192,122,.45) !important;
   }
   .gate-lang-title{
     display:block !important;
@@ -88,17 +98,17 @@
     color:#f3e3b8 !important;
     -webkit-text-fill-color:#f3e3b8 !important;
     background:none !important;
-    line-height:1.2 !important;
+    line-height:1.15 !important;
   }
   .gate-lang-title.en{
     font-family:"Playfair Display","Cormorant Garamond",serif !important;
-    font-size:clamp(22px, 5.8vw, 34px) !important;
+    font-size:clamp(20px, 5.4vw, 32px) !important;
     font-weight:700 !important;
     letter-spacing:.02em !important;
   }
   .gate-lang-title.hi{
     font-family:"Noto Sans Devanagari","Noto Serif Devanagari",sans-serif !important;
-    font-size:clamp(24px, 6.2vw, 36px) !important;
+    font-size:clamp(22px, 5.8vw, 34px) !important;
     font-weight:700 !important;
     letter-spacing:0 !important;
     color:#f0d78a !important;
@@ -108,17 +118,18 @@
     display:inline-flex !important;
     align-items:center !important;
     justify-content:center !important;
-    min-width:min(132px, 38vw) !important;
-    min-height:42px !important;
-    padding:10px 16px !important;
-    border:1.5px solid #e0c07a !important;
-    border-radius:10px !important;
+    width:min(148px, 42vw) !important;
+    min-height:46px !important;
+    padding:12px 14px !important;
+    border:2px solid #e0c07a !important;
+    border-radius:12px !important;
     background:#163529 !important;
     color:#fff4d4 !important;
     font-weight:700 !important;
-    font-size:13px !important;
-    letter-spacing:.06em !important;
+    font-size:14px !important;
+    letter-spacing:.04em !important;
     cursor:pointer !important;
+    box-shadow:0 10px 22px rgba(0,0,0,.28) !important;
     -webkit-tap-highlight-color:rgba(212,179,106,.35) !important;
   }
   .gate-open-btn.en{
@@ -129,8 +140,14 @@
     font-family:"Noto Sans Devanagari",sans-serif !important;
     letter-spacing:.02em !important;
     text-transform:none !important;
-    font-size:14px !important;
+    font-size:15px !important;
   }
+  /* Hide old-style single titles if any leftover */
+  .emerald-gate > .title-wedding,
+  .emerald-gate > .title-invitation,
+  .emerald-gate-sheet > .title-wedding,
+  .emerald-gate-sheet > .title-invitation,
+  .emerald-gate .invite-open-hint{ display:none !important; }
   body.gate-locked #langSwitch{ display:none !important; }
 </style>
 <style id="maps-btn-force">
@@ -331,8 +348,8 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- build-v64 -->
-<link rel="stylesheet" href="style.v64.css?v=64-bilingual-gate">
+<!-- build-v65 -->
+<link rel="stylesheet" href="style.v65.css?v=65-both-langs">
 </head>
 <body class="lang-hi">
 <div class="grain"></div>
@@ -550,6 +567,6 @@
 </section>
 
 </main>
-<script src="script.v64.js?v=64-bilingual-gate"></script>
+<script src="script.v65.js?v=65-both-langs"></script>
 </body>
 </html>
