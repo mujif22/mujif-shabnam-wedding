@@ -60,38 +60,78 @@
   }
 </style>
 <style id="gate-title-force">
-  /* Always show Wedding / Invitation (EN) and जश्ने / शादी (HI) */
-  .emerald-gate .title-wedding,
-  .emerald-gate .title-invitation,
-  .welcome-gate .title-wedding,
-  .welcome-gate .title-invitation{
-    display:block !important;
-    opacity:1 !important;
-    visibility:visible !important;
-    color:#f3e3b8 !important;
-    -webkit-text-fill-color:#f3e3b8 !important;
-    background:none !important;
-    -webkit-background-clip:border-box !important;
-    background-clip:border-box !important;
-    transform:none !important;
-  }
-  .emerald-gate .title-invitation,
-  .welcome-gate .title-invitation{
-    color:#e8d09a !important;
-    -webkit-text-fill-color:#e8d09a !important;
-  }
-  body.lang-hi .emerald-gate .title-wedding,
-  body.lang-hi .emerald-gate .title-invitation,
-  body.lang-hi .welcome-gate .title-wedding,
-  body.lang-hi .welcome-gate .title-invitation{
-    color:#f0d78a !important;
-    -webkit-text-fill-color:#f0d78a !important;
-  }
   .emerald-gate-sheet{
     transform:none !important;
     margin-top:0 !important;
     margin-bottom:0 !important;
   }
+  .gate-bilingual{
+    display:grid !important;
+    grid-template-columns:1fr 1fr !important;
+    gap:clamp(12px, 3vw, 28px) !important;
+    width:min(560px, 94vw) !important;
+    align-items:stretch !important;
+    margin:10px auto 0 !important;
+  }
+  .gate-lang-col{
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:center !important;
+    text-align:center !important;
+    gap:10px !important;
+  }
+  .gate-lang-title{
+    display:block !important;
+    margin:0 !important;
+    opacity:1 !important;
+    visibility:visible !important;
+    color:#f3e3b8 !important;
+    -webkit-text-fill-color:#f3e3b8 !important;
+    background:none !important;
+    line-height:1.2 !important;
+  }
+  .gate-lang-title.en{
+    font-family:"Playfair Display","Cormorant Garamond",serif !important;
+    font-size:clamp(22px, 5.8vw, 34px) !important;
+    font-weight:700 !important;
+    letter-spacing:.02em !important;
+  }
+  .gate-lang-title.hi{
+    font-family:"Noto Sans Devanagari","Noto Serif Devanagari",sans-serif !important;
+    font-size:clamp(24px, 6.2vw, 36px) !important;
+    font-weight:700 !important;
+    letter-spacing:0 !important;
+    color:#f0d78a !important;
+    -webkit-text-fill-color:#f0d78a !important;
+  }
+  .gate-open-btn{
+    display:inline-flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    min-width:min(132px, 38vw) !important;
+    min-height:42px !important;
+    padding:10px 16px !important;
+    border:1.5px solid #e0c07a !important;
+    border-radius:10px !important;
+    background:#163529 !important;
+    color:#fff4d4 !important;
+    font-weight:700 !important;
+    font-size:13px !important;
+    letter-spacing:.06em !important;
+    cursor:pointer !important;
+    -webkit-tap-highlight-color:rgba(212,179,106,.35) !important;
+  }
+  .gate-open-btn.en{
+    font-family:"Cinzel",serif !important;
+    text-transform:none !important;
+  }
+  .gate-open-btn.hi{
+    font-family:"Noto Sans Devanagari",sans-serif !important;
+    letter-spacing:.02em !important;
+    text-transform:none !important;
+    font-size:14px !important;
+  }
+  body.gate-locked #langSwitch{ display:none !important; }
 </style>
 <style id="maps-btn-force">
   a.gold-btn,
@@ -291,8 +331,8 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- build-v63 -->
-<link rel="stylesheet" href="style.v63.css?v=63-force-gate">
+<!-- build-v64 -->
+<link rel="stylesheet" href="style.v64.css?v=64-bilingual-gate">
 </head>
 <body class="lang-hi">
 <div class="grain"></div>
@@ -306,23 +346,33 @@
   <div class="host-starfield" aria-hidden="true"></div>
   <div class="host-corners" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
 
-  <div class="lang-switch lang-switch-gate" id="langSwitch" role="group" aria-label="Language">
-    <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
-    <span class="lang-sep" aria-hidden="true">|</span>
-    <button type="button" class="lang-btn is-active" data-lang="hi" aria-pressed="true">हि</button>
-  </div>
-
   <div class="emerald-gate-sheet">
     <div class="host-rule host-rule-top" aria-hidden="true"><i></i></div>
     <p class="arabic-small host-bismillah" lang="ar" dir="rtl">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</p>
     <div class="host-diamond" aria-hidden="true"></div>
-    <h1 class="title-wedding" data-i18n="welcome_line1" lang="hi">जश्ने</h1>
-    <h2 class="title-invitation" data-i18n="welcome_line2" lang="hi">शादी</h2>
+
+    <div class="gate-bilingual" role="group" aria-label="Choose language">
+      <div class="gate-lang-col">
+        <h1 class="gate-lang-title en" lang="en">Wedding<br>Invitation</h1>
+        <button type="button" class="gate-open-btn en" data-open-lang="en">English</button>
+      </div>
+      <div class="gate-lang-col">
+        <h1 class="gate-lang-title hi" lang="hi">जश्ने<br>शादी</h1>
+        <button type="button" class="gate-open-btn hi" data-open-lang="hi">Hindi</button>
+      </div>
+    </div>
+
     <div class="host-diamond" aria-hidden="true"></div>
-    <p class="invite-open-hint open-gate-hint" data-i18n="tap_to_open">खोलने के लिए टैप करें</p>
     <div class="host-rule host-rule-bottom" aria-hidden="true"><i></i></div>
   </div>
 </div>
+
+<div class="lang-switch is-fixed" id="langSwitch" role="group" aria-label="Language">
+  <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">English</button>
+  <span class="lang-sep" aria-hidden="true">|</span>
+  <button type="button" class="lang-btn is-active" data-lang="hi" aria-pressed="true">Hindi</button>
+</div>
+
 <main id="invitation">
 
 <section class="screen host" id="host">
@@ -500,6 +550,6 @@
 </section>
 
 </main>
-<script src="script.v63.js?v=63-force-gate"></script>
+<script src="script.v64.js?v=64-bilingual-gate"></script>
 </body>
 </html>
