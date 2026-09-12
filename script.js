@@ -212,29 +212,15 @@ pinToStart();
 window.addEventListener("pageshow", pinToStart);
 window.addEventListener("load", pinToStart);
 
-/* Countdown phases:
-   1) Until Nikah 27 Sep 2026 11:30 IST → Nikah countdown
-   2) From 1:00 PM 27 Sep until midnight → Nikah Mubarak (big text)
-   3) From 12:00 AM 28 Sep → Reception / वलीमा countdown (29 Sep after Zuhr) */
-const NIKAH_AT=new Date("2026-09-27T11:30:00+05:30").getTime();
-const MUBARAK_AT=new Date("2026-09-27T13:00:00+05:30").getTime();
-const RECEPTION_COUNT_AT=new Date("2026-09-28T00:00:00+05:30").getTime();
-const RECEPTION_AT=new Date("2026-09-29T13:00:00+05:30").getTime();
+/* Countdown */
+const target=new Date("2026-09-27T11:30:00+05:30").getTime();
 const dayEl=document.getElementById("days");
 const hourEl=document.getElementById("hours");
 const minEl=document.getElementById("minutes");
 const secEl=document.getElementById("seconds");
-const countdownEl=document.getElementById("countdown");
-const mubarakEl=document.getElementById("nikahMubarak");
-const countHeadingEl=document.getElementById("countHeading");
-const countTitleEl=document.getElementById("countTitle");
-const countTargetEl=document.getElementById("countTarget");
-const countNoteEl=document.getElementById("countNote");
 let prev={d:"",h:"",m:"",s:""};
-let countdownPhase="";
 
 function setDigit(el, value, key){
-  if(!el) return;
   const next=String(value).padStart(2,"0");
   if(prev[key] !== next){
     el.textContent=next;
@@ -247,8 +233,8 @@ function setDigit(el, value, key){
   }
 }
 
-function fillCountdown(msLeft){
-  let d=Math.max(0, msLeft);
+function tick(){
+  let d=Math.max(0, target - Date.now());
   const days=Math.floor(d/86400000); d%=86400000;
   const hours=Math.floor(d/3600000); d%=3600000;
   const mins=Math.floor(d/60000); d%=60000;
@@ -257,65 +243,6 @@ function fillCountdown(msLeft){
   setDigit(hourEl, hours, "h");
   setDigit(minEl, mins, "m");
   setDigit(secEl, secs, "s");
-}
-
-function applyCountdownCopy(phase){
-  const dict=I18N[currentLang] || I18N.en;
-  if(phase === "reception"){
-    if(countHeadingEl) countHeadingEl.textContent=dict.reception_eyebrow || dict.countdown_eyebrow;
-    if(countTitleEl) countTitleEl.innerHTML=dict.reception_title || dict.countdown_title;
-    if(countTargetEl) countTargetEl.textContent=dict.reception_target || dict.countdown_target;
-    if(countNoteEl){
-      const note=dict.reception_note != null ? dict.reception_note : dict.countdown_note;
-      countNoteEl.textContent=note || "";
-      countNoteEl.style.display=note ? "" : "none";
-    }
-  }else{
-    if(countHeadingEl) countHeadingEl.textContent=dict.countdown_eyebrow;
-    if(countTitleEl) countTitleEl.innerHTML=dict.countdown_title;
-    if(countTargetEl) countTargetEl.textContent=dict.countdown_target;
-    if(countNoteEl){
-      countNoteEl.textContent=dict.countdown_note || "";
-      countNoteEl.style.display=dict.countdown_note ? "" : "none";
-    }
-  }
-  if(mubarakEl){
-    const txt=mubarakEl.querySelector(".nikah-mubarak-text");
-    if(txt) txt.textContent=dict.nikah_mubarak || "Nikah Mubarak";
-  }
-}
-
-function setCountdownPhase(phase){
-  if(countdownPhase === phase) return;
-  countdownPhase=phase;
-  const screen=document.querySelector(".countdown-screen");
-  if(screen){
-    screen.classList.toggle("is-mubarak", phase === "mubarak");
-    screen.classList.toggle("is-reception", phase === "reception");
-  }
-  if(countdownEl) countdownEl.hidden=(phase === "mubarak");
-  if(mubarakEl) mubarakEl.hidden=(phase !== "mubarak");
-  if(countTargetEl) countTargetEl.hidden=(phase === "mubarak");
-  if(countNoteEl) countNoteEl.hidden=(phase === "mubarak");
-  if(countTitleEl) countTitleEl.hidden=(phase === "mubarak");
-  if(countHeadingEl) countHeadingEl.hidden=(phase === "mubarak");
-  if(phase !== "mubarak") applyCountdownCopy(phase);
-  else applyCountdownCopy("nikah");
-}
-
-function tick(){
-  const now=Date.now();
-  if(now >= RECEPTION_COUNT_AT){
-    setCountdownPhase("reception");
-    fillCountdown(RECEPTION_AT - now);
-    return;
-  }
-  if(now >= MUBARAK_AT){
-    setCountdownPhase("mubarak");
-    return;
-  }
-  setCountdownPhase("nikah");
-  fillCountdown(NIKAH_AT - now);
 }
 tick();
 setInterval(tick, 1000);
@@ -443,11 +370,6 @@ const I18N={
     unit_seconds:"SECONDS",
     countdown_target:"27 September 2026 · Sunday · 11:30 AM",
     countdown_note:"Until two hearts begin one beautiful journey, Insha’Allah.",
-    nikah_mubarak:"Nikah Mubarak",
-    reception_eyebrow:"RECEPTION",
-    reception_title:"The Celebration<br><em>Continues</em>",
-    reception_target:"29 September 2026 · Tuesday · After Zuhr",
-    reception_note:"Countdown to the Walima reception, Insha’Allah.",
     closing_eyebrow:"WITH LOVE & DUA",
     closing_title:"For Being a Part<br><em>of Our Story</em>",
     closing_note:"We ask Allah to fill this journey with sakinah, mawaddah and rahmah.",
@@ -517,11 +439,6 @@ const I18N={
     unit_seconds:"सेकंड",
     countdown_target:"27 सितंबर 2026 · इतवार · सुबह 11.30 बजे",
     countdown_note:"",
-    nikah_mubarak:"निकाह मुबारक",
-    reception_eyebrow:"वलीमा",
-    reception_title:"जश्न जारी है...",
-    reception_target:"29 सितंबर 2026 · मंगल · ज़ोहर के बाद",
-    reception_note:"",
     closing_eyebrow:"मोहब्बत और दुआओं के साथ",
     closing_title:"हमारी ख़ुशी में<br><em>शामिल होने के लिए शुक्रिया</em>",
     closing_note:"",
@@ -636,12 +553,6 @@ function setLanguage(lang){
   }
 
   applyHindiFonts(next === "hi");
-  /* Refresh countdown phase copy after language change */
-  if(typeof countdownPhase === "string" && countdownPhase){
-    const keep=countdownPhase;
-    countdownPhase="";
-    setCountdownPhase(keep);
-  }
   scheduleFitScreens();
 }
 
