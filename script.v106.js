@@ -1561,36 +1561,36 @@ window.addEventListener("pagehide", ()=>{
 (function initWeddingFloralInteraction(){
   if(reduceMotion) return;
 
-  const DEFAULT_BURST = { min:16, max:24 };
+  const DEFAULT_BURST = { min:28, max:44 };
   const BURST = {
-    gate: { min:12, max:18 },
-    host: { min:16, max:24 },
-    blessing: { min:12, max:18 },
-    couple: { min:16, max:24 },
-    nikah: { min:18, max:26 },
-    walima: { min:18, max:26 },
-    countdown: { min:12, max:18 },
-    closing: { min:12, max:18 }
+    gate: { min:20, max:32 },
+    host: { min:28, max:44 },
+    blessing: { min:24, max:36 },
+    couple: { min:28, max:44 },
+    nikah: { min:32, max:48 },
+    walima: { min:32, max:48 },
+    countdown: { min:24, max:36 },
+    closing: { min:24, max:36 }
   };
-  const MAX_ACTIVE = 90;
-  const COOLDOWN_MS = 110;
+  const MAX_ACTIVE = 144;
+  const COOLDOWN_MS = 90;
 
   const PETAL_SVG = {
-    ivory: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 32"><path d="M12 1C9 6 4 10 4 17c0 6 3.5 10 8 13 4.5-3 8-7 8-13 0-7-5-11-8-16z" fill="rgba(255,248,235,.55)"/></svg>'),
-    champagne: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 32"><path d="M12 2c-2.2 5-7 8.5-7 14.5S9 28 12 30c3-2 7-7 7-13.5S14.2 7 12 2z" fill="rgba(232,205,140,.42)"/></svg>'),
-    rose: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 32"><path d="M12 1C9 6 4 10 4 17c0 6 3.5 10 8 13 4.5-3 8-7 8-13 0-7-5-11-8-16z" fill="rgba(176,48,58,.42)"/></svg>'),
-    crimson: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 32"><path d="M12 2c-2.2 5-7 8.5-7 14.5S9 28 12 30c3-2 7-7 7-13.5S14.2 7 12 2z" fill="rgba(148,36,48,.36)"/></svg>'),
-    blush: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 28"><path d="M9 0L14 14c1 4-1 9-5 13C5 23 3 18 4 14L9 0z" fill="rgba(196,78,88,.4)"/></svg>'),
-    peach: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 32"><path d="M12 1C9 6 4 10 4 17c0 6 3.5 10 8 13 4.5-3 8-7 8-13 0-7-5-11-8-16z" fill="rgba(232,160,130,.4)"/></svg>'),
-    coral: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 28"><path d="M9 0L14 14c1 4-1 9-5 13C5 23 3 18 4 14L9 0z" fill="rgba(210,110,95,.38)"/></svg>'),
-    softpink: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 32"><path d="M12 2c-2.2 5-7 8.5-7 14.5S9 28 12 30c3-2 7-7 7-13.5S14.2 7 12 2z" fill="rgba(230,150,170,.38)"/></svg>'),
-    apricot: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 32"><path d="M12 1C9 6 4 10 4 17c0 6 3.5 10 8 13 4.5-3 8-7 8-13 0-7-5-11-8-16z" fill="rgba(230,175,110,.4)"/></svg>'),
-    mauve: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 28"><path d="M9 0L14 14c1 4-1 9-5 13C5 23 3 18 4 14L9 0z" fill="rgba(170,110,130,.36)"/></svg>'),
-    burgundy: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 32"><path d="M12 2c-2.2 5-7 8.5-7 14.5S9 28 12 30c3-2 7-7 7-13.5S14.2 7 12 2z" fill="rgba(120,40,55,.34)"/></svg>'),
-    creamgold: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 32"><path d="M12 1C9 6 4 10 4 17c0 6 3.5 10 8 13 4.5-3 8-7 8-13 0-7-5-11-8-16z" fill="rgba(245,220,160,.44)"/></svg>'),
-    leaf: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 32"><path d="M10 1C5 8 3 15 4 23c3-2 6-3 6-3s3 1 6 3c1-8-1-15-6-22z" fill="rgba(120,140,100,.32)"/><path d="M10 4v20" stroke="rgba(70,90,60,.2)" stroke-width="1" fill="none"/></svg>'),
-    sage: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 32"><path d="M10 1C5 8 3 15 4 23c3-2 6-3 6-3s3 1 6 3c1-8-1-15-6-22z" fill="rgba(140,155,120,.3)"/></svg>'),
-    sharp: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 28"><path d="M9 0L14 14c1 4-1 9-5 13C5 23 3 18 4 14L9 0z" fill="rgba(250,242,220,.48)"/></svg>')
+    ivory: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 32"><path d="M12 1C9 6 4 10 4 17c0 6 3.5 10 8 13 4.5-3 8-7 8-13 0-7-5-11-8-16z" fill="rgba(255,248,235,.88)"/></svg>'),
+    champagne: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 32"><path d="M12 2c-2.2 5-7 8.5-7 14.5S9 28 12 30c3-2 7-7 7-13.5S14.2 7 12 2z" fill="rgba(232,205,140,.72)"/></svg>'),
+    rose: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 32"><path d="M12 1C9 6 4 10 4 17c0 6 3.5 10 8 13 4.5-3 8-7 8-13 0-7-5-11-8-16z" fill="rgba(176,48,58,.78)"/></svg>'),
+    crimson: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 32"><path d="M12 2c-2.2 5-7 8.5-7 14.5S9 28 12 30c3-2 7-7 7-13.5S14.2 7 12 2z" fill="rgba(148,36,48,.7)"/></svg>'),
+    blush: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 28"><path d="M9 0L14 14c1 4-1 9-5 13C5 23 3 18 4 14L9 0z" fill="rgba(196,78,88,.75)"/></svg>'),
+    peach: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 32"><path d="M12 1C9 6 4 10 4 17c0 6 3.5 10 8 13 4.5-3 8-7 8-13 0-7-5-11-8-16z" fill="rgba(232,160,130,.72)"/></svg>'),
+    coral: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 28"><path d="M9 0L14 14c1 4-1 9-5 13C5 23 3 18 4 14L9 0z" fill="rgba(210,110,95,.7)"/></svg>'),
+    softpink: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 32"><path d="M12 2c-2.2 5-7 8.5-7 14.5S9 28 12 30c3-2 7-7 7-13.5S14.2 7 12 2z" fill="rgba(230,150,170,.7)"/></svg>'),
+    apricot: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 32"><path d="M12 1C9 6 4 10 4 17c0 6 3.5 10 8 13 4.5-3 8-7 8-13 0-7-5-11-8-16z" fill="rgba(230,175,110,.72)"/></svg>'),
+    mauve: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 28"><path d="M9 0L14 14c1 4-1 9-5 13C5 23 3 18 4 14L9 0z" fill="rgba(170,110,130,.68)"/></svg>'),
+    burgundy: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 32"><path d="M12 2c-2.2 5-7 8.5-7 14.5S9 28 12 30c3-2 7-7 7-13.5S14.2 7 12 2z" fill="rgba(120,40,55,.68)"/></svg>'),
+    creamgold: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 32"><path d="M12 1C9 6 4 10 4 17c0 6 3.5 10 8 13 4.5-3 8-7 8-13 0-7-5-11-8-16z" fill="rgba(245,220,160,.74)"/></svg>'),
+    leaf: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 32"><path d="M10 1C5 8 3 15 4 23c3-2 6-3 6-3s3 1 6 3c1-8-1-15-6-22z" fill="rgba(120,140,100,.55)"/><path d="M10 4v20" stroke="rgba(70,90,60,.35)" stroke-width="1" fill="none"/></svg>'),
+    sage: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 32"><path d="M10 1C5 8 3 15 4 23c3-2 6-3 6-3s3 1 6 3c1-8-1-15-6-22z" fill="rgba(140,155,120,.55)"/></svg>'),
+    sharp: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 28"><path d="M9 0L14 14c1 4-1 9-5 13C5 23 3 18 4 14L9 0z" fill="rgba(250,242,220,.8)"/></svg>')
   };
 
   let activeCount = 0;
@@ -1659,20 +1659,19 @@ window.addEventListener("pagehide", ()=>{
     if(!layer || activeCount >= MAX_ACTIVE) return;
     const fromBottom = direction === "up";
     const el = document.createElement("span");
-    /* Prefer soft distant petals */
-    const depth = pick(["mid", "mid", "far", "far", "near"]);
+    const depth = pick(["near", "mid", "far"]);
     const kind = depth === "far"
-      ? (Math.random() < 0.45 ? "speck" : pick(["champagne", "blush", "ivory", "peach", "softpink", "creamgold"]))
-      : pick(["ivory", "champagne", "rose", "blush", "peach", "coral", "softpink", "apricot", "mauve", "burgundy", "creamgold", "leaf", "sage", "sharp"]);
+      ? (Math.random() < 0.45 ? "speck" : pick(["champagne", "blush", "ivory", "peach", "softpink", "creamgold", "rose"]))
+      : pick(["ivory", "champagne", "rose", "crimson", "blush", "peach", "coral", "softpink", "apricot", "mauve", "burgundy", "creamgold", "leaf", "sage", "sharp"]);
 
     el.className = "floral-petal depth-" + depth + (kind === "leaf" || kind === "sage" ? " is-leaf" : "") + (kind === "speck" ? " is-speck" : "");
     if(kind === "speck"){
       const speckColors = [
-        "rgba(176,48,58," + rand(0.2, 0.38).toFixed(2) + ")",
-        "rgba(232,160,130," + rand(0.2, 0.36).toFixed(2) + ")",
-        "rgba(230,150,170," + rand(0.18, 0.34).toFixed(2) + ")",
-        "rgba(224,192,122," + rand(0.2, 0.36).toFixed(2) + ")",
-        "rgba(210,110,95," + rand(0.18, 0.34).toFixed(2) + ")"
+        "rgba(176,48,58," + rand(0.45, 0.75).toFixed(2) + ")",
+        "rgba(232,160,130," + rand(0.4, 0.7).toFixed(2) + ")",
+        "rgba(230,150,170," + rand(0.4, 0.68).toFixed(2) + ")",
+        "rgba(224,192,122," + rand(0.4, 0.65).toFixed(2) + ")",
+        "rgba(210,110,95," + rand(0.4, 0.7).toFixed(2) + ")"
       ];
       el.style.background = pick(speckColors);
     }else{
@@ -1684,7 +1683,7 @@ window.addEventListener("pagehide", ()=>{
     const ph = (kind === "speck" ? 4 : kind === "leaf" ? 20 : 18) * sizeScale;
     el.style.width = pw + "px";
     el.style.height = ph + "px";
-    el.style.opacity = String(depth === "near" ? rand(0.28, 0.48) : depth === "mid" ? rand(0.18, 0.34) : rand(0.1, 0.22));
+    el.style.opacity = String(depth === "near" ? rand(0.42, 0.72) : depth === "mid" ? rand(0.28, 0.5) : rand(0.14, 0.32));
 
     const layerRect = layer.getBoundingClientRect();
     const layerW = layerRect.width || 1;
@@ -1693,18 +1692,18 @@ window.addEventListener("pagehide", ()=>{
     const startX = rand(6, Math.max(8, layerW - 6));
     const startY = fromBottom ? rand(layerH + 8, layerH + 48) : rand(-48, -8);
     const travelY = fromBottom
-      ? -rand(layerH * 0.55, layerH * 0.95)
-      : rand(layerH * 0.55, layerH * 0.95);
+      ? -rand(layerH * 0.6, layerH * 1.05)
+      : rand(layerH * 0.6, layerH * 1.05);
 
-    el.style.transform = "translate3d(" + startX + "px," + startY + "px,0) rotate(" + rand(-20, 20) + "deg)";
+    el.style.transform = "translate3d(" + startX + "px," + startY + "px,0) rotate(" + rand(-30, 30) + "deg)";
     layer.appendChild(el);
     activeCount++;
 
-    const sway = (Math.random() < 0.5 ? 1 : -1) * rand(12, 42);
-    const rot = (Math.random() < 0.5 ? 1 : -1) * rand(40, 110);
-    const dur = depth === "far" ? rand(4200, 6200) : depth === "mid" ? rand(3800, 5600) : rand(3400, 5000);
-    const windFreq = rand(0.8, 1.4);
-    const baseOp = parseFloat(el.style.opacity) || 0.28;
+    const sway = (Math.random() < 0.5 ? 1 : -1) * rand(24, 90);
+    const rot = (Math.random() < 0.5 ? 1 : -1) * rand(80, 220);
+    const dur = depth === "far" ? rand(3200, 4800) : depth === "mid" ? rand(2800, 4200) : rand(2400, 3800);
+    const windFreq = rand(1.2, 2.2);
+    const baseOp = parseFloat(el.style.opacity) || 0.5;
 
     const t0 = performance.now();
     function frame(now){
@@ -1719,7 +1718,7 @@ window.addEventListener("pagehide", ()=>{
       }else if(ny > 0.78){
         fade = Math.max(0, 1 - (ny - 0.78) / 0.28);
       }
-      const op = baseOp * (1 - p * 0.82) * fade;
+      const op = baseOp * (1 - p * 0.75) * fade;
       el.style.opacity = String(Math.max(0, op));
       el.style.transform = "translate3d(" + x + "px," + y + "px,0) rotate(" + (rot * ease) + "deg)";
       if(p < 1){
