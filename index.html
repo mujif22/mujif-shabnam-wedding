@@ -79,97 +79,68 @@
   }
 </style>
 <style id="gate-title-force">
-  .emerald-gate-sheet{
-    transform:none !important;
-    margin-top:0 !important;
-    margin-bottom:0 !important;
-    width:min(620px, 96vw) !important;
-    max-width:96vw !important;
+  /* Full-bleed artwork first page — image is the UI */
+  .welcome-gate.emerald-gate.gate-artwork,
+  .emerald-gate.gate-artwork{
+    cursor:default !important;
+    background:#02140e !important;
+    padding:0 !important;
+    overflow:hidden !important;
   }
-  .gate-bilingual{
+  .gate-artwork .gate-art{
+    position:absolute !important;
+    inset:0 !important;
+    width:100% !important;
+    height:100% !important;
+    object-fit:cover !important;
+    object-position:center center !important;
+    display:block !important;
+    pointer-events:none !important;
+    user-select:none !important;
+    z-index:1 !important;
+  }
+  .gate-artwork .gate-hit-row{
+    position:absolute !important;
+    left:50% !important;
+    top:51% !important;
+    transform:translate(-50%, -50%) !important;
     display:flex !important;
     flex-direction:row !important;
+    align-items:center !important;
     justify-content:center !important;
-    align-items:stretch !important;
-    gap:0 !important;
-    width:100% !important;
-    margin:14px auto 0 !important;
+    gap:clamp(10px, 2.8vw, 28px) !important;
+    width:min(54vw, 460px) !important;
+    z-index:5 !important;
   }
-  .gate-lang-col{
-    display:flex !important;
+  .gate-artwork .gate-hit{
     flex:1 1 50% !important;
-    flex-direction:column !important;
-    align-items:center !important;
-    justify-content:space-between !important;
-    text-align:center !important;
-    gap:14px !important;
-    padding:8px 10px !important;
+    height:clamp(44px, 8vh, 64px) !important;
     min-width:0 !important;
-  }
-  .gate-lang-col + .gate-lang-col{
-    border-left:1px solid rgba(224,192,122,.45) !important;
-  }
-  .gate-lang-title{
-    display:block !important;
     margin:0 !important;
-    opacity:1 !important;
-    visibility:visible !important;
-    color:#f3e3b8 !important;
-    -webkit-text-fill-color:#f3e3b8 !important;
-    background:none !important;
-    line-height:1.15 !important;
-  }
-  .gate-lang-title.en{
-    font-family:"Playfair Display","Cormorant Garamond",serif !important;
-    font-size:clamp(20px, 5.4vw, 32px) !important;
-    font-weight:700 !important;
-    letter-spacing:.02em !important;
-  }
-  .gate-lang-title.hi{
-    font-family:"Noto Sans Devanagari","Noto Serif Devanagari",sans-serif !important;
-    font-size:clamp(22px, 5.8vw, 34px) !important;
-    font-weight:700 !important;
-    letter-spacing:0 !important;
-    color:#f0d78a !important;
-    -webkit-text-fill-color:#f0d78a !important;
-  }
-  .gate-open-btn{
-    display:inline-flex !important;
-    align-items:center !important;
-    justify-content:center !important;
-    width:min(148px, 42vw) !important;
-    min-height:46px !important;
-    padding:12px 14px !important;
-    border:2px solid #e0c07a !important;
-    border-radius:12px !important;
-    background:#163529 !important;
-    color:#fff4d4 !important;
-    font-weight:700 !important;
-    font-size:14px !important;
-    letter-spacing:.04em !important;
+    padding:0 !important;
+    border:0 !important;
+    border-radius:10px !important;
+    background:transparent !important;
+    box-shadow:none !important;
     cursor:pointer !important;
-    box-shadow:0 10px 22px rgba(0,0,0,.28) !important;
-    -webkit-tap-highlight-color:rgba(212,179,106,.35) !important;
+    -webkit-tap-highlight-color:rgba(224,192,122,.25) !important;
   }
-  .gate-open-btn.en{
-    font-family:"Cinzel",serif !important;
-    text-transform:none !important;
-  }
-  .gate-open-btn.hi{
-    font-family:"Noto Sans Devanagari","Noto Serif Devanagari",sans-serif !important;
-    letter-spacing:.02em !important;
-    text-transform:none !important;
-    font-size:16px !important;
-    font-weight:700 !important;
-  }
-  /* Hide old-style single titles if any leftover */
-  .emerald-gate > .title-wedding,
-  .emerald-gate > .title-invitation,
-  .emerald-gate-sheet > .title-wedding,
-  .emerald-gate-sheet > .title-invitation,
-  .emerald-gate .invite-open-hint{ display:none !important; }
+  .gate-artwork .host-starfield,
+  .gate-artwork .host-corners,
+  .gate-artwork .emerald-gate-sheet,
+  .gate-artwork .gate-bilingual{ display:none !important; }
   body.gate-locked #langSwitch,
   #langSwitch{ display:none !important; }
+  @media (max-aspect-ratio: 3/4){
+    .gate-artwork .gate-hit-row{
+      top:50% !important;
+      width:min(78vw, 360px) !important;
+      gap:clamp(8px, 3vw, 18px) !important;
+    }
+    .gate-artwork .gate-hit{
+      height:clamp(48px, 7.5vh, 60px) !important;
+    }
+  }
 </style>
 <style id="maps-btn-force">
   a.gold-btn,
@@ -369,8 +340,8 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- build-v74 -->
-<link rel="stylesheet" href="style.v74.css?v=74-shekh">
+<!-- build-v75 -->
+<link rel="stylesheet" href="style.v75.css?v=75-gate-art">
 </head>
 <body class="lang-hi">
 <div class="grain"></div>
@@ -380,28 +351,11 @@
   <source src="assets/instrumental.mp3" type="audio/mpeg">
 </audio>
 
-<div class="welcome-gate emerald-gate" id="openGate" role="dialog" aria-modal="true" aria-label="Open wedding invitation">
-  <div class="host-starfield" aria-hidden="true"></div>
-  <div class="host-corners" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
-
-  <div class="emerald-gate-sheet">
-    <div class="host-rule host-rule-top" aria-hidden="true"><i></i></div>
-    <p class="arabic-small host-bismillah" lang="ar" dir="rtl">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</p>
-    <div class="host-diamond" aria-hidden="true"></div>
-
-    <div class="gate-bilingual" role="group" aria-label="Choose language">
-      <div class="gate-lang-col">
-        <h1 class="gate-lang-title en" lang="en">Wedding<br>Invitation</h1>
-        <button type="button" class="gate-open-btn en" data-open-lang="en">English</button>
-      </div>
-      <div class="gate-lang-col">
-        <h1 class="gate-lang-title hi" lang="hi">जश्ने<br>शादी</h1>
-        <button type="button" class="gate-open-btn hi" data-open-lang="hi" lang="hi">हिंदी</button>
-      </div>
-    </div>
-
-    <div class="host-diamond" aria-hidden="true"></div>
-    <div class="host-rule host-rule-bottom" aria-hidden="true"><i></i></div>
+<div class="welcome-gate emerald-gate gate-artwork" id="openGate" role="dialog" aria-modal="true" aria-label="Open wedding invitation">
+  <img class="gate-art" src="assets/welcome-gate-v75.png" alt="Wedding Invitation" width="1920" height="1080" decoding="async" fetchpriority="high">
+  <div class="gate-hit-row" role="group" aria-label="Choose language">
+    <button type="button" class="gate-hit en" data-open-lang="en" aria-label="English"></button>
+    <button type="button" class="gate-hit hi" data-open-lang="hi" lang="hi" aria-label="हिंदी"></button>
   </div>
 </div>
 
@@ -582,6 +536,6 @@
 </section>
 
 </main>
-<script src="script.v74.js?v=74-shekh"></script>
+<script src="script.v75.js?v=75-gate-art"></script>
 </body>
 </html>
