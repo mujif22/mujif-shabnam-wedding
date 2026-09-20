@@ -1,0 +1,9 @@
+# Cloudflare must not upload these as site assets
+node_modules
+package-lock.json
+.git
+.idea
+*.iml
+scripts
+README.md
+netlify.toml

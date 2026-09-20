@@ -1,0 +1,7 @@
+name = "wedding-invitation-ms"
+compatibility_date = "2025-09-21"
+
+[assets]
+directory = "."
+html_handling = "auto"
+not_found_handling = "404-page"
