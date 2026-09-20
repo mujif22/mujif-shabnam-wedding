@@ -79,7 +79,7 @@
   }
 </style>
 <style id="gate-title-force">
-  /* Full-bleed artwork first page — image is the UI */
+  /* Artwork gate: image aspect box + hits locked to button pixels */
   .welcome-gate.emerald-gate.gate-artwork,
   .emerald-gate.gate-artwork{
     cursor:default !important;
@@ -87,60 +87,64 @@
     padding:0 !important;
     overflow:hidden !important;
   }
+  .gate-artwork .gate-stage{
+    position:absolute !important;
+    inset:0 !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    z-index:2 !important;
+  }
+  .gate-artwork .gate-art-wrap{
+    position:relative !important;
+    width:min(100vw, calc(var(--app-h, 100dvh) * 1813 / 868)) !important;
+    height:min(var(--app-h, 100dvh), calc(100vw * 868 / 1813)) !important;
+    max-width:100% !important;
+    max-height:100% !important;
+  }
   .gate-artwork .gate-art{
     position:absolute !important;
     inset:0 !important;
     width:100% !important;
     height:100% !important;
-    object-fit:cover !important;
-    object-position:center center !important;
+    object-fit:fill !important;
     display:block !important;
     pointer-events:none !important;
     user-select:none !important;
     z-index:1 !important;
   }
-  .gate-artwork .gate-hit-row{
-    position:absolute !important;
-    left:50% !important;
-    top:51% !important;
-    transform:translate(-50%, -50%) !important;
-    display:flex !important;
-    flex-direction:row !important;
-    align-items:center !important;
-    justify-content:center !important;
-    gap:clamp(10px, 2.8vw, 28px) !important;
-    width:min(54vw, 460px) !important;
-    z-index:5 !important;
-  }
   .gate-artwork .gate-hit{
-    flex:1 1 50% !important;
-    height:clamp(44px, 8vh, 64px) !important;
-    min-width:0 !important;
+    position:absolute !important;
+    z-index:6 !important;
     margin:0 !important;
     padding:0 !important;
     border:0 !important;
-    border-radius:10px !important;
+    border-radius:12px !important;
     background:transparent !important;
     box-shadow:none !important;
     cursor:pointer !important;
-    -webkit-tap-highlight-color:rgba(224,192,122,.25) !important;
+    -webkit-tap-highlight-color:rgba(224,192,122,.35) !important;
+  }
+  /* Exact ENGLISH / हिंदी boxes from welcome-gate-v75.png (1813x868) */
+  .gate-artwork .gate-hit.en{
+    left:34.8% !important;
+    top:49.2% !important;
+    width:15.5% !important;
+    height:15% !important;
+  }
+  .gate-artwork .gate-hit.hi{
+    left:49.6% !important;
+    top:49.2% !important;
+    width:15.5% !important;
+    height:15% !important;
   }
   .gate-artwork .host-starfield,
   .gate-artwork .host-corners,
   .gate-artwork .emerald-gate-sheet,
-  .gate-artwork .gate-bilingual{ display:none !important; }
+  .gate-artwork .gate-bilingual,
+  .gate-artwork .gate-hit-row{ display:none !important; }
   body.gate-locked #langSwitch,
   #langSwitch{ display:none !important; }
-  @media (max-aspect-ratio: 3/4){
-    .gate-artwork .gate-hit-row{
-      top:50% !important;
-      width:min(78vw, 360px) !important;
-      gap:clamp(8px, 3vw, 18px) !important;
-    }
-    .gate-artwork .gate-hit{
-      height:clamp(48px, 7.5vh, 60px) !important;
-    }
-  }
 </style>
 <style id="maps-btn-force">
   a.gold-btn,
@@ -340,8 +344,8 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- build-v75 -->
-<link rel="stylesheet" href="style.v75.css?v=75-gate-art">
+<!-- build-v76 -->
+<link rel="stylesheet" href="style.v76.css?v=76-hits">
 </head>
 <body class="lang-hi">
 <div class="grain"></div>
@@ -352,10 +356,12 @@
 </audio>
 
 <div class="welcome-gate emerald-gate gate-artwork" id="openGate" role="dialog" aria-modal="true" aria-label="Open wedding invitation">
-  <img class="gate-art" src="assets/welcome-gate-v75.png" alt="Wedding Invitation" width="1920" height="1080" decoding="async" fetchpriority="high">
-  <div class="gate-hit-row" role="group" aria-label="Choose language">
-    <button type="button" class="gate-hit en" data-open-lang="en" aria-label="English"></button>
-    <button type="button" class="gate-hit hi" data-open-lang="hi" lang="hi" aria-label="हिंदी"></button>
+  <div class="gate-stage">
+    <div class="gate-art-wrap">
+      <img class="gate-art" src="assets/welcome-gate-v75.png" alt="Wedding Invitation" width="1813" height="868" decoding="async" fetchpriority="high">
+      <button type="button" class="gate-hit en" data-open-lang="en" aria-label="English"></button>
+      <button type="button" class="gate-hit hi" data-open-lang="hi" lang="hi" aria-label="हिंदी"></button>
+    </div>
   </div>
 </div>
 
@@ -536,6 +542,6 @@
 </section>
 
 </main>
-<script src="script.v75.js?v=75-gate-art"></script>
+<script src="script.v76.js?v=76-hits"></script>
 </body>
 </html>
