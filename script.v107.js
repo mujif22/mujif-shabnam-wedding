@@ -1586,16 +1586,15 @@ window.addEventListener("pagehide", ()=>{
     softpink: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 32"><path d="M12 2c-2.2 5-7 8.5-7 14.5S9 28 12 30c3-2 7-7 7-13.5S14.2 7 12 2z" fill="rgba(230,150,170,.7)"/></svg>'),
     apricot: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 32"><path d="M12 1C9 6 4 10 4 17c0 6 3.5 10 8 13 4.5-3 8-7 8-13 0-7-5-11-8-16z" fill="rgba(230,175,110,.72)"/></svg>'),
     mauve: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 28"><path d="M9 0L14 14c1 4-1 9-5 13C5 23 3 18 4 14L9 0z" fill="rgba(170,110,130,.68)"/></svg>'),
-    burgundy: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 32"><path d="M12 2c-2.2 5-7 8.5-7 14.5S9 28 12 30c3-2 7-7 7-13.5S14.2 7 12 2z" fill="rgba(120,40,55,.68)"/></svg>'),
+    burgundy: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 32"><path d="M12 2c-2.2 5-7 8.5-7 14.5S9 28 12 30c3-2 7-7 7-13.5S14.2 7 12 2z" fill="rgba(110,28,48,.82)"/></svg>'),
+    wine: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 32"><path d="M12 1C9 6 4 10 4 17c0 6 3.5 10 8 13 4.5-3 8-7 8-13 0-7-5-11-8-16z" fill="rgba(92,22,40,.84)"/></svg>'),
+    plum: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 28"><path d="M9 0L14 14c1 4-1 9-5 13C5 23 3 18 4 14L9 0z" fill="rgba(88,40,70,.8)"/></svg>'),
+    darkrose: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 32"><path d="M12 2c-2.2 5-7 8.5-7 14.5S9 28 12 30c3-2 7-7 7-13.5S14.2 7 12 2z" fill="rgba(130,30,50,.82)"/></svg>'),
+    garnet: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 32"><path d="M12 1C9 6 4 10 4 17c0 6 3.5 10 8 13 4.5-3 8-7 8-13 0-7-5-11-8-16z" fill="rgba(120,24,36,.85)"/></svg>'),
+    bronze: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 28"><path d="M9 0L14 14c1 4-1 9-5 13C5 23 3 18 4 14L9 0z" fill="rgba(140,95,45,.78)"/></svg>'),
     creamgold: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 32"><path d="M12 1C9 6 4 10 4 17c0 6 3.5 10 8 13 4.5-3 8-7 8-13 0-7-5-11-8-16z" fill="rgba(245,220,160,.74)"/></svg>'),
-    wine: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 32"><path d="M12 1C9 6 4 10 4 17c0 6 3.5 10 8 13 4.5-3 8-7 8-13 0-7-5-11-8-16z" fill="rgba(96,24,40,.82)"/></svg>'),
-    maroon: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 28"><path d="M9 0L14 14c1 4-1 9-5 13C5 23 3 18 4 14L9 0z" fill="rgba(110,28,42,.8)"/></svg>'),
-    plum: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 32"><path d="M12 2c-2.2 5-7 8.5-7 14.5S9 28 12 30c3-2 7-7 7-13.5S14.2 7 12 2z" fill="rgba(90,40,70,.78)"/></svg>'),
-    deeprose: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 32"><path d="M12 1C9 6 4 10 4 17c0 6 3.5 10 8 13 4.5-3 8-7 8-13 0-7-5-11-8-16z" fill="rgba(140,30,50,.8)"/></svg>'),
-    darkgold: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 32"><path d="M12 2c-2.2 5-7 8.5-7 14.5S9 28 12 30c3-2 7-7 7-13.5S14.2 7 12 2z" fill="rgba(160,120,55,.78)"/></svg>'),
     leaf: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 32"><path d="M10 1C5 8 3 15 4 23c3-2 6-3 6-3s3 1 6 3c1-8-1-15-6-22z" fill="rgba(120,140,100,.55)"/><path d="M10 4v20" stroke="rgba(70,90,60,.35)" stroke-width="1" fill="none"/></svg>'),
     sage: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 32"><path d="M10 1C5 8 3 15 4 23c3-2 6-3 6-3s3 1 6 3c1-8-1-15-6-22z" fill="rgba(140,155,120,.55)"/></svg>'),
-    deepgreen: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 32"><path d="M10 1C5 8 3 15 4 23c3-2 6-3 6-3s3 1 6 3c1-8-1-15-6-22z" fill="rgba(70,95,65,.7)"/></svg>'),
     sharp: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 28"><path d="M9 0L14 14c1 4-1 9-5 13C5 23 3 18 4 14L9 0z" fill="rgba(250,242,220,.8)"/></svg>')
   };
 
@@ -1667,20 +1666,25 @@ window.addEventListener("pagehide", ()=>{
     const el = document.createElement("span");
     const depth = pick(["near", "mid", "far"]);
     const kind = depth === "far"
-      ? (Math.random() < 0.45 ? "speck" : pick(["champagne", "blush", "ivory", "peach", "softpink", "creamgold", "rose", "burgundy", "wine"]))
-      : pick(["ivory", "champagne", "rose", "crimson", "blush", "peach", "coral", "softpink", "apricot", "mauve", "burgundy", "creamgold", "wine", "maroon", "plum", "deeprose", "darkgold", "leaf", "sage", "deepgreen", "sharp", "wine", "maroon", "deeprose", "burgundy"]);
+      ? (Math.random() < 0.45 ? "speck" : pick(["champagne", "blush", "ivory", "peach", "softpink", "creamgold", "rose", "burgundy", "wine", "darkrose"]))
+      : pick([
+          "ivory", "champagne", "rose", "crimson", "blush", "peach", "coral", "softpink", "apricot", "mauve",
+          "burgundy", "burgundy", "wine", "wine", "plum", "darkrose", "garnet", "bronze",
+          "creamgold", "leaf", "sage", "sharp"
+        ]);
 
-    el.className = "floral-petal depth-" + depth + (kind === "leaf" || kind === "sage" || kind === "deepgreen" ? " is-leaf" : "") + (kind === "speck" ? " is-speck" : "");
+    el.className = "floral-petal depth-" + depth + (kind === "leaf" || kind === "sage" ? " is-leaf" : "") + (kind === "speck" ? " is-speck" : "");
     if(kind === "speck"){
       const speckColors = [
         "rgba(176,48,58," + rand(0.45, 0.75).toFixed(2) + ")",
+        "rgba(92,22,40," + rand(0.5, 0.8).toFixed(2) + ")",
+        "rgba(120,24,36," + rand(0.48, 0.78).toFixed(2) + ")",
+        "rgba(88,40,70," + rand(0.45, 0.75).toFixed(2) + ")",
         "rgba(232,160,130," + rand(0.4, 0.7).toFixed(2) + ")",
         "rgba(230,150,170," + rand(0.4, 0.68).toFixed(2) + ")",
         "rgba(224,192,122," + rand(0.4, 0.65).toFixed(2) + ")",
-        "rgba(210,110,95," + rand(0.4, 0.7).toFixed(2) + ")",
-        "rgba(96,24,40," + rand(0.5, 0.8).toFixed(2) + ")",
-        "rgba(110,28,42," + rand(0.48, 0.78).toFixed(2) + ")",
-        "rgba(90,40,70," + rand(0.48, 0.76).toFixed(2) + ")"
+        "rgba(140,95,45," + rand(0.45, 0.72).toFixed(2) + ")",
+        "rgba(210,110,95," + rand(0.4, 0.7).toFixed(2) + ")"
       ];
       el.style.background = pick(speckColors);
     }else{
