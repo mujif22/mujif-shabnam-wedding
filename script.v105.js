@@ -1679,9 +1679,9 @@ window.addEventListener("pagehide", ()=>{
       el.style.backgroundImage = "url(\"" + (PETAL_SVG[kind] || PETAL_SVG.ivory) + "\")";
     }
 
-    const sizeScale = depth === "near" ? rand(0.7, 0.95) : depth === "mid" ? rand(0.5, 0.75) : rand(0.28, 0.48);
-    const pw = (kind === "speck" ? 3 : kind === "leaf" ? 10 : 12) * sizeScale;
-    const ph = (kind === "speck" ? 3 : kind === "leaf" ? 16 : 15) * sizeScale;
+    const sizeScale = depth === "near" ? rand(0.95, 1.25) : depth === "mid" ? rand(0.7, 1.0) : rand(0.35, 0.6);
+    const pw = (kind === "speck" ? 4 : kind === "leaf" ? 12 : 14) * sizeScale;
+    const ph = (kind === "speck" ? 4 : kind === "leaf" ? 20 : 18) * sizeScale;
     el.style.width = pw + "px";
     el.style.height = ph + "px";
     el.style.opacity = String(depth === "near" ? rand(0.28, 0.48) : depth === "mid" ? rand(0.18, 0.34) : rand(0.1, 0.22));
